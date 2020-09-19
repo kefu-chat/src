@@ -12,7 +12,6 @@ return [
     | syntax for every one. Here you may define a default connection.
     |
     */
-
     'default' => env('QUEUE_CONNECTION', 'sync'),
 
     /*
@@ -27,7 +26,6 @@ return [
     | Drivers: "sync", "database", "beanstalkd", "sqs", "redis", "null"
     |
     */
-
     'connections' => [
 
         'sync' => [
@@ -78,10 +76,9 @@ return [
     | have failed. You may change them to any database / table you wish.
     |
     */
-
     'failed' => [
+        'driver' => env('QUEUE_FAILED_DRIVER', 'database-uuids'),
         'database' => env('DB_CONNECTION', 'mysql'),
         'table' => 'failed_jobs',
     ],
-
 ];

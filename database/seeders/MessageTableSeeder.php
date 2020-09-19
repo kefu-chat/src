@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Broadcasting\ConversationMessaging;
 use App\Models\Conversation;
 use App\Models\Institution;

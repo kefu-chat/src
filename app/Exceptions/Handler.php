@@ -74,4 +74,14 @@ class Handler extends ExceptionHandler
             'message' => $this->isHttpException($e) ? $e->getMessage() : 'Server Error',
         ];
     }
+
+    /**
+     * Register the exception handling callbacks for the application.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
 }
