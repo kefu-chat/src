@@ -28,6 +28,7 @@ php artisan migrate
 
 ```
 #初始化管理员
+php artisan db:seed --class=Database\\Seeders\\PerissionSeeder
 php artisan db:seed --class=Database\\Seeders\\AdminSeeder
 
 #待分配对话
@@ -37,7 +38,7 @@ php artisan db:seed --class=Database\\Seeders\\MessageTableSeeder
 #已分配对话
 php artisan db:seed --class=Database\\Seeders\\ConversationTableSeeder
 php artisan db:seed --class=Database\\Seeders\\MessageTableSeeder
-php artisan db:seed --class=Database\\Seeders\\AssignTableSeeder
+php artisan db:seed --class=Database\\Seeders\\AssignSeeder
 
 #全新企业
 php artisan db:seed --class=Database\\Seeders\\InstitutionsTableSeeder
