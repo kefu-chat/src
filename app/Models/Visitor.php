@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\HasInstitution;
 use App\Models\Traits\HasPublicId;
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthAuthenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
@@ -34,7 +35,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Visitor whereUniqueId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Visitor whereUpdatedAt($value)
  */
-class Visitor extends AbstractModel implements JWTSubject
+class Visitor extends AbstractModel implements JWTSubject, AuthAuthenticatable
 {
     use HasInstitution, Authenticatable, HasPublicId;
 

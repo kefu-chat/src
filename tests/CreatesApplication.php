@@ -20,4 +20,18 @@ trait CreatesApplication
 
         return $app;
     }
+
+    /**
+     * Clean up the testing environment before the next test.
+     *
+     * @return void
+     *
+     * @throws \Mockery\Exception\InvalidCountException
+     */
+    protected function tearDown(): void
+    {
+        ob_clean();
+
+        parent::tearDown();
+    }
 }

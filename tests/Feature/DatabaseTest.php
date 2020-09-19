@@ -34,6 +34,5 @@ class DatabaseTest extends TestCase
         $this->artisan('db:seed', [ '--class' => \Database\Seeders\InstitutionsTableSeeder::class])->assertExitCode(0);
         $this->artisan('db:seed', [ '--class' => \Database\Seeders\UsersTableSeeder::class])->assertExitCode(0);
         $this->artisan('db:seed', [ '--class' => \Database\Seeders\VisitorsTableSeeder::class])->assertExitCode(0);
-        ob_clean();
     }
 }

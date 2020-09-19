@@ -27,6 +27,5 @@ class RouteTest extends TestCase
         $this->assertTrue(!!route('visitor.init'));
         $this->assertTrue(!!route('visitor.list-message', 1));
         $this->assertTrue(!!route('visitor.send-message', 1));
-        ob_clean();
     }
 }

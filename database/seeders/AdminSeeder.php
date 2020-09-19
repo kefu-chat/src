@@ -6,6 +6,7 @@ use App\Models\Institution;
 use App\Models\User;
 use Faker\Generator;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
 
 class AdminSeeder extends Seeder
 {
@@ -30,6 +31,7 @@ class AdminSeeder extends Seeder
         ]);
         $user->institution()->associate($institution);
         $user->save();
+        $user->givePermissionTo(Permission::findOrCreate('manager', 'api'));
 
         echo 'admin@admin.com' . PHP_EOL;
         echo '123456' . PHP_EOL;
