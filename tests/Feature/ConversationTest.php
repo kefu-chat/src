@@ -2,12 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Conversation;
-use App\Models\Message;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ConversationTest extends TestCase
 {
