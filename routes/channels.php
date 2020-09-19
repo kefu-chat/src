@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Broadcast;
-
 /*
 |--------------------------------------------------------------------------
 | Broadcast Channels
@@ -13,6 +11,14 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});
+use App\Models\Conversation;
+use App\Models\User;
+use App\Models\Visitor;
+
+/**
+ * @see \App\Broadcasting\ConversationMessaging
+ */
+Broadcast::channel('conversation.{id}.messaging', function ($user, $id) {
+    $conversation = Conversation::findOrFail($id);
+    return $conversation->{[Visitor::class => 'visitor_id', User::class => 'user_id'][get_class($user)]} == $user->id;
+}, ['guards' => ['visitor', 'api']]);

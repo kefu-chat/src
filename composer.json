@@ -1,21 +1,31 @@
 {
-    "name": "laravel/laravel",
+    "name": "fastsupport/api",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "闪客服API代码.",
     "keywords": [
-        "framework",
-        "laravel"
+        "laravel",
+        "kefu",
+        "customer-service",
+        "support"
     ],
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
         "fideloper/proxy": "^4.2",
+        "filp/whoops": "^2.7",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
+        "iidestiny/laravel-filesystem-oss": "^2.0",
         "laravel/framework": "^7.24",
-        "laravel/tinker": "^2.0"
+        "laravel/socialite": "^4.3",
+        "laravel/tinker": "^2.0",
+        "laravel/ui": "^2.0",
+        "predis/predis": "^1.1",
+        "tymon/jwt-auth": "^1.0.0-rc.5"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.8",
+        "beyondcode/laravel-dump-server": "^1.4",
         "facade/ignition": "^2.0",
         "fzaninotto/faker": "^1.9.1",
         "mockery/mockery": "^1.3.1",
@@ -54,7 +64,8 @@
             "@php artisan package:discover --ansi"
         ],
         "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php artisan jwt:secret"
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"

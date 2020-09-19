@@ -10,3 +10,10 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+.nuxt
+/dist
+/public/_nuxt
+*.code-workspace
+.DS_Store
+laravel-echo-server.json
+laravel-echo-server.lock

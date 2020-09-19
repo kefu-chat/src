@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Arr;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -27,29 +29,49 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * Report or log an exception.
+     * Prepare a response for the given exception.
      *
-     * @param  \Throwable  $exception
-     * @return void
-     *
-     * @throws \Throwable
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $e
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function report(Throwable $exception)
+    protected function prepareResponse($request, Throwable $e)
     {
-        parent::report($exception);
+        return $this->prepareJsonResponse($request, $e);
     }
 
     /**
-     * Render an exception into an HTTP response.
+     * Convert an authentication exception into a response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $exception
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Throwable
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Illuminate\Http\Response
      */
-    public function render($request, Throwable $exception)
+    protected function unauthenticated($request, AuthenticationException $exception)
     {
-        return parent::render($request, $exception);
+        return response()->json(['message' => $exception->getMessage()], 401);
+    }
+
+    /**
+     * Convert the given exception to an array.
+     *
+     * @param  \Throwable  $e
+     * @return array
+     */
+    protected function convertExceptionToArray(Throwable $e)
+    {
+        return config('app.debug') ? [
+            'success' => false,
+            'message' => $e->getMessage(),
+            'exception' => get_class($e),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => collect($e->getTrace())->map(function ($trace) {
+                return Arr::except($trace, ['args']);
+            })->all(),
+        ] : [
+            'success' => false,
+            'message' => $this->isHttpException($e) ? $e->getMessage() : 'Server Error',
+        ];
     }
 }

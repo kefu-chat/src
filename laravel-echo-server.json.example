@@ -1,0 +1,27 @@
+{
+	"authHost": "http://dev.fastsupport.cn",
+	"authEndpoint": "/broadcasting/auth",
+	"clients": [
+		{
+			"appId": "775088722a0321b3",
+			"key": "0ddf99217d66f3689ef4a81d935b34a1"
+		}
+	],
+	"database": "redis",
+	"databaseConfig": {
+		"redis": {}
+	},
+	"devMode": true,
+	"host": null,
+	"port": "6001",
+	"protocol": "http",
+	"socketio": {},
+	"sslCertChainPath": "",
+	"sslPassphrase": "",
+	"apiOriginAllow": {
+		"allowCors": true,
+		"allowOrigin": "*",
+		"allowMethods": "GET, POST",
+		"allowHeaders": "Origin, Content-Type, X-Auth-Token, X-Requested-With, Accept, Authorization, X-CSRF-TOKEN, X-Socket-Id"
+	}
+}
