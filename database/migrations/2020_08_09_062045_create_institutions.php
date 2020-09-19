@@ -14,10 +14,17 @@ class CreateInstitutions extends Migration
     public function up()
     {
         Schema::create('institutions', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name')->nullable()->comment('公司名字');
-            $table->string('serial')->nullable()->comment('公司注册号');
+            $table->id();
+
+            $table->string('name')->nullable()->comment('项目名字');
+            $table->string('website')->nullable()->comment('网站');
+            $table->string('technical_name')->nullable()->comment('技术负责人');
+            $table->string('billing_name')->nullable()->comment('财务负责人');
+            $table->string('technical_phone')->nullable()->comment('技术负责人电话');
+            $table->string('billing_phone')->nullable()->comment('财务负责人电话');
             $table->unsignedBigInteger('plan_id')->default(0)->comment('套餐 ID');
+            $table->unsignedBigInteger('enterprise_id')->comment('企业 ID');
+
             $table->timestamps();
         });
     }

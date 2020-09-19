@@ -14,7 +14,7 @@ class CreateVisitors extends Migration
     public function up()
     {
         Schema::create('visitors', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('institution_id')->index()->comment('组织 ID');
             $table->string('unique_id', 32)->unique()->comment('唯一 ID');
             $table->string('name', 120)->index()->comment('名字');
