@@ -33,7 +33,8 @@ class InstitutionController extends Controller
     {
         $user = auth()->user();
         $institution = $user->institution;
-        $institution->fill($request->only(['name', 'serial',]));
+        $institution->fill($request->only(['name', 'website',]));
+        $institution->save();
 
         return response()->success([
             'institution' => $institution,

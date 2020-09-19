@@ -19,8 +19,8 @@ class RouteTest extends TestCase
         $this->assertTrue(!!route('conversation.list.agent'));
         $this->assertTrue(!!route('conversation.message.list.agent', 1));
         $this->assertTrue(!!route('conversation.message.send.agent', 1));
-        $this->assertTrue(!!route('institution.profile.show'));
-        $this->assertTrue(!!route('institution.profile.update'));
+        $this->assertTrue(!!route('institution.profile.show', 1));
+        $this->assertTrue(!!route('institution.profile.update', 1));
         $this->assertTrue(!!route('login'));
         $this->assertTrue(!!route('verification.verify', 1));
         $this->assertTrue(!!route('oauth.callback', 1));

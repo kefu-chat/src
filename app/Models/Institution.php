@@ -9,7 +9,6 @@ use App\Models\Traits\HasPublicId;
  *
  * @property int $id
  * @property string|null $name 公司名字
- * @property string|null $serial 公司注册号
  * @property string|null $website 网站
  * @property int $plan_id 套餐 ID
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -38,7 +37,7 @@ class Institution extends AbstractModel
 
     protected $fillable = [
         'name',
-        'serial',
+        'website',
     ];
 
     /**

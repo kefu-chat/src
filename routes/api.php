@@ -29,8 +29,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('conversation/{conversation}/messages', 'Personnel\ConversationController@listConversationMessage')->name('conversation.message.list.agent');
     Route::post('conversation/{conversation}/send-message', 'Personnel\ConversationController@sendMessage')->name('conversation.message.send.agent');
 
-    Route::get('institution', 'Personnel\InstitutionController@showProfile')->name('institution.profile.show');
-    Route::post('institution', 'Personnel\InstitutionController@updateProfile')->name('institution.profile.update')->middleware(['can:manager']);
+    Route::get('institution/{institution}', 'Personnel\InstitutionController@showProfile')->name('institution.profile.show');
+    Route::post('institution/{institution}/update', 'Personnel\InstitutionController@updateProfile')->name('institution.profile.update')->middleware(['can:manager']);
 });
 
 Route::group(['middleware' => 'guest:api'], function () {
