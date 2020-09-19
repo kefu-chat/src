@@ -1,4 +1,4 @@
-name: 单元测试
+name: build
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  laravel-tests:
+  单元测试:
 
     runs-on: ubuntu-latest
 
