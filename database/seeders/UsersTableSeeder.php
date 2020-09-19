@@ -17,7 +17,7 @@ class UsersTableSeeder extends Seeder
     public function run(Generator $generator)
     {
         begin:
-        $institution = Institution::latest()->first();
+        $institution = Institution::latest('id')->first();
         if (!$institution) {
             $this->call(InstitutionsTableSeeder::class);
             goto begin;

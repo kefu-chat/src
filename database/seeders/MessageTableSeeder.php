@@ -21,15 +21,15 @@ class MessageTableSeeder extends Seeder
     public function run(Generator $generator)
     {
         begin:
-        $conversation = Conversation::latest()->first();
+        $conversation = Conversation::latest('id')->first();
         if (!$conversation) {
             $this->call(ConversationTableSeeder::class);
             goto begin;
         }
 
-        $visitor = Visitor::latest()->first();
-        $user = User::latest()->first();
-        $institution = Institution::latest()->first();
+        $visitor = Visitor::latest('id')->first();
+        $user = User::latest('id')->first();
+        $institution = Institution::latest('id')->first();
 
         $count = mt_rand(1, 3);
         for ($i = 0; $i < $count; $i ++) {

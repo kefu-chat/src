@@ -28,6 +28,14 @@ class ConversationRepository
          * @var Conversation[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Conversation> $conversations
          */
         $conversations = $query->with(['visitor', 'user',])
+            ->when($user, function ($query) use ($user) {
+                /**
+                 * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                 */
+                return $query->whereHas('institution', function ($query) use ($user) {
+                    return $query->where('id', $user->institution_id);
+                });
+            })
             ->when($type == 'unassigned', function ($query) {
                 /**
                  * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query

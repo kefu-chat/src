@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@admin.com',
             'password' => '$2y$10$KvdJSsvIZb7B53GP/h5NFuPDtNJLRwgXB75kYT7ueYI6bWdNNwPym', //password_hash('123456', 1),
         ]);
-        $user->institution()->associate(Institution::latest()->first());
+        $user->institution()->associate(Institution::latest('id')->first());
         $user->save();
     }
 }

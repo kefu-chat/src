@@ -19,17 +19,17 @@ class ConversationTableSeeder extends Seeder
     public function run(Generator $generator)
     {
         begin:
-        $visitor = Visitor::latest()->first();
+        $visitor = Visitor::latest('id')->first();
         if (!$visitor) {
             $this->call(VisitorsTableSeeder::class);
             goto begin;
         }
-        $user = User::latest()->first();
+        $user = User::latest('id')->first();
         if (!$user) {
             $this->call(UsersTableSeeder::class);
             goto begin;
         }
-        $institution = Institution::latest()->first();
+        $institution = Institution::latest('id')->first();
         if (!$user) {
             $this->call(InstitutionsTableSeeder::class);
             goto begin;

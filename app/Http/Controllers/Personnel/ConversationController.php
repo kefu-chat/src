@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Messagingable;
 use App\Http\Transformers\ConversationListTransformer;
 use App\Repositories\ConversationRepository;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Vinkla\Hashids\Facades\Hashids;
 

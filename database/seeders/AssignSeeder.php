@@ -16,9 +16,9 @@ class AssignSeeder extends Seeder
     public function run()
     {
         $this->call(MessageTableSeeder::class);
-        $user = User::latest()->first();
+        $user = User::latest('id')->first();
 
-        $conversation = Conversation::latest()->first();
+        $conversation = Conversation::latest('id')->first();
         $conversation->user()->associate($user);
         $conversation->save();
     }
