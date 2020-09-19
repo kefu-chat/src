@@ -1,6 +1,6 @@
 # 闪客服后端
 
-![单元测试](https://github.com/fastsupport-cn/src/workflows/build/badge.svg)
+[![单元测试](https://github.com/fastsupport-cn/src/workflows/build/badge.svg)](https://github.com/fastsupport-cn/src/actions?query=workflow%3Abuild)
 
 > 基于 Laravel 的客服系统: [www.kefu.chat](https://www.kefu.chat).
 
