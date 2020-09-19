@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  单元测试:
+  UnitTest:
 
     runs-on: ubuntu-latest
 
