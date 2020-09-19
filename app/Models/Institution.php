@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasPublicId;
+
 /**
  * App\Models\Institution
  *
@@ -27,6 +29,8 @@ namespace App\Models;
  */
 class Institution extends AbstractModel
 {
+    use HasPublicId;
+
     protected $fillable = [
         'name',
         'serial',

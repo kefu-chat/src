@@ -28,7 +28,7 @@ class ConversationController extends Controller
     public function init(Request $request, VisitorRepository $visitorRepository, ConversationRepository $conversationRepository)
     {
         $request->validate([
-            'institution_id' => ['required', 'integer',],
+            'institution_id' => ['required', 'string',],
             'unique_id' => ['required', 'string'],
             'name' => ['nullable', 'string'],
             'email' => ['nullable', 'email'],

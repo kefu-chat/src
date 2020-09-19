@@ -21,7 +21,7 @@ class ConversationController extends Controller
     public function listConversation(Request $request, ConversationRepository $conversationRepository)
     {
         $request->validate([
-            'offset' => ['integer', 'nullable',],
+            'offset' => ['string', 'nullable',],
             'type' => ['string', 'in:assigned,unassigned'],
         ]);
 
