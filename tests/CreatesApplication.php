@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Encryption\Encrypter;
 
 trait CreatesApplication
 {

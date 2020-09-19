@@ -46,7 +46,7 @@ trait HasPublicId
     {
         $decode = Hashids::decode($value);
         if (Arr::last($decode) != crc32(static::class)) {
-            abort(403, '路由 ID 拼错了， CRC32校验失败');
+            abort(403, '路由 ID 拼错了， CRC32校验失败: ' . static::class);
         }
 
         return parent::resolveRouteBinding(Arr::first($decode));

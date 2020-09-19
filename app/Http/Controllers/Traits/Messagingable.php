@@ -55,12 +55,15 @@ trait Messagingable
         $request->validate([
             'offset' => ['nullable', 'string'],
         ]);
-        $request_offset = $request->input('offset', 999999);
+        $request_offset = $request->input('offset');
         $offset = Arr::first(Hashids::decode($request_offset));
-        if ($request_offset && !$offset) {
-            throw ValidationException::withMessages([
-                'offset' => 'offset 无效!',
-            ]);
+        if (!$offset) {
+            if ($request_offset) {
+                throw ValidationException::withMessages([
+                    'offset' => 'offset 无效!' . $request_offset . '-' . $offset,
+                ]);
+            }
+            $offset = 999999;
         }
         $has_previous = false;
 

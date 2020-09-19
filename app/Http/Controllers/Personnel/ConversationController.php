@@ -7,6 +7,9 @@ use App\Http\Controllers\Traits\Messagingable;
 use App\Http\Transformers\ConversationListTransformer;
 use App\Repositories\ConversationRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Validation\ValidationException;
+use Vinkla\Hashids\Facades\Hashids;
 
 class ConversationController extends Controller
 {
@@ -21,12 +24,21 @@ class ConversationController extends Controller
     public function listConversation(Request $request, ConversationRepository $conversationRepository)
     {
         $request->validate([
-            'offset' => ['string', 'nullable',],
+            'offset' => ['nullable', 'string'],
             'type' => ['string', 'in:assigned,unassigned'],
         ]);
 
-        $offset = $request->input('offset', 0);
         $type = $request->input('type');
+        $request_offset = $request->input('offset');
+        $offset = Arr::first(Hashids::decode($request_offset));
+        if (!$offset) {
+            if ($request_offset) {
+                throw ValidationException::withMessages([
+                    'offset' => 'offset 无效!' . $request_offset . '-' . $offset,
+                ]);
+            }
+            $offset = 0;
+        }
         $conversations = $conversationRepository->listConversations($this->user, $offset, $type, ['messages',]);
 
         return response()->success([
