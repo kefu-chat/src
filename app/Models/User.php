@@ -9,6 +9,7 @@ use App\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -45,7 +46,9 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  */
 class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
 {
-    use Notifiable, HasInstitution, SetTransformer, HasFactory;
+    use Notifiable, SetTransformer, HasInstitution, HasFactory, HasRoles;
+
+    protected $guard_name = 'api';
 
     /**
      * The attributes that are mass assignable.
