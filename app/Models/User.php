@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasInstitution;
+use App\Models\Traits\HasPublicId;
 use App\Models\Traits\SetTransformer;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
@@ -46,7 +47,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  */
 class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
 {
-    use Notifiable, SetTransformer, HasInstitution, HasFactory, HasRoles;
+    use Notifiable, SetTransformer, HasInstitution, HasFactory, HasRoles, HasPublicId;
 
     protected $guard_name = 'api';
 
@@ -83,7 +84,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      * @var array
      */
     protected $appends = [
-        'photo_url',
+        'avatar',
     ];
 
     /**
@@ -91,7 +92,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      *
      * @return string
      */
-    public function getPhotoUrlAttribute()
+    public function getAvatarAttribute()
     {
         return 'https://www.gravatar.com/avatar/'.md5(strtolower($this->email)).'.jpg?s=200&d=mm';
     }

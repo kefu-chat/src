@@ -12,6 +12,9 @@ use App\Models\Visitor;
 use App\Repositories\ConversationRepository;
 use App\Repositories\MessageRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Validation\ValidationException;
+use Vinkla\Hashids\Facades\Hashids;
 
 /**
  * @property User $user
@@ -50,9 +53,15 @@ trait Messagingable
     public function listConversationMessage(MessageRepository $messageRepository, ConversationRepository $conversationRepository, Conversation $conversation, Request $request)
     {
         $request->validate([
-            'offset' => ['nullable', 'integer'],
+            'offset' => ['nullable', 'string'],
         ]);
-        $offset = $request->input('offset', 999999);
+        $request_offset = $request->input('offset', 999999);
+        $offset = Arr::first(Hashids::decode($request_offset));
+        if ($request_offset && !$offset) {
+            throw ValidationException::withMessages([
+                'offset' => 'offset 无效!',
+            ]);
+        }
         $has_previous = false;
 
         if ($conversation->institution_id != $this->user->institution_id) {

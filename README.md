@@ -28,23 +28,23 @@ php artisan migrate
 
 ```
 #初始化管理员
-php artisan db:seed --class=AdminSeeder
+php artisan db:seed --class=Database\\Seeders\\AdminSeeder
 
 #待分配对话
-php artisan db:seed --class=ConversationTableSeeder
-php artisan db:seed --class=MessageTableSeeder
+php artisan db:seed --class=Database\\Seeders\\ConversationTableSeeder
+php artisan db:seed --class=Database\\Seeders\\MessageTableSeeder
 
 #已分配对话
-php artisan db:seed --class=ConversationTableSeeder
-php artisan db:seed --class=MessageTableSeeder
-php artisan db:seed --class=AssignTableSeeder
+php artisan db:seed --class=Database\\Seeders\\ConversationTableSeeder
+php artisan db:seed --class=Database\\Seeders\\MessageTableSeeder
+php artisan db:seed --class=Database\\Seeders\\AssignTableSeeder
 
 #全新企业
-php artisan db:seed --class=InstitutionsTableSeeder
+php artisan db:seed --class=Database\\Seeders\\InstitutionsTableSeeder
 
 #全新客服
-php artisan db:seed --class=UsersTableSeeder
+php artisan db:seed --class=Database\\Seeders\\UsersTableSeeder
 
 #全新访客
-php artisan db:seed --class=VisitorsTableSeeder
+php artisan db:seed --class=Database\\Seeders\\VisitorsTableSeeder
 ```

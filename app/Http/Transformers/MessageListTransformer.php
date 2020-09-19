@@ -3,6 +3,7 @@
 namespace App\Http\Transformers;
 
 use App\Models\User;
+use Vinkla\Hashids\Facades\Hashids;
 
 /**
  * 消息列表转换器
@@ -20,10 +21,12 @@ class MessageListTransformer extends AbstractTransformer
         $item->setAppends([
             'sender_type_text',
         ]);
+        $item->sender_id = $item->sender->public_id;
+
         $item->setVisible([
             'id',
-            'visitor_id',
-            'conversation_id',
+            //'visitor_id',
+            //'conversation_id',
             'type',
             'content',
             'sender',

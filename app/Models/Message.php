@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasInstitution;
+use App\Models\Traits\HasPublicId;
 
 /**
  * App\Models\Message
@@ -30,7 +31,7 @@ use App\Models\Traits\HasInstitution;
  */
 class Message extends AbstractModel
 {
-    use HasInstitution;
+    use HasInstitution, HasPublicId;
 
     const TYPE_TEXT = 1;
     const TYPE_IMAGE = 2;

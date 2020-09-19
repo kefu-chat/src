@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasInstitution;
+use App\Models\Traits\HasPublicId;
 
 /**
  * App\Models\Conversation
@@ -33,7 +34,7 @@ use App\Models\Traits\HasInstitution;
  */
 class Conversation extends AbstractModel
 {
-    use HasInstitution;
+    use HasInstitution, HasPublicId;
 
     protected $fillable = [
         'ip',
