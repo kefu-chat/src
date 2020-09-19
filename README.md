@@ -1,19 +1,10 @@
-# FastSupport 快客服项目
+# 闪客服后端
 
-> 基于 Laravel & Nuxt 的客服系统
-
-## 特性
-
-- Nuxt 2.11
-- Laravel 6
-- SPA or SSR
-- Socialite integration
-- VueI18n + ESlint + Bootstrap 4 + Font Awesome 5
-- Login, register, email verification and password reset
+> 基于 Laravel 的客服系统: [www.kefu.chat](https://www.kefu.chat).
 
 ## 安装
 
-```
+```bash
 composer install
 cp .env.example .env
 
@@ -26,7 +17,7 @@ php artisan migrate
 ```
 
 
-```
+```bash
 #初始化管理员
 php artisan db:seed --class=Database\\Seeders\\PerissionSeeder
 php artisan db:seed --class=Database\\Seeders\\AdminSeeder
@@ -49,3 +40,12 @@ php artisan db:seed --class=Database\\Seeders\\UsersTableSeeder
 #全新访客
 php artisan db:seed --class=Database\\Seeders\\VisitorsTableSeeder
 ```
+
+## 单元测试
+```bash
+php artisan test
+```
+
+## 授权协议
+
+商业软件, 保留知识产权, 不开源.
