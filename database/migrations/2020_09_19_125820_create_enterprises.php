@@ -15,8 +15,10 @@ class CreateEnterprises extends Migration
     {
         Schema::create('enterprises', function (Blueprint $table) {
             $table->id();
+
             $table->string('name')->nullable()->comment('企业名称');
             $table->string('serial')->nullable()->comment('公司注册号');
+            $table->unsignedBigInteger('plan_id')->default(0)->comment('套餐 ID');
 
             $table->timestamps();
         });

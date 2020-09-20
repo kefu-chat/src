@@ -34,10 +34,16 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('user', 'Personnel\UserController@info')->name('user.info.agent');
 
+    // 会话列表
     Route::get('conversation/list', 'Personnel\ConversationController@listConversation')->name('conversation.list.agent');
 
+    // 网站管理
     Route::post('institution/create', 'Personnel\InstitutionController@store')->name('institution.create')->middleware(['can:manager']);
     Route::get('institution/{institution}', 'Personnel\InstitutionController@show')->name('institution.show');
     Route::post('institution/{institution}/update', 'Personnel\InstitutionController@update')->name('institution.update')->middleware(['can:manager']);
     Route::post('institution/{institution}/delete', 'Personnel\InstitutionController@delete')->name('institution.delete')->middleware(['can:manager']);
+
+    // 套餐管理
+    Route::get('enterprise/plan', 'Personnel\PlanController@show')->name('enterprise.plan.show');
+    Route::get('enterprise/plan/upgrade/{plan}', 'Personnel\PlanController@upgrade')->name('enterprise.plan.upgrade');
 });

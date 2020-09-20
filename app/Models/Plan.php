@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasPublicId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,8 +18,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $available 是否开放购买
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Institution[] $institutions
- * @property-read int|null $institutions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Enterprise[] $enterprises
+ * @property-read int|null $enterprises_count
  * @method static \Illuminate\Database\Eloquent\Builder|Plan newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Plan newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Plan query()
@@ -35,7 +36,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Plan extends Model
 {
-    use HasFactory;
+    use HasFactory, HasPublicId;
 
     protected $fillable = [
         'name',
@@ -51,12 +52,12 @@ class Plan extends Model
     ];
 
     /**
-     * 套餐下面的网站们
+     * 套餐下面的企业们
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Institution|\Illuminate\Database\Query\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Enterprise|\Illuminate\Database\Query\Builder
      */
-    public function institutions()
+    public function enterprises()
     {
-        return $this->hasMany(Institution::class);
+        return $this->hasMany(Enterprise::class);
     }
 }

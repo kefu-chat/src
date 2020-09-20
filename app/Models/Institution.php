@@ -5,12 +5,11 @@ namespace App\Models;
 use App\Models\Traits\HasPublicId;
 
 /**
- * App\Models\Institution 机构, 或者网站/项目
+ * App\Models\Institution 项目、网站
  *
  * @property int $id
  * @property string|null $name 公司名字
  * @property string|null $website 网站
- * @property int $plan_id 套餐 ID
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
@@ -65,14 +64,5 @@ class Institution extends AbstractModel
     public function enterprise()
     {
         return $this->belongsTo(Enterprise::class);
-    }
-
-    /**
-     * 套餐
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|Plan|\Illuminate\Database\Query\Builder
-     */
-    public function plan()
-    {
-        return $this->belongsTo(Plan::class);
     }
 }

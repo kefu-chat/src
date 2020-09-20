@@ -19,7 +19,6 @@ class InstitutionController extends Controller
     {
         $institution = new Institution();
         $institution->fill($request->only(['name', 'website', ]));
-        $institution->plan()->associate(0);
         $institution->enterprise()->associate($this->user->enterprise);
         $institution->save();
 

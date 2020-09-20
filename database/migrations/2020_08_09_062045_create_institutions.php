@@ -22,7 +22,6 @@ class CreateInstitutions extends Migration
             $table->string('billing_name')->nullable()->comment('财务负责人');
             $table->string('technical_phone')->nullable()->comment('技术负责人电话');
             $table->string('billing_phone')->nullable()->comment('财务负责人电话');
-            $table->unsignedBigInteger('plan_id')->default(0)->comment('套餐 ID');
             $table->unsignedBigInteger('enterprise_id')->comment('企业 ID');
 
             $table->timestamps();

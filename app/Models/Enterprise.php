@@ -11,9 +11,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string|null $name 企业名称
  * @property string|null $serial 公司注册号
+ * @property int $plan_id 套餐 ID
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Institution[] $institutions
+ * @property-read \App\Models\Plan $plan
  * @property-read int|null $institutions_count
  * @method static \Illuminate\Database\Eloquent\Builder|Enterprise newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Enterprise newQuery()
@@ -42,5 +44,14 @@ class Enterprise extends Model
     public function institutions()
     {
         return $this->hasMany(Institution::class);
+    }
+
+    /**
+     * 套餐
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|Plan|\Illuminate\Database\Query\Builder
+     */
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class);
     }
 }
