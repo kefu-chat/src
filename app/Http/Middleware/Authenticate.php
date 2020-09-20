@@ -18,6 +18,6 @@ class Authenticate extends Middleware
      */
     protected function unauthenticated($request, array $guards)
     {
-        throw new HttpException(400, 'Unauthenticated.');
+        throw new HttpException(401, 'Unauthenticated.');
     }
 }
