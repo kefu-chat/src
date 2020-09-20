@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $plan_id
  * @property int $user_id
  * @property string $period 期限, monthly annually biennially triennially
- * @property string|null $coupon 优惠券
+ * @property int|null $coupon_id 优惠券
  * @property string $price 价格
  * @property string $need_pay_price 实际应支付价格
  * @property string $paid_price 实际已支付价格

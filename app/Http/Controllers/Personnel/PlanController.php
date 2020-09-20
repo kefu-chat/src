@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Personnel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Plan;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class PlanController extends Controller
@@ -44,20 +48,32 @@ class PlanController extends Controller
         }
         $price = $plan->{'price_' . $request->input('period')};
 
-        $order = new Order();
-        $order->user()->associate($this->user);
-        $order->enterprise()->associate($this->user->enterprise);
-        $order->plan()->associate($plan);
-        $order->fill([
-            'period' => $request->input('period'),
-            'price' => $price,
-            'need_pay_price' => $price,
-            'status' => Order::STATUS_UNPAID,
-        ]);
-        if ($request->input('coupon')) {
-            // 优惠券逻辑
+        DB::beginTransaction();
+
+        try {
+            $order = new Order();
+            $order->user()->associate($this->user);
+            $order->enterprise()->associate($this->user->enterprise);
+            $order->plan()->associate($plan);
+            $order->fill([
+                'period' => $request->input('period'),
+                'price' => $price,
+                'need_pay_price' => $price,
+                'status' => Order::STATUS_UNPAID,
+            ]);
+            if ($request->input('coupon')) {
+                // 优惠券逻辑
+                $coupon = Coupon::findPublicIdOrFail($request->input('coupon'));
+                $order = $coupon->usingOnOrder($order);
+                $coupon->save();
+            }
+            $order->save();
+        } catch (Exception $e) {
+            DB::commit();
+            throw $e;
         }
-        $order->save();
+
+        DB::commit();
 
         return response()->success([
             'order' => $order,

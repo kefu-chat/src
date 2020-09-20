@@ -49,12 +49,7 @@ trait HasPublicId
      */
     public function resolveRouteBinding($value, $field = null)
     {
-        $decode = Hashids::decode($value);
-        if (Arr::last($decode) != crc32(static::class)) {
-            abort(403, '路由 ID 拼错了， CRC32校验失败: ' . static::class);
-        }
-
-        return parent::resolveRouteBinding(Arr::first($decode));
+        return parent::resolveRouteBinding(static::decodePublicId($value));
     }
 
     /**
@@ -64,5 +59,40 @@ trait HasPublicId
     public function getRouteKey()
     {
         return $this->public_id;
+    }
+
+    /**
+     * 查找
+     * @param string $value
+     * @return self|static
+     */
+    public static function findPublicId($value)
+    {
+        return parent::find(static::decodePublicId($value));
+    }
+
+    /**
+     * 查找
+     * @param string $value
+     * @return self|static
+     */
+    public static function findPublicIdOrFail($value)
+    {
+        return parent::findOrFail(static::decodePublicId($value));
+    }
+    
+    /**
+     * 解密 public_id
+     *
+     * @param string $public_id
+     * @return int
+     */
+    protected static function decodePublicId($public_id)
+    {
+        $decode = Hashids::decode($public_id);
+        if (Arr::last($decode) != crc32(static::class)) {
+            abort(403, '路由 ID 拼错了， CRC32校验失败: ' . static::class);
+        }
+        return Arr::first($decode);
     }
 }

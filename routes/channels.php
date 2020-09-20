@@ -22,12 +22,6 @@ use Vinkla\Hashids\Facades\Hashids;
  * @see \App\Broadcasting\ConversationMessaging
  */
 Broadcast::channel('conversation.{id}.messaging', function ($user, $id) {
-    $decoded = Hashids::decode($id);
-    if (Arr::last($decoded) != crc32(Conversation::class)) {
-        abort(403, '路由 ID 拼错了， CRC32校验失败: ' . Conversation::class);
-    }
-    $id = Arr::first($decoded);
-
-    $conversation = Conversation::findOrFail($id);
+    $conversation = Conversation::findPublicIdOrFail($id);
     return $conversation->{[Visitor::class => 'visitor_id', User::class => 'user_id'][get_class($user)]} == $user->id;
 }, ['guards' => ['visitor', 'api']]);
