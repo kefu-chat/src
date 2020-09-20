@@ -91,7 +91,7 @@ trait HasPublicId
     {
         $decode = Hashids::decode($public_id);
         if (Arr::last($decode) != crc32(static::class)) {
-            abort(403, '路由 ID 拼错了， CRC32校验失败: ' . static::class);
+            abort(404, '路由 ID 拼错了， CRC32校验失败: ' . static::class);
         }
         return Arr::first($decode);
     }

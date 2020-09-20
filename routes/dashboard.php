@@ -45,5 +45,5 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // 套餐管理
     Route::get('enterprise/plan', 'Personnel\PlanController@show')->name('enterprise.plan.show');
-    Route::get('enterprise/plan/upgrade/{plan}', 'Personnel\PlanController@upgrade')->name('enterprise.plan.upgrade');
+    Route::post('enterprise/plan/upgrade/{plan}', 'Personnel\PlanController@upgrade')->name('enterprise.plan.upgrade');
 });

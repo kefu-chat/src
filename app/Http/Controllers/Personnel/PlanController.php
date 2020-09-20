@@ -26,6 +26,7 @@ class PlanController extends Controller
 
         return response()->success([
             'plan' => $plan,
+            'plans_available' => Plan::where('available', '>', 0)->where('id', '<>', $this->user->enterprise->plan_id)->get(),
         ]);
     }
 
