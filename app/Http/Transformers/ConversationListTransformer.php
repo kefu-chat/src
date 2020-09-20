@@ -32,6 +32,7 @@ class ConversationListTransformer extends AbstractTransformer
             'memo',
             'avatar',
         ]);
+        $item->setAppends(['geo',]);
         $item->setVisible([
             'id',
             'visitor_id',
@@ -43,6 +44,7 @@ class ConversationListTransformer extends AbstractTransformer
             'updated_at',
             'visitor',
             'user',
+            'geo',
         ]);
 
         return $item;

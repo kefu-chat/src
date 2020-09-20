@@ -18,6 +18,7 @@ use App\Models\Traits\HasPublicId;
  * @property string|null $last_reply_at 上次回复时间
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Torann\GeoIP\GeoIP|\Torann\GeoIP\Location $geo
  * @property-read \App\Models\Visitor $visitor
  * @property-read Conversation[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Conversation> $messages
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation newModelQuery()
@@ -72,5 +73,10 @@ class Conversation extends AbstractModel
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+
+    public function getGeoAttribute()
+    {
+        return geoip($this->ip)->toArray();
     }
 }
