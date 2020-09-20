@@ -28,7 +28,7 @@ class MessageTest extends ConversationTest
         $conversation_id = $conversationRes->json('data.conversation.id');
 
         $message = Str::random();
-        $sendConversationRes = $this->post(route('conversation.message.send.agent', [$conversation_id], false), [
+        $sendConversationRes = $this->post(route('conversation.message.send', [$conversation_id], false), [
             'type' => Message::TYPE_TEXT,
             'content' => $message,
         ], $this->authManager());
@@ -36,7 +36,7 @@ class MessageTest extends ConversationTest
         $this->assertTrue($sendConversationRes->json('success'));
         $this->assertNotEmpty($sendConversationRes->json('data.message'));
 
-        $getConversationRes = $this->get(route('conversation.message.list.agent', [$conversation_id,], false), $this->authManager());
+        $getConversationRes = $this->get(route('conversation.message.list', [$conversation_id,], false), $this->authManager());
         $getConversationRes->assertStatus(200);
         $this->assertNotEmpty($getConversationRes->json('data.messages'));
         $this->assertContains($message, collect($getConversationRes->json('data.messages'))->pluck('content'));
@@ -51,7 +51,7 @@ class MessageTest extends ConversationTest
         $conversation_id = $conversationRes->json('data.conversation.id');
 
         $message = Str::random();
-        $sendConversationRes = $this->post(route('visitor.send-message', [$conversation_id], false), [
+        $sendConversationRes = $this->post(route('conversation.message.send', [$conversation_id], false), [
             'type' => Message::TYPE_TEXT,
             'content' => $message,
         ], $this->authVisitor());
@@ -59,7 +59,7 @@ class MessageTest extends ConversationTest
         $this->assertTrue($sendConversationRes->json('success'));
         $this->assertNotEmpty($sendConversationRes->json('data.message'));
 
-        $getConversationRes = $this->get(route('visitor.list-message', [$conversation_id,], false), $this->authVisitor());
+        $getConversationRes = $this->get(route('conversation.message.list', [$conversation_id,], false), $this->authVisitor());
         $getConversationRes->assertStatus(200);
         $this->assertNotEmpty($getConversationRes->json('data.messages'));
         $this->assertContains($message, collect($getConversationRes->json('data.messages'))->pluck('content'));
@@ -74,7 +74,7 @@ class MessageTest extends ConversationTest
         $conversation_id = $conversationRes->json('data.conversation.id');
 
         $message = Str::random();
-        $sendConversationRes = $this->post(route('visitor.send-message', [$conversation_id], false), [
+        $sendConversationRes = $this->post(route('conversation.message.send', [$conversation_id], false), [
             'type' => Message::TYPE_TEXT,
             'content' => $message,
         ], $this->authVisitor());
@@ -82,7 +82,7 @@ class MessageTest extends ConversationTest
         $this->assertTrue($sendConversationRes->json('success'));
         $this->assertNotEmpty($sendConversationRes->json('data.message'));
 
-        $getConversationRes = $this->get(route('conversation.message.list.agent', [$conversation_id,], false), $this->authManager());
+        $getConversationRes = $this->get(route('conversation.message.list', [$conversation_id,], false), $this->authManager());
         $getConversationRes->assertStatus(200);
         $this->assertNotEmpty($getConversationRes->json('data.messages'));
         $this->assertContains($message, collect($getConversationRes->json('data.messages'))->pluck('content'));
@@ -97,7 +97,7 @@ class MessageTest extends ConversationTest
         $conversation_id = $conversationRes->json('data.conversation.id');
 
         $message = Str::random();
-        $sendConversationRes = $this->post(route('conversation.message.send.agent', [$conversation_id], false), [
+        $sendConversationRes = $this->post(route('conversation.message.send', [$conversation_id], false), [
             'type' => Message::TYPE_TEXT,
             'content' => $message,
         ], $this->authManager());
@@ -105,7 +105,7 @@ class MessageTest extends ConversationTest
         $this->assertTrue($sendConversationRes->json('success'));
         $this->assertNotEmpty($sendConversationRes->json('data.message'));
 
-        $getConversationRes = $this->get(route('visitor.list-message', [$conversation_id,], false), $this->authVisitor());
+        $getConversationRes = $this->get(route('conversation.message.list', [$conversation_id,], false), $this->authVisitor());
         $getConversationRes->assertStatus(200);
         $this->assertNotEmpty($getConversationRes->json('data.messages'));
         $this->assertContains($message, collect($getConversationRes->json('data.messages'))->pluck('content'));

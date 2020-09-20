@@ -27,7 +27,7 @@ class ConversationTest extends TestCase
 
         $conversation_id = $listConversationRes->json('data.conversations.0.id');
 
-        $getConversationRes = $this->get(route('conversation.message.list.agent', [$conversation_id, 'type' => 'unassigned',], false), $this->authManager());
+        $getConversationRes = $this->get(route('conversation.message.list', [$conversation_id, 'type' => 'unassigned',], false), $this->authManager());
         $getConversationRes->assertStatus(200);
         $this->assertNotEmpty($getConversationRes->json('data.conversation'));
         $this->assertNotEmpty($getConversationRes->json('data.messages'));
@@ -59,7 +59,7 @@ class ConversationTest extends TestCase
 
         $conversation_id = $listConversationRes->json('data.conversations.0.id');
 
-        $getConversationRes = $this->get(route('conversation.message.list.agent', [$conversation_id, 'type' => 'unassigned',], false), $this->authManager());
+        $getConversationRes = $this->get(route('conversation.message.list', [$conversation_id, 'type' => 'unassigned',], false), $this->authManager());
         $getConversationRes->assertStatus(200);
         $this->assertNotEmpty($getConversationRes->json('data.conversation'));
         $this->assertNotEmpty($getConversationRes->json('data.messages'));

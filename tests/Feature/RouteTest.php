@@ -17,15 +17,13 @@ class RouteTest extends TestCase
         $this->assertTrue(!!route('file.upload'));
         $this->assertTrue(!!route('user.info.agent'));
         $this->assertTrue(!!route('conversation.list.agent'));
-        $this->assertTrue(!!route('conversation.message.list.agent', 1));
-        $this->assertTrue(!!route('conversation.message.send.agent', 1));
+        $this->assertTrue(!!route('conversation.message.list', 1));
+        $this->assertTrue(!!route('conversation.message.send', 1));
         $this->assertTrue(!!route('institution.profile.show', 1));
         $this->assertTrue(!!route('institution.profile.update', 1));
         $this->assertTrue(!!route('login'));
         $this->assertTrue(!!route('verification.verify', 1));
         $this->assertTrue(!!route('oauth.callback', 1));
         $this->assertTrue(!!route('visitor.init'));
-        $this->assertTrue(!!route('visitor.list-message', 1));
-        $this->assertTrue(!!route('visitor.send-message', 1));
     }
 }

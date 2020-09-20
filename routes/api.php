@@ -26,8 +26,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('user', 'Personnel\UserController@info')->name('user.info.agent');
 
     Route::get('conversation/list', 'Personnel\ConversationController@listConversation')->name('conversation.list.agent');
-    Route::get('conversation/{conversation}/messages', 'Personnel\ConversationController@listConversationMessage')->name('conversation.message.list.agent');
-    Route::post('conversation/{conversation}/send-message', 'Personnel\ConversationController@sendMessage')->name('conversation.message.send.agent');
 
     Route::get('institution/{institution}', 'Personnel\InstitutionController@showProfile')->name('institution.profile.show');
     Route::post('institution/{institution}/update', 'Personnel\InstitutionController@updateProfile')->name('institution.profile.update')->middleware(['can:manager']);
@@ -45,12 +43,4 @@ Route::group(['middleware' => 'guest:api'], function () {
 
     Route::post('oauth/{driver}', 'Auth\OAuthController@redirectToProvider');
     Route::get('oauth/{driver}/callback', 'Auth\OAuthController@handleProviderCallback')->name('oauth.callback');
-});
-
-Route::group(['prefix' => 'visitor/', 'as' => 'visitor.', ], function () {
-    Route::post('init', 'Visitor\ConversationController@init')->name('init');
-    Route::group(['middleware' => 'auth:visitor', ], function () {
-        Route::get('conversation/{conversation}/messages', 'Personnel\ConversationController@listConversationMessage')->name('list-message');
-        Route::post('conversation/{conversation}/send-message', 'Personnel\ConversationController@sendMessage')->name('send-message');
-    });
 });
