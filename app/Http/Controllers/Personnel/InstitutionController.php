@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class InstitutionController extends Controller
 {
     /**
-     * Create institution 
+     * Create institution
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
@@ -28,7 +28,7 @@ class InstitutionController extends Controller
     }
 
     /**
-     * Get institution 
+     * Get institution
      *
      * @param Institution $institution
      * @param  \Illuminate\Http\Request $request
@@ -47,7 +47,7 @@ class InstitutionController extends Controller
     }
 
     /**
-     * Get institution 
+     * Get institution
      *
      * @param Institution $institution
      * @param  \Illuminate\Http\Request $request
@@ -69,7 +69,7 @@ class InstitutionController extends Controller
     }
 
     /**
-     * Delete institution 
+     * Delete institution
      *
      * @param Institution $institution
      * @param  \Illuminate\Http\Request $request
