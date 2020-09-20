@@ -57,7 +57,7 @@ class ConversationController extends Controller
         $title = $request->input('title');
 
         if (!$request->headers->has('authorization')) {
-            $institution = Institution::findOrFail($institution_id);
+            $institution = Institution::findPublicIdOrFail($institution_id);
             $visitor = $visitorRepository->init($institution, $unique_id, $name, $email, $phone, $avatar, $memo, $address);
             $conversation = $conversationRepository->initConversation($visitor, $ip, $url);
         } else {
