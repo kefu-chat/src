@@ -52,12 +52,16 @@ class Coupon extends Model
         self::TYPE_DISC => '抵扣',
     ];
 
-    protected $filalble = [
+    protected $fillable = [
         'name',
         'periods',
         'using_limit',
         'type',
         'amount',
+    ];
+
+    protected $casts = [
+        'periods' => 'array',
     ];
 
     /**
@@ -96,10 +100,15 @@ class Coupon extends Model
                 'coupon' => '此优惠券无法购买此产品',
             ]);
         }
-        if ($this->periods && !collect($this->periods)->contains($order->period)) {
+        if ($this->periods && collect($this->periods)->count() && !collect($this->periods)->contains($order->period)) {
             throw ValidationException::withMessages([
                 'coupon' => '此优惠券不支持在此期限(' . Arr::get(Order::PERIOD_MAP, $order->period) . ')下使用',
                 'period' => '此优惠券不支持在此期限(' . Arr::get(Order::PERIOD_MAP, $order->period) . ')下使用',
+            ]);
+        }
+        if ($this->using_limit < 1) {
+            throw ValidationException::withMessages([
+                'coupon' => '此优惠券使用次数超限',
             ]);
         }
 
