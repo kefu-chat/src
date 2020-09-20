@@ -71,11 +71,11 @@ trait Messagingable
             abort(404);
         }
 
-        if ($this->isUser()) {
-            if (!$conversation->user_id) {
-                $conversationRepository->assignConversation($conversation, $this->user);
-            }
-        }
+        // if ($this->isUser()) {
+        //     if (!$conversation->user_id) {
+        //         $conversationRepository->assignConversation($conversation, $this->user);
+        //     }
+        // }
 
         if ($this->isVisitor()) {
             if ($conversation->visitor_id != $this->user->id) {
