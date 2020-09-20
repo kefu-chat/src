@@ -20,10 +20,15 @@ trait HasPublicId
         return 'string';
     }
 
-    public function setVisible($visible)
+    /**
+     * Convert the object into something JSON serializable.
+     *
+     * @return array
+     */
+    public function jsonSerialize()
     {
         $this->id = $this->public_id;
-        return parent::setVisible($visible);
+        return parent::jsonSerialize();
     }
 
     /**
