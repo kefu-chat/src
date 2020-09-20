@@ -38,7 +38,7 @@ return [
     |
     */
 
-    'service' => 'ipapi',
+    'service' => 'maxmind_database',
 
     /*
     |--------------------------------------------------------------------------
@@ -53,7 +53,7 @@ return [
 
         'maxmind_database' => [
             'class' => \Torann\GeoIP\Services\MaxMindDatabase::class,
-            'database_path' => storage_path('app/geoip.mmdb'),
+            'database_path' => storage_path('geoip/geoip.mmdb'),
             'update_url' => sprintf('https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=%s&suffix=tar.gz', env('MAXMIND_LICENSE_KEY')),
             'locales' => ['en'],
         ],

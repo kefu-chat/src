@@ -12,16 +12,12 @@
 */
 
 use App\Models\Conversation;
-use App\Models\Message;
 use App\Models\User;
 use App\Models\Visitor;
-use Illuminate\Support\Arr;
-use Vinkla\Hashids\Facades\Hashids;
 
 /**
  * @see \App\Broadcasting\ConversationMessaging
  */
-Broadcast::channel('conversation.{id}.messaging', function ($user, $id) {
-    $conversation = Conversation::findPublicIdOrFail($id);
+Broadcast::channel('conversation.{conversation}.messaging', function ($user, Conversation $conversation) {
     return $conversation->{[Visitor::class => 'visitor_id', User::class => 'user_id'][get_class($user)]} == $user->id;
 }, ['guards' => ['visitor', 'api']]);
