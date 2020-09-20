@@ -2,11 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Models\Institution;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 /**
