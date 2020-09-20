@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $name 企业名称
  * @property string|null $serial 公司注册号
  * @property int $plan_id 套餐 ID
+ * @property \Illuminate\Support\Carbon|null $plan_expires_at 套餐过期时间
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Institution[] $institutions
@@ -25,6 +26,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Enterprise whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Enterprise whereSerial($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Enterprise whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Enterprise wherePlanExpiresAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Enterprise wherePlanId($value)
  * @mixin \Eloquent
  */
 class Enterprise extends Model
@@ -34,6 +37,10 @@ class Enterprise extends Model
     protected $fillable = [
         'name',
         'serial',
+    ];
+
+    protected $dates = [
+        'plan_expires_at',
     ];
 
     /**

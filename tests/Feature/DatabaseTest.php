@@ -26,13 +26,15 @@ class DatabaseTest extends TestCase
     public function testSeeds()
     {
         $this->artisan('migrate');
-        $this->artisan('db:seed', [ '--class' => \Database\Seeders\PermissionSeeder::class])->assertExitCode(0);
-        $this->artisan('db:seed', [ '--class' => \Database\Seeders\AdminSeeder::class])->assertExitCode(0);
-        $this->artisan('db:seed', [ '--class' => \Database\Seeders\ConversationTableSeeder::class])->assertExitCode(0);
-        $this->artisan('db:seed', [ '--class' => \Database\Seeders\MessageTableSeeder::class])->assertExitCode(0);
-        $this->artisan('db:seed', [ '--class' => \Database\Seeders\AssignSeeder::class])->assertExitCode(0);
-        $this->artisan('db:seed', [ '--class' => \Database\Seeders\InstitutionsTableSeeder::class])->assertExitCode(0);
-        $this->artisan('db:seed', [ '--class' => \Database\Seeders\UsersTableSeeder::class])->assertExitCode(0);
-        $this->artisan('db:seed', [ '--class' => \Database\Seeders\VisitorsTableSeeder::class])->assertExitCode(0);
+
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\PlansTableSeeder::class])->assertExitCode(0);
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\PermissionSeeder::class])->assertExitCode(0);
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\AdminSeeder::class])->assertExitCode(0);
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\ConversationTableSeeder::class])->assertExitCode(0);
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\MessageTableSeeder::class])->assertExitCode(0);
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\AssignSeeder::class])->assertExitCode(0);
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\InstitutionsTableSeeder::class])->assertExitCode(0);
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\UsersTableSeeder::class])->assertExitCode(0);
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\VisitorsTableSeeder::class])->assertExitCode(0);
     }
 }

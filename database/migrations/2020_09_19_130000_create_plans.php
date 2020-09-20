@@ -22,6 +22,7 @@ class CreatePlans extends Migration
             $table->decimal('price_biennially')->comment('两年付价格');
             $table->decimal('price_triennially')->comment('三年付价格');
             $table->tinyInteger('available')->index()->default(0)->comment('是否开放购买');
+            $table->text('desc')->nullable()->comment('描述');
 
             $table->timestamps();
         });

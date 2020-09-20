@@ -20,6 +20,9 @@ php artisan migrate
 
 
 ```bash
+#初始化套餐信息
+php artisan db:seed --class=Database\\Seeders\\PlansTableSeeder
+
 #初始化管理员
 php artisan db:seed --class=Database\\Seeders\\PerissionSeeder
 php artisan db:seed --class=Database\\Seeders\\AdminSeeder

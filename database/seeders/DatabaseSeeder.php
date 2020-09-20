@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(PermissionSeeder::class);
         $this->call(InstitutionsTableSeeder::class);
+        $this->call(PlansTableSeeder::class);
+
         $user = new User([
             'name' => 'admin',
             'email' => 'admin@admin.com',
