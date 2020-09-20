@@ -29,6 +29,6 @@ class FileController extends Controller
         $file->storeAs($path, $filename);
         $url = Storage::url($path . $filename, now()->addDay());
 
-        return response()->success(['url' => $url, 'mime' => $file->getMimeType(),]);
+        return response()->success(['url' => $url, 'path' => $path . '/' . $filename, 'mime' => $file->getMimeType(),]);
     }
 }

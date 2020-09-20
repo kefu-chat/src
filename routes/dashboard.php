@@ -13,10 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['middleware' => 'auth:api,visitor'], function () {
-    Route::post('file/upload', 'FileController@upload')->name('file.upload');
-});
-
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('logout', 'Auth\LoginController@logout');
 
