@@ -3,20 +3,25 @@
 namespace App\Http\Controllers\Personnel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Institution;
+use App\Models\Plan;
 use Illuminate\Http\Request;
 
 class InstitutionController extends Controller
 {
     /**
-     * Get institution profile
+     * Create institution 
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function showProfile(Request $request)
+    public function store(Request $request)
     {
-        $user = auth()->user();
-        $institution = $user->institution;
+        $institution = new Institution();
+        $institution->fill($request->only(['name', 'website', ]));
+        $institution->plan()->associate(0);
+        $institution->enterprise()->associate($this->user->enterprise);
+        $institution->save();
 
         return response()->success([
             'institution' => $institution,
@@ -24,20 +29,62 @@ class InstitutionController extends Controller
     }
 
     /**
-     * Get institution profile
+     * Get institution 
      *
+     * @param Institution $institution
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function updateProfile(Request $request)
+    public function show(Institution $institution, Request $request)
     {
-        $user = auth()->user();
-        $institution = $user->institution;
+        $user = $this->user;
+        if (!$user->enterprise->institutions->pluck('id')->contains($institution->id)) {
+            abort(404);
+        }
+
+        return response()->success([
+            'institution' => $institution,
+        ]);
+    }
+
+    /**
+     * Get institution 
+     *
+     * @param Institution $institution
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Institution $institution, Request $request)
+    {
+        $user = $this->user;
+        if (!$user->enterprise->institutions->pluck('id')->contains($institution->id)) {
+            abort(404);
+        }
+
         $institution->fill($request->only(['name', 'website',]));
         $institution->save();
 
         return response()->success([
             'institution' => $institution,
         ]);
+    }
+
+    /**
+     * Delete institution 
+     *
+     * @param Institution $institution
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Institution $institution, Request $request)
+    {
+        $user = $this->user;
+        if (!$user->enterprise->institutions->pluck('id')->contains($institution->id)) {
+            abort(404);
+        }
+
+        $institution->delete();
+
+        return response()->success([]);
     }
 }

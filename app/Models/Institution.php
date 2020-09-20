@@ -66,4 +66,13 @@ class Institution extends AbstractModel
     {
         return $this->belongsTo(Enterprise::class);
     }
+
+    /**
+     * 套餐
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|Plan|\Illuminate\Database\Query\Builder
+     */
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class);
+    }
 }

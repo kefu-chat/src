@@ -15,7 +15,8 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('institution_id')->index()->comment('组织 ID');
+            $table->unsignedBigInteger('institution_id')->index()->comment('网站 ID');
+            $table->unsignedBigInteger('enterprise_id')->index()->comment('企业 ID');
 
             $table->string('name');
             $table->string('email')->unique();

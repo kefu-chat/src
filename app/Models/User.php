@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasEnterprise;
 use App\Models\Traits\HasInstitution;
 use App\Models\Traits\HasPublicId;
 use App\Models\Traits\SetTransformer;
@@ -47,7 +48,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  */
 class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
 {
-    use Notifiable, SetTransformer, HasInstitution, HasFactory, HasRoles, HasPublicId;
+    use Notifiable, SetTransformer, HasInstitution, HasEnterprise, HasFactory, HasRoles, HasPublicId;
 
     protected $guard_name = 'api';
 
