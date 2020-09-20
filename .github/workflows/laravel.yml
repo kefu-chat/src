@@ -23,6 +23,8 @@ jobs:
         php artisan jwt:secret
     - name: 目录权限
       run: chmod -R 777 storage bootstrap/cache
+    - name: 代码风格检查
+      run: vendor/bin/phpcs
     - name: 执行单元测试 (Unit and Feature tests) via PHPUnit
       env:
         APP_ENV: testing

@@ -19,7 +19,9 @@ class VerifyEmail extends Notification
         $appUrl = config('app.client_url', config('app.url'));
 
         $url = URL::temporarySignedRoute(
-            'verification.verify', Carbon::now()->addMinutes(60), ['user' => $notifiable->id]
+            'verification.verify',
+            Carbon::now()->addMinutes(60),
+            ['user' => $notifiable->id]
         );
 
         return str_replace(url('/api'), $appUrl, $url);
