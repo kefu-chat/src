@@ -72,4 +72,9 @@ class ConversationMessaging implements ShouldBroadcast
     {
         return $conversation->{[Visitor::class => 'visitor_id', User::class => 'user_id'][get_class($user)]} == $user->id;
     }
+
+    public function getMessage()
+    {
+        return $this->message;
+    }
 }

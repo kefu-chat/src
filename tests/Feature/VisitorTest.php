@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Broadcasting\ConversationMessaging;
 use App\Models\Institution;
 use App\Models\Message;
 use Faker\Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -58,12 +60,17 @@ class VisitorTest extends TestCase
         ], false))
             ->assertOk();
 
+        $content = $generator->paragraph;
+        Broadcast::shouldReceive('event')
+            ->once()
+            ->withArgs(fn(ConversationMessaging $arg) => $arg->getMessage()->content === $content);
+
         $this->post(route('conversation.message.send', [$initRes->json('data.conversation.id')], false), [
             'type' => Message::TYPE_TEXT,
-            'content' => 'test',
+            'content' => $content,
         ], $this->authVisitor())
             ->assertOk()
-            ->assertSee('test');
+            ->assertSee($content);
     }
 
     public function testSupportUpdateVisitorInfo()
