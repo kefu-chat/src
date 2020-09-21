@@ -26,7 +26,7 @@ class Controller extends BaseController
     public function callAction($method, $parameters)
     {
         if (JWTAuth::getToken()) {
-            $this->user = JWTAuth::parseToken()->user();
+            $this->user = JWTAuth::parseToken()->user() ?: auth()->user();
         }
         return parent::callAction($method, $parameters);
     }

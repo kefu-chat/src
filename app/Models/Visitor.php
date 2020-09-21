@@ -18,6 +18,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property string $phone 手机号
  * @property string|null $avatar 头像
  * @property string|null $memo 备注
+ * @property int $institution_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Conversation[] $conversations

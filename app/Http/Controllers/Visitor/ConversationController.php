@@ -67,10 +67,12 @@ class ConversationController extends Controller
                 $conversation = $conversationRepository->initConversation($visitor, $ip, $url);
             }
         }
+        $visitor_token = JWTAuth::fromUser($visitor);
+        $visitor->id = $visitor->public_id;
 
         return response()->success([
             'conversation' => $conversation->setTransformer(ConversationListTransformer::class),
-            'visitor_token' => JWTAuth::fromUser($visitor),
+            'visitor_token' => $visitor_token,
             'visitor_type' => 'Berear',
         ]);
     }
