@@ -23,9 +23,12 @@ abstract class TestCase extends BaseTestCase
         return ['Authorization' => 'Bearer ' . JWTAuth::fromUser(auth()->guard('api')->user())];
     }
 
-    protected function authVisitor()
+    protected function authVisitor($token = null)
     {
-        auth()->guard('visitor')->setUser(Visitor::latest()->firstOrFail());
-        return ['Authorization' => 'Bearer ' . JWTAuth::fromUser(auth()->guard('visitor')->user())];
+        if (!$token) {
+            auth()->guard('visitor')->setUser(Visitor::latest()->firstOrFail());
+            $token = JWTAuth::fromUser(auth()->guard('visitor')->user());
+        }
+        return ['Authorization' => 'Bearer ' . $token];
     }
 }

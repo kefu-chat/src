@@ -7,6 +7,7 @@ use App\Models\Institution;
 use App\Models\Message;
 use Faker\Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -73,6 +74,7 @@ class VisitorTest extends TestCase
             'content' => $content,
         ], $this->authVisitor())
             ->assertOk()
+            ->assertJsonPath('success', true)
             ->assertSee($content);
     }
 

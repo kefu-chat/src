@@ -8,6 +8,8 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Facades\JWTFactory;
+use Tymon\JWTAuth\JWT;
 
 class Controller extends BaseController
 {
@@ -26,7 +28,7 @@ class Controller extends BaseController
     public function callAction($method, $parameters)
     {
         if (JWTAuth::getToken()) {
-            $this->user = JWTAuth::parseToken()->user() ?: auth()->user();
+            $this->user = auth()->user();
         }
         return parent::callAction($method, $parameters);
     }

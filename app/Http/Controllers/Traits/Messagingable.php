@@ -17,7 +17,7 @@ use Illuminate\Validation\ValidationException;
 use Vinkla\Hashids\Facades\Hashids;
 
 /**
- * @property User $user
+ * @property User|Visitor $user
  */
 trait Messagingable
 {

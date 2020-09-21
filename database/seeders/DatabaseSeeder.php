@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Enterprise;
 use App\Models\Institution;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
             'password' => '$2y$10$KvdJSsvIZb7B53GP/h5NFuPDtNJLRwgXB75kYT7ueYI6bWdNNwPym', //password_hash('123456', 1),
         ]);
         $user->institution()->associate(Institution::latest('id')->first());
+        $user->enterprise()->associate(Enterprise::latest('id')->first());
         $user->save();
     }
 }

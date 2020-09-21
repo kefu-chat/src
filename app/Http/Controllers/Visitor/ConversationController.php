@@ -57,12 +57,16 @@ class ConversationController extends Controller
         $title = $request->input('title');
 
         if (!$request->headers->has('authorization')) {
+            init:
             $institution = Institution::findPublicIdOrFail($institution_id);
             $visitor = $visitorRepository->init($institution, $unique_id, $name, $email, $phone, $avatar, $memo, $address);
             $conversation = $conversationRepository->initConversation($visitor, $ip, $url);
         } else {
-            $visitor = auth()->guard('visitor')->user();
-            $conversation = $visitor->conversations()->latest()->first();
+            $visitor = $this->user;
+            if (!$visitor || !$this->isVisitor()) {
+                goto init;
+            }
+            $conversation = $visitor->conversations()->latest('id')->first();
             if (!$conversation) {
                 $conversation = $conversationRepository->initConversation($visitor, $ip, $url);
             }

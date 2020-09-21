@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('enterprise_id')->index()->comment('企业 ID');
 
             $table->string('name');
+            $table->string('avatar')->default(asset('img/default_avatar.svg'))->comment('头像');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
