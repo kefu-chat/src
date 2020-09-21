@@ -60,16 +60,15 @@ class ConversationController extends Controller
             init:
             $institution = Institution::findPublicIdOrFail($institution_id);
             $visitor = $visitorRepository->init($institution, $unique_id, $name, $email, $phone, $avatar, $memo, $address);
-            $conversation = $conversationRepository->initConversation($visitor, $ip, $url);
         } else {
             $visitor = $this->user;
             if (!$visitor || !$this->isVisitor()) {
                 goto init;
             }
-            $conversation = $visitor->conversations()->latest('id')->first();
-            if (!$conversation) {
-                $conversation = $conversationRepository->initConversation($visitor, $ip, $url);
-            }
+        }
+        $conversation = $visitor->conversations()->latest('id')->first();
+        if (!$conversation) {
+            $conversation = $conversationRepository->initConversation($visitor, $ip, $url);
         }
         $visitor_token = JWTAuth::fromUser($visitor);
         $visitor->id = $visitor->public_id;
