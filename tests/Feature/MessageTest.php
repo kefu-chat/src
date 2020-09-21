@@ -2,8 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Broadcasting\ConversationMessaging;
 use App\Models\Message;
+use Faker\Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Str;
 
 class MessageTest extends ConversationTest
@@ -50,19 +53,23 @@ class MessageTest extends ConversationTest
         $conversationRes = $this->testConversationsFromSeeders();
         $conversation_id = $conversationRes->json('data.conversation.id');
 
-        $message = Str::random();
-        $sendConversationRes = $this->post(route('conversation.message.send', [$conversation_id], false), [
-            'type' => Message::TYPE_TEXT,
-            'content' => $message,
-        ], $this->authVisitor());
-        $sendConversationRes->assertStatus(200);
-        $this->assertTrue($sendConversationRes->json('success'));
-        $this->assertNotEmpty($sendConversationRes->json('data.message'));
 
-        $getConversationRes = $this->get(route('conversation.message.list', [$conversation_id,], false), $this->authVisitor());
-        $getConversationRes->assertStatus(200);
-        $this->assertNotEmpty($getConversationRes->json('data.messages'));
-        $this->assertContains($message, collect($getConversationRes->json('data.messages'))->pluck('content'));
+        $generator = app(Generator::class);
+        $content = $generator->paragraph;
+        Broadcast::shouldReceive('event')
+            ->once()
+            ->withArgs(fn (ConversationMessaging $arg) => $arg->getMessage()->content === $content);
+
+        $this->post(route('conversation.message.send', [$conversation_id], false), [
+            'type' => Message::TYPE_TEXT,
+            'content' => $content,
+        ], $this->authVisitor())
+            ->assertStatus(200)
+            ->assertJsonPath('success', true);
+
+        $this->get(route('conversation.message.list', [$conversation_id,], false), $this->authVisitor())
+            ->assertStatus(200)
+            ->assertSee($content);
     }
 
     /**
@@ -73,19 +80,22 @@ class MessageTest extends ConversationTest
         $conversationRes = $this->testConversationsFromSeeders();
         $conversation_id = $conversationRes->json('data.conversation.id');
 
-        $message = Str::random();
-        $sendConversationRes = $this->post(route('conversation.message.send', [$conversation_id], false), [
+        $generator = app(Generator::class);
+        $content = $generator->paragraph;
+        Broadcast::shouldReceive('event')
+            ->once()
+            ->withArgs(fn (ConversationMessaging $arg) => $arg->getMessage()->content === $content);
+
+        $this->post(route('conversation.message.send', [$conversation_id], false), [
             'type' => Message::TYPE_TEXT,
-            'content' => $message,
-        ], $this->authVisitor());
-        $sendConversationRes->assertStatus(200);
-        $this->assertTrue($sendConversationRes->json('success'));
-        $this->assertNotEmpty($sendConversationRes->json('data.message'));
+            'content' => $content,
+        ], $this->authVisitor())
+            ->assertStatus(200)
+            ->assertJsonPath('success', true);
 
         $getConversationRes = $this->get(route('conversation.message.list', [$conversation_id,], false), $this->authManager());
-        $getConversationRes->assertStatus(200);
-        $this->assertNotEmpty($getConversationRes->json('data.messages'));
-        $this->assertContains($message, collect($getConversationRes->json('data.messages'))->pluck('content'));
+        $getConversationRes->assertStatus(200)
+            ->assertSee($content);
     }
 
     /**
@@ -96,18 +106,22 @@ class MessageTest extends ConversationTest
         $conversationRes = $this->testConversationsFromSeeders();
         $conversation_id = $conversationRes->json('data.conversation.id');
 
-        $message = Str::random();
-        $sendConversationRes = $this->post(route('conversation.message.send', [$conversation_id], false), [
+
+        $generator = app(Generator::class);
+        $content = $generator->paragraph;
+        Broadcast::shouldReceive('event')
+            ->once()
+            ->withArgs(fn (ConversationMessaging $arg) => $arg->getMessage()->content === $content);
+
+        $this->post(route('conversation.message.send', [$conversation_id], false), [
             'type' => Message::TYPE_TEXT,
-            'content' => $message,
-        ], $this->authManager());
-        $sendConversationRes->assertStatus(200);
-        $this->assertTrue($sendConversationRes->json('success'));
-        $this->assertNotEmpty($sendConversationRes->json('data.message'));
+            'content' => $content,
+        ], $this->authManager())
+            ->assertStatus(200)
+            ->assertJsonPath('success', true);
 
         $getConversationRes = $this->get(route('conversation.message.list', [$conversation_id,], false), $this->authVisitor());
-        $getConversationRes->assertStatus(200);
-        $this->assertNotEmpty($getConversationRes->json('data.messages'));
-        $this->assertContains($message, collect($getConversationRes->json('data.messages'))->pluck('content'));
+        $getConversationRes->assertStatus(200)
+            ->assertSee($content);
     }
 }

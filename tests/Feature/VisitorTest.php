@@ -41,6 +41,9 @@ class VisitorTest extends TestCase
             ->assertJsonPath('data.conversation.url', $url);
     }
 
+    /**
+     * 测试访客 API 发的消息会不会触发 socket
+     */
     public function testVisitorMessage()
     {
         $this->artisan('migrate');
