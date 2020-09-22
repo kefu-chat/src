@@ -80,7 +80,6 @@ class ConversationController extends Controller
 
         $conversation->user()->associate($user);
         $conversation->save();
-        $conversation->user->id = $user->public_id;
 
         return response()->success([
             'conversation' => $conversation->setTransformer(ConversationDetailTransformer::class),

@@ -40,6 +40,7 @@ class InstitutionController extends Controller
         if (!$user->enterprise->institutions->pluck('id')->contains($institution->id)) {
             abort(404);
         }
+        $institution->load(['users']);
 
         return response()->success([
             'institution' => $institution,
