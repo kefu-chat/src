@@ -40,6 +40,7 @@ class UsersTableSeeder extends Seeder
         $user = new User([
             'name' => $name,
             'email' => $email,
+            'title' => $generator->jobTitle,
             'password' => '$2y$10$KvdJSsvIZb7B53GP/h5NFuPDtNJLRwgXB75kYT7ueYI6bWdNNwPym', //password_hash('123456', 1),
         ]);
         $user->institution()->associate($institution);

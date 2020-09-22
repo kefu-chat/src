@@ -23,12 +23,12 @@ class FileController extends Controller
             ]);
         }
 
-        $path = 'upload/';
+        $path = 'upload';
         $filename = md5_file($file->getPathname()) . '.' . ($file->getExtension() ?: $file->getClientOriginalExtension());
 
-        $file->storeAs($path, $filename);
-        $url = Storage::url($path . $filename, now()->addDay());
+        $to = $file->storeAs($path, $filename);
+        $url = Storage::url($path . '/' . $filename, now()->addDay());
 
-        return response()->success(['url' => $url, 'path' => $path . '/' . $filename, 'mime' => $file->getMimeType(),]);
+        return response()->success(['url' => $url, 'path' => $to, 'mime' => $file->getMimeType(),]);
     }
 }

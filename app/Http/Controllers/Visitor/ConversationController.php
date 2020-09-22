@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Visitor;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Messagingable;
+use App\Http\Transformers\ConversationDetailTransformer;
 use App\Http\Transformers\ConversationListTransformer;
 use App\Models\Institution;
 use App\Repositories\ConversationRepository;
@@ -74,7 +75,7 @@ class ConversationController extends Controller
         $visitor->id = $visitor->public_id;
 
         return response()->success([
-            'conversation' => $conversation->setTransformer(ConversationListTransformer::class),
+            'conversation' => $conversation->setTransformer(ConversationDetailTransformer::class),
             'visitor_token' => $visitor_token,
             'visitor_type' => 'Berear',
         ]);

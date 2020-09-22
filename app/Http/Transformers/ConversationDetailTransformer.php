@@ -21,6 +21,7 @@ class ConversationDetailTransformer extends AbstractTransformer
                 'name',
                 'email',
                 'avatar',
+                'title',
             ]);
         }
         $item->visitor->setVisible([
