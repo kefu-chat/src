@@ -25,10 +25,10 @@ trait HasPublicId
      *
      * @return array
      */
-    public function jsonSerialize()
+    public function toArray()
     {
         $this->id = $this->public_id;
-        return parent::jsonSerialize();
+        return parent::toArray();
     }
 
     /**
@@ -80,7 +80,7 @@ trait HasPublicId
     {
         return parent::findOrFail(static::decodePublicId($value));
     }
-    
+
     /**
      * 解密 public_id
      *
