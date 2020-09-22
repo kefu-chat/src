@@ -88,6 +88,9 @@ trait Messagingable
         $messages->load(['sender',]);
         $messages = $messages->sortBy('id')->values();
         $conversation->load(['user', 'visitor',]);
+        if ($conversation->user_id) {
+            $conversation->user->id = $conversation->user->public_id;
+        }
 
         return response()->success([
             'conversation' => $conversation->setTransformer(ConversationDetailTransformer::class),

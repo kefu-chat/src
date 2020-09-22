@@ -35,7 +35,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('user', 'Personnel\UserController@info')->name('user.info.agent');
 
     // 会话列表
-    Route::get('conversation/list', 'Personnel\ConversationController@listConversation')->name('conversation.list.agent');
+    Route::get('conversation/list', 'Personnel\ConversationController@list')->name('conversation.list');
+    Route::get('conversation/{conversation}/transfer/{user}', 'Personnel\ConversationController@transfer')->name('conversation.transfer');
 
     // 网站管理
     Route::post('institution/create', 'Personnel\InstitutionController@store')->name('institution.create')->middleware(['can:manager']);

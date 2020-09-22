@@ -4,11 +4,23 @@ namespace App\Http\Controllers\Personnel;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Messagingable;
+use App\Http\Transformers\ConversationDetailTransformer;
 use App\Http\Transformers\ConversationListTransformer;
+use App\Models\Conversation;
+use App\Models\User;
 use App\Repositories\ConversationRepository;
+use Illuminate\Database\Eloquent\InvalidCastException;
+use Illuminate\Database\Eloquent\JsonEncodingException;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
+use Spatie\Permission\Exceptions\PermissionDoesNotExist;
+use LogicException;
+use InvalidArgumentException;
+use Spatie\Permission\Models\Permission;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Vinkla\Hashids\Facades\Hashids;
 
 class ConversationController extends Controller
@@ -21,7 +33,7 @@ class ConversationController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function listConversation(Request $request, ConversationRepository $conversationRepository)
+    public function list(Request $request, ConversationRepository $conversationRepository)
     {
         $request->validate([
             'offset' => ['nullable', 'string'],
@@ -43,6 +55,35 @@ class ConversationController extends Controller
 
         return response()->success([
             'conversations' => $conversations->setTransformer(ConversationListTransformer::class),
+        ]);
+    }
+
+    /**
+     * 转移给同事
+     *
+     * @param Conversation $conversation
+     * @param User $user
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function transfer(Conversation $conversation, User $user, Request $request)
+    {
+        if (!$this->user->hasPermissionTo(Permission::findByName('manager', 'api')) && $conversation->user_id != $this->user->id) {
+            abort(404);
+        }
+        if ($user->enterprise_id != $this->user->enterprise_id) {
+            abort(404);
+        }
+        if (!$user->hasPermissionTo(Permission::findByName('manager', 'api')) && $user->institution_id != $this->user->institution_id) {
+            abort(404);
+        }
+
+        $conversation->user()->associate($user);
+        $conversation->save();
+        $conversation->user->id = $user->public_id;
+
+        return response()->success([
+            'conversation' => $conversation->setTransformer(ConversationDetailTransformer::class),
         ]);
     }
 }

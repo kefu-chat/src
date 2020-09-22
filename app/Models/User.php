@@ -19,7 +19,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * App\Models\User
  *
  * @property int $id
- * @property int $institution_id 组织 ID
+ * @property int $enterprise_id 企业 ID
+ * @property int $institution_id 网站 ID
  * @property string $name
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at

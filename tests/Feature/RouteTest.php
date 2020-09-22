@@ -16,9 +16,10 @@ class RouteTest extends TestCase
     {
         $this->assertTrue(!!route('file.upload'));
         $this->assertTrue(!!route('user.info.agent'));
-        $this->assertTrue(!!route('conversation.list.agent'));
+        $this->assertTrue(!!route('conversation.list'));
         $this->assertTrue(!!route('conversation.message.list', 1));
         $this->assertTrue(!!route('conversation.message.send', 1));
+        $this->assertTrue(!!route('conversation.transfer', [1, 2]));
         $this->assertTrue(!!route('institution.create'));
         $this->assertTrue(!!route('institution.show', 1));
         $this->assertTrue(!!route('institution.update', 1));

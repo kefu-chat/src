@@ -15,15 +15,14 @@ class ConversationListTransformer extends AbstractTransformer
      */
     public function transform($item)
     {
-        if ($item->user) {
-            $item->user->setVisible([
-                'id',
-                'name',
-                'email',
-                'avatar',
-            ]);
-        }
-        $item->visitor->setVisible([
+        optional($item->user)->setVisible([
+            'id',
+            'name',
+            'email',
+            'avatar',
+            'title',
+        ]);
+        optional($item->visitor)->setVisible([
             'id',
             'unique_id',
             'name',
