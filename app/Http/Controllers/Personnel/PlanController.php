@@ -7,6 +7,7 @@ use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Plan;
 use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -78,6 +79,32 @@ class PlanController extends Controller
 
         return response()->success([
             'order' => $order,
+        ]);
+    }
+
+    /**
+     * 支付婊支付付款
+     * @param Order $order
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function alipay(Order $order, Request $request)
+    {
+        return response()->success([
+            'pay' => $order->alipay
+        ]);
+    }
+
+    /**
+     * 微信支付付款
+     * @param Order $order
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function wechatpay(Order $order, Request $request)
+    {
+        return response()->success([
+            'pay' => $order->wechatpay
         ]);
     }
 }

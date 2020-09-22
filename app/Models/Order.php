@@ -6,6 +6,7 @@ use App\Models\Traits\HasEnterprise;
 use App\Models\Traits\HasPublicId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Yansongda\LaravelPay\Facades\Pay;
 
 /**
  * App\Models\Order
@@ -26,6 +27,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\stirng $public_id
  * @property-read \App\Models\Plan $plan
  * @property-read \App\Models\User $user
+ * @property-read mixed $alipay
+ * @property-read mixed $wechatpay
  * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Order query()
@@ -41,6 +44,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCouponId($value)
  * @mixin \Eloquent
  */
 class Order extends Model
@@ -87,5 +91,43 @@ class Order extends Model
     public function plan()
     {
         return $this->belongsTo(Plan::class);
+    }
+
+    /**
+     * 支付宝
+     * @return mixed
+     */
+    public function getAlipayAttribute()
+    {
+        if ($this->status != static::STATUS_UNPAID) {
+            abort(400, 'Order must be unpaid!');
+        }
+
+        return Pay::alipay()->web([
+            'out_trade_no' => $this->public_id,
+            'total_amount' => $this->need_pay_price,
+            'subject' => '给[' . $this->enterprise->name . ',enterprise_id=' . $this->enterprise_id . ']套餐升级至[' . $this->plan->name . ']',
+            'notify_url' => '',
+            'return_url' => '',
+        ]);
+    }
+
+    /**
+     * 微信支付
+     * @return mixed
+     */
+    public function getWechatpayAttribute()
+    {
+        if ($this->status != static::STATUS_UNPAID) {
+            abort(400, 'Order must be unpaid!');
+        }
+
+        return Pay::wechat()->scan([
+            'out_trade_no' => $this->public_id,
+            'total_amount' => (float) bcmul($this->need_pay_price, 100, 2),
+            'subject' => '给[' . $this->enterprise->name . ',enterprise_id=' . $this->enterprise_id . ']套餐升级至[' . $this->plan->name . ']',
+            'notify_url' => '',
+            'return_url' => '',
+        ]);
     }
 }

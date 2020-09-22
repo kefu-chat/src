@@ -28,5 +28,11 @@ class RouteTest extends TestCase
         $this->assertTrue(!!route('verification.verify', 1));
         $this->assertTrue(!!route('oauth.callback', 1));
         $this->assertTrue(!!route('visitor.init'));
+        $this->assertTrue(!!route('enterprise.plan.show'));
+        $this->assertTrue(!!route('enterprise.plan.upgrade', [1]));
+        $this->assertTrue(!!route('enterprise.plan.upgrade.alipay', [1]));
+        $this->assertTrue(!!route('enterprise.plan.upgrade.wechatpay', [1]));
+
+
     }
 }
