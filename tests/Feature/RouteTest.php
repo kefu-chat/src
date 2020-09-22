@@ -32,7 +32,5 @@ class RouteTest extends TestCase
         $this->assertTrue(!!route('enterprise.plan.upgrade', [1]));
         $this->assertTrue(!!route('enterprise.plan.upgrade.alipay', [1]));
         $this->assertTrue(!!route('enterprise.plan.upgrade.wechatpay', [1]));
-
-
     }
 }
