@@ -34,6 +34,8 @@ Broadcast::channel('conversation.{conversation}', function ($user, Conversation 
     ) {
         if ($user instanceof User) {
             return $user->setTransformer(ConversationUserTransformer::class);
+        } else if ($user instanceof Visitor) {
+            $conversation->online($user);
         }
         return $user;
     }

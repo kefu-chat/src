@@ -44,8 +44,12 @@ class Conversation extends AbstractModel
         'first_reply_at',
         'last_reply_at',
         'ended_at',
+        'online_status',
     ];
 
+    protected $casts = [
+        'online_status' => 'bool',
+    ];
     protected $dates = [
         'first_reply_at',
         'last_reply_at',
@@ -79,5 +83,25 @@ class Conversation extends AbstractModel
     public function getGeoAttribute()
     {
         return geoip($this->ip)->toArray();
+    }
+  
+    public function offline(Visitor $visitor)
+    {
+        if ($visitor->id != $this->visitor_id) {
+            abort(404);
+        }
+        $this->fill(['online_status' => false,]);
+        $this->save();
+        return $this;
+    }
+
+    public function online(Visitor $visitor)
+    {
+        if ($visitor->id != $this->visitor_id) {
+            abort(404);
+        }
+        $this->fill(['online_status' => true,]);
+        $this->save();
+        return $this;
     }
 }

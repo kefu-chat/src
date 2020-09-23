@@ -20,6 +20,7 @@ class CreateConversations extends Migration
             $table->unsignedBigInteger('user_id')->index()->comment('客服 ID');
             $table->string('ip', 64)->index()->comment('访客 IP');
             $table->string('url')->nullable()->comment('从那个页面来');
+            $table->tinyInteger('online_status')->default(1)->comment('会话在线状态');
             $table->timestamp('first_reply_at')->nullable()->comment('初次回复时间');
             $table->timestamp('last_reply_at')->nullable()->comment('上次回复时间');
             $table->timestamps();

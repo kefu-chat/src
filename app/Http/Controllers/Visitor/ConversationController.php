@@ -6,10 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Messagingable;
 use App\Http\Transformers\ConversationDetailTransformer;
 use App\Http\Transformers\ConversationListTransformer;
+use App\Models\Conversation;
 use App\Models\Institution;
+use App\Models\User;
+use App\Models\Visitor;
 use App\Repositories\ConversationRepository;
 use App\Repositories\VisitorRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -84,5 +88,18 @@ class ConversationController extends Controller
             'visitor_token' => $visitor_token,
             'visitor_type' => 'Berear',
         ]);
+    }
+
+    public function leave(Request $request)
+    {
+        $channel = $request->input('channel_name');
+        $user = $request->input('member');
+
+        $conversation = Conversation::findPublicIdOrFail(Arr::last(explode('presence-conversation.', $channel)));
+        $visitor = Visitor::findPublicIdOrFail(data_get($user, 'id'));
+
+        $conversation->offline($visitor);
+
+        return response()->success();
     }
 }

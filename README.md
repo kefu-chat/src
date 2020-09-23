@@ -46,6 +46,28 @@ php artisan db:seed --class=Database\\Seeders\\UsersTableSeeder
 php artisan db:seed --class=Database\\Seeders\\VisitorsTableSeeder
 ```
 
+## Socket 服务器启动
+
+需要单独编译 laravel-echo-server
+```bash
+cw=$(pwd)
+cd ../
+git clone github.com:fastsupport-cn/laravel-echo-server.git
+cd laravel-echo-server
+tsc
+cd $cw
+```
+
+配置文件
+```bash
+cp laravel-echo-server.json.example laravel-echo-server.json
+```
+
+启动服务
+```
+../laravel-echo-server/bin/server.js start
+```
+
 ## 单元测试
 ```bash
 php artisan test

@@ -38,6 +38,7 @@ class ConversationListTransformer extends AbstractTransformer
             'visitor',
             'user',
             'geo',
+            'online_status',
         ]);
 
         return $item;

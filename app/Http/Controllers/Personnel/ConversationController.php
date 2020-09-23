@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Personnel;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Messagingable;
 use App\Http\Transformers\ConversationDetailTransformer;
+use App\Http\Transformers\ConversationListTransformer;
 use App\Http\Transformers\ConversationListWithOnlineStatusTransformer;
 use App\Models\Conversation;
 use App\Models\User;
@@ -54,7 +55,7 @@ class ConversationController extends Controller
         $conversations = $conversationRepository->listConversations($this->user, $offset, $type, ['messages',]);
 
         return response()->success([
-            'conversations' => $conversations->setTransformer(ConversationListWithOnlineStatusTransformer::class),
+            'conversations' => $conversations->setTransformer(ConversationListTransformer::class),
         ]);
     }
 
