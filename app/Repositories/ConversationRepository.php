@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Broadcasting\ConversationAssigning;
 use App\Models\Conversation;
 use App\Models\User;
 use App\Models\Visitor;
@@ -103,6 +104,8 @@ class ConversationRepository
     public function assignConversation(Conversation $conversation, User $user)
     {
         $conversation->user()->associate($user);
-        return $conversation->save();
+        $conversation->save();
+        broadcast(new ConversationAssigning($conversation, $user));
+        return $conversation;
     }
 }

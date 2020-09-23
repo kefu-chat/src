@@ -11,7 +11,7 @@ trait SetTransformer
      * 转换
      *
      * @param string $class
-     * @return mixed
+     * @return static
      */
     public function setTransformer($class)
     {
