@@ -20,19 +20,20 @@ class ConversationListWithOnlineStatusTransformer extends ConversationListTransf
      */
     public function transform($item)
     {
-        $url = env('LARAEVL_ECHO_SERVER_API') . '/apps/' . env('LARAEVL_ECHO_SERVER_APPID') . '/channels/presence-conversation.' . $item->public_id . '/users?auth_key=' . env('LARAEVL_ECHO_SERVER_APPKEY');
         $item = parent::transform($item);
         $item->online_status = false;
 
-        $status = Redis::connection('echo')->get('presence-conversation.' . $item->public_id . ':members');
-        if ($status) {
-            $status = json_decode($status, true);
+        if (env('REDIS_LARAVEL_ECHO_SERVER_DB')) {
+            $status = Redis::connection('echo')->get('presence-conversation.' . $item->public_id . ':members');
+            if ($status) {
+                $status = json_decode($status, true);
 
-            foreach (collect($status)->pluck('user_info.id') as $public_id) {
-                list($id, $type) = Hashids::decode($public_id);
-                if ($type == crc32(Visitor::class)) {
-                    $item->online_status = true;
-                    break;
+                foreach (collect($status)->pluck('user_info.id') as $public_id) {
+                    list($id, $type) = Hashids::decode($public_id);
+                    if ($type == crc32(Visitor::class)) {
+                        $item->online_status = true;
+                        break;
+                    }
                 }
             }
         }
