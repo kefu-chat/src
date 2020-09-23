@@ -11,6 +11,7 @@ use App\Repositories\ConversationRepository;
 use App\Repositories\VisitorRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ConversationController extends Controller
@@ -39,7 +40,7 @@ class ConversationController extends Controller
             'address' => ['nullable', 'string'],
             'userAgent' => ['required', 'string',],
             'languages' => ['required', 'array',],
-            'url' => ['required', 'url',],
+            'url' => ['required', 'string',],
             'title' => ['nullable', 'string',],
             'languages.*' => ['required', 'string',],
         ]);
@@ -56,6 +57,11 @@ class ConversationController extends Controller
         $languages = $request->input('languages');
         $url = $request->input('url');
         $title = $request->input('title');
+        if (!Str::startsWith($url, ['https://', 'http://', 'file://'])) {
+            throw ValidationException::withMessages([
+                'url' => 'The url format is invalid.',
+            ]);
+        }
 
         if (!$request->headers->has('authorization')) {
             init:

@@ -24,7 +24,17 @@ use Spatie\Permission\Models\Permission;
  * @see \App\Broadcasting\ConversationAssigning
  */
 Broadcast::channel('conversation.{conversation}', function ($user, Conversation $conversation) {
-    if ($conversation->{[Visitor::class => 'visitor_id', User::class => 'user_id'][get_class($user)]} == $user->id) {
+    if (
+        $conversation->{[Visitor::class => 'visitor_id', User::class => 'user_id'][get_class($user)]} == $user->id
+        ||
+        (
+            $user instanceof User
+            &&
+            $user->hasPermissionTo(Permission::findByName('manager', 'api'))
+            &&
+            $user->enterprise_id == $conversation->institution->enterprise_id
+        )
+    ) {
         if ($user instanceof User) {
             return $user->setTransformer(ConversationUserTransformer::class);
         }
