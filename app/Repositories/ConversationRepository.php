@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Broadcasting\ConversationAssigning;
+use App\Broadcasting\ConversationIncoming;
 use App\Models\Conversation;
 use App\Models\User;
 use App\Models\Visitor;
@@ -89,8 +90,12 @@ class ConversationRepository
         ]);
         $conversation->institution()->associate($visitor->institution);
         $conversation->visitor()->associate($visitor);
+        // @TODO: 自动分配
         //$conversation->user()->associate($user);
         $conversation->save();
+
+        broadcast(new ConversationIncoming($conversation));
+
         return $conversation;
     }
 

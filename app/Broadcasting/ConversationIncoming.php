@@ -2,19 +2,19 @@
 
 namespace App\Broadcasting;
 
-use App\Http\Transformers\ConversationUserTransformer;
+use App\Http\Transformers\ConversationDetailTransformer;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
-use App\Models\Visitor;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Spatie\Permission\Models\Permission;
 
 /**
- * 客服分配 Socket, 主要是给访客端用
+ * 新会话 Socket
  */
-class ConversationAssigning implements ShouldBroadcast
+class ConversationIncoming implements ShouldBroadcast
 {
     use InteractsWithSockets;
 
@@ -24,19 +24,13 @@ class ConversationAssigning implements ShouldBroadcast
     protected $conversation;
 
     /**
-     * @var User
-     */
-    protected $user;
-
-    /**
      * Create a new channel instance.
      *
      * @return void
      */
-    public function __construct(Conversation $conversation, User $user)
+    public function __construct(Conversation $conversation)
     {
         $this->conversation = $conversation;
-        $this->user = $user;
     }
 
     /**
@@ -46,7 +40,10 @@ class ConversationAssigning implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('conversation.' . $this->conversation->public_id);
+        return [
+            new PresenceChannel('institution.' . $this->conversation->institution->public_id),
+            new PresenceChannel('enterprise.' . $this->conversation->institution->enterprise->public_id),
+        ];
     }
 
     /**
@@ -56,7 +53,7 @@ class ConversationAssigning implements ShouldBroadcast
      */
     public function broadcastAs()
     {
-        return 'conversation.assigned';
+        return 'conversation.created';
     }
 
     /**
@@ -66,17 +63,17 @@ class ConversationAssigning implements ShouldBroadcast
      */
     public function broadcastWith()
     {
-        return $this->user->setTransformer(ConversationUserTransformer::class)->toArray();
+        return $this->conversation->setTransformer(ConversationDetailTransformer::class)->toArray();
     }
 
     /**
      * Authenticate the user's access to the channel.
      *
-     * @param  \App\Models\Visitor|\\App\Models\User $user
+     * @param  \App\Models\User $user
      * @return array|bool
      */
-    public function join($user, Conversation $conversation)
+    public function join(User $user, Conversation $conversation)
     {
-        return $conversation->{[Visitor::class => 'visitor_id', User::class => 'user_id'][get_class($user)]} == $user->id;
+        return $conversation->institution_id == $user->institution_id || ($user->hasPermissionTo(Permission::findByName('manager', 'api')) && $conversation->institution->enterprise_id = $user->enterprise_id);
     }
 }
