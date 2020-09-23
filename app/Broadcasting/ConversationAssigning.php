@@ -47,7 +47,7 @@ class ConversationAssigning implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('conversation.' . $this->conversation->public_id );
+        return new PresenceChannel('conversation.' . $this->conversation->public_id);
     }
 
     /**
