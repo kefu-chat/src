@@ -17,7 +17,8 @@ use App\Models\Visitor;
 
 /**
  * @see \App\Broadcasting\ConversationMessaging
+ * @see \App\Broadcasting\ConversationAssigning
  */
-Broadcast::channel('conversation.{conversation}.messaging', function ($user, Conversation $conversation) {
+Broadcast::channel('conversation.{conversation}', function ($user, Conversation $conversation) {
     return $conversation->{[Visitor::class => 'visitor_id', User::class => 'user_id'][get_class($user)]} == $user->id;
 }, ['guards' => ['visitor', 'api']]);

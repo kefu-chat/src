@@ -39,7 +39,7 @@ class ConversationMessaging implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('conversation.' . $this->message->conversation->public_id . '.messaging');
+        return new PresenceChannel('conversation.' . $this->message->conversation->public_id);
     }
 
     /**
