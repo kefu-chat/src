@@ -1305,6 +1305,7 @@ namespace PHPSTORM_META {
     override(\last(0), elementType(0));
     override(\with(0), type(0));
     override(\tap(0), type(0));
+    override(\optional(0), type(0));
 
     override(\Illuminate\Database\Eloquent\Concerns\HasRelationships::hasOne(0), map(['' => '@|\Illuminate\Database\Eloquent\Relations\HasOne',]));
     override(\Illuminate\Database\Eloquent\Concerns\HasRelationships::hasOneThrough(0), map(['' => '@|\Illuminate\Database\Eloquent\Relations\HasOneThrough',]));
