@@ -7,7 +7,8 @@ use App\Models\Enterprise;
 /**
  * 企业的
  *
- * @property Enterprise $enterprise
+ * @property int $enterprise_id
+ * @property-read Enterprise $enterprise
  */
 trait HasEnterprise
 {
