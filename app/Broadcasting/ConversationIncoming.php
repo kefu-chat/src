@@ -5,11 +5,9 @@ namespace App\Broadcasting;
 use App\Http\Transformers\ConversationDetailTransformer;
 use App\Models\Conversation;
 use App\Models\Message;
-use App\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Spatie\Permission\Models\Permission;
 
 /**
  * 新会话 Socket

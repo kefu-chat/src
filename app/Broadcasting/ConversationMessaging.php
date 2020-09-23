@@ -3,9 +3,7 @@
 namespace App\Broadcasting;
 
 use App\Http\Transformers\MessageListTransformer;
-use App\Models\Conversation;
 use App\Models\Message;
-use App\Models\Visitor;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;

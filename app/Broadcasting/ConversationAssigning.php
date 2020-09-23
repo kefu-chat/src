@@ -6,7 +6,6 @@ use App\Http\Transformers\ConversationUserTransformer;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
-use App\Models\Visitor;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
