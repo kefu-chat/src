@@ -2,32 +2,40 @@
 
 namespace App\Broadcasting;
 
-use App\Http\Transformers\MessageListTransformer;
+use App\Http\Transformers\ConversationUserTransformer;
+use App\Models\Conversation;
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 /**
- * 消息 Socket, 访客侧和客服侧共用
+ * 客服分配 Socket, 主要是给访客端用
  */
-class ConversationMessaging implements ShouldBroadcast
+class ConversationAssigning implements ShouldBroadcast
 {
     use InteractsWithSockets;
 
     /**
-     * @var Message
+     * @var Conversation
      */
-    protected $message;
+    protected $conversation;
+
+    /**
+     * @var User
+     */
+    protected $user;
 
     /**
      * Create a new channel instance.
      *
      * @return void
      */
-    public function __construct(Message $message)
+    public function __construct(Conversation $conversation, User $user)
     {
-        $this->message = $message;
+        $this->conversation = $conversation;
+        $this->user = $user;
     }
 
     /**
@@ -37,7 +45,7 @@ class ConversationMessaging implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('conversation.' . $this->message->conversation->public_id);
+        return new PresenceChannel('conversation.' . $this->conversation->public_id);
     }
 
     /**
@@ -47,7 +55,7 @@ class ConversationMessaging implements ShouldBroadcast
      */
     public function broadcastAs()
     {
-        return 'message.created';
+        return 'conversation.assigned';
     }
 
     /**
@@ -57,11 +65,6 @@ class ConversationMessaging implements ShouldBroadcast
      */
     public function broadcastWith()
     {
-        return $this->message->setTransformer(MessageListTransformer::class)->toArray();
-    }
-
-    public function getMessage()
-    {
-        return $this->message;
+        return $this->user->setTransformer(ConversationUserTransformer::class)->toArray();
     }
 }

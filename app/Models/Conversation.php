@@ -19,6 +19,7 @@ use App\Models\Traits\HasPublicId;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Torann\GeoIP\GeoIP|\Torann\GeoIP\Location $geo
+ * @property-read \App\Models\User|null $user
  * @property-read \App\Models\Visitor $visitor
  * @property-read Conversation[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Conversation> $messages
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation newModelQuery()

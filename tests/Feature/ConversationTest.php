@@ -45,7 +45,7 @@ class ConversationTest extends TestCase
      *
      * @return \Illuminate\Testing\TestResponse
      */
-    public function testMuitiConversationsFromSeeders()
+    public function testMultiConversationsFromSeeders()
     {
         $this->artisan('migrate');
         $this->artisan('db:seed', ['--class' => \Database\Seeders\PermissionSeeder::class])->assertExitCode(0);
