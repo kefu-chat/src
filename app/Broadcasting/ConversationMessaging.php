@@ -62,17 +62,6 @@ class ConversationMessaging implements ShouldBroadcast
         return $this->message->setTransformer(MessageListTransformer::class)->toArray();
     }
 
-    /**
-     * Authenticate the user's access to the channel.
-     *
-     * @param  \App\Models\Visitor|\\App\Models\User $user
-     * @return array|bool
-     */
-    public function join($user, Conversation $conversation)
-    {
-        return $conversation->{[Visitor::class => 'visitor_id', User::class => 'user_id'][get_class($user)]} == $user->id;
-    }
-
     public function getMessage()
     {
         return $this->message;

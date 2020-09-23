@@ -65,15 +65,4 @@ class ConversationIncoming implements ShouldBroadcast
     {
         return $this->conversation->setTransformer(ConversationDetailTransformer::class)->toArray();
     }
-
-    /**
-     * Authenticate the user's access to the channel.
-     *
-     * @param  \App\Models\User $user
-     * @return array|bool
-     */
-    public function join(User $user, Conversation $conversation)
-    {
-        return $conversation->institution_id == $user->institution_id || ($user->hasPermissionTo(Permission::findByName('manager', 'api')) && $conversation->institution->enterprise_id = $user->enterprise_id);
-    }
 }
