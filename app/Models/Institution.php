@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasEnterprise;
 use App\Models\Traits\HasPublicId;
 
 /**
@@ -32,7 +33,7 @@ use App\Models\Traits\HasPublicId;
  */
 class Institution extends AbstractModel
 {
-    use HasPublicId;
+    use HasPublicId, HasEnterprise;
 
     protected $fillable = [
         'name',
