@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Broadcasting\ConversationAssigning;
 use App\Broadcasting\ConversationMessaging;
 use App\Models\Message;
 use Faker\Generator;
@@ -56,9 +57,14 @@ class MessageTest extends ConversationTest
 
         $generator = app(Generator::class);
         $content = $generator->paragraph;
+
         Broadcast::shouldReceive('event')
             ->once()
-            ->withArgs(fn (ConversationMessaging $arg) => $arg->getMessage()->content === $content);
+            ->withArgs(fn ($arg) => $arg instanceof ConversationAssigning);
+
+        Broadcast::shouldReceive('event')
+            ->once()
+            ->withArgs(fn ($arg) => $arg instanceof ConversationMessaging && $arg->getMessage()->content === $content);
 
         $this->post(route('conversation.message.send', [$conversation_id], false), [
             'type' => Message::TYPE_TEXT,
@@ -82,9 +88,14 @@ class MessageTest extends ConversationTest
 
         $generator = app(Generator::class);
         $content = $generator->paragraph;
+
         Broadcast::shouldReceive('event')
             ->once()
-            ->withArgs(fn (ConversationMessaging $arg) => $arg->getMessage()->content === $content);
+            ->withArgs(fn ($arg) => $arg instanceof ConversationAssigning);
+
+        Broadcast::shouldReceive('event')
+            ->once()
+            ->withArgs(fn ($arg) => $arg instanceof ConversationMessaging && $arg->getMessage()->content === $content);
 
         $this->post(route('conversation.message.send', [$conversation_id], false), [
             'type' => Message::TYPE_TEXT,
@@ -109,9 +120,14 @@ class MessageTest extends ConversationTest
 
         $generator = app(Generator::class);
         $content = $generator->paragraph;
+
         Broadcast::shouldReceive('event')
             ->once()
-            ->withArgs(fn (ConversationMessaging $arg) => $arg->getMessage()->content === $content);
+            ->withArgs(fn ($arg) => $arg instanceof ConversationAssigning);
+
+        Broadcast::shouldReceive('event')
+            ->once()
+            ->withArgs(fn ($arg) => $arg instanceof ConversationMessaging && $arg->getMessage()->content === $content);
 
         $this->post(route('conversation.message.send', [$conversation_id], false), [
             'type' => Message::TYPE_TEXT,
