@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Broadcasting\ConversationIncoming;
 use App\Broadcasting\ConversationMessaging;
 use App\Models\Institution;
 use App\Models\Message;
@@ -65,9 +66,9 @@ class VisitorTest extends TestCase
             ->assertOk();
 
         $content = $generator->paragraph;
+
         Broadcast::shouldReceive('event')
-            ->once()
-            ->withArgs(fn(ConversationMessaging $arg) => $arg->getMessage()->content === $content);
+            ->withArgs(fn ($arg) => $arg instanceof ConversationIncoming || ($arg instanceof ConversationMessaging && $arg->getMessage()->content === $content));
 
         $this->post(route('conversation.message.send', [$initRes->json('data.conversation.id')], false), [
             'type' => Message::TYPE_TEXT,
