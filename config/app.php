@@ -82,12 +82,13 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => env('APP_LOCALE', 'en'),
 
     'locales' => [
         'en' => 'EN',
         'zh-CN' => '中文',
-        'es' => 'ES',
+        'zh-HK' => '中文-香港',
+        'zh-HK' => '中文-台湾',
     ],
 
     /*
