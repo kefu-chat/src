@@ -52,8 +52,9 @@ php artisan db:seed --class=Database\\Seeders\\VisitorsTableSeeder
 ```bash
 cw=$(pwd)
 cd ../
-git clone github.com:fastsupport-cn/laravel-echo-server.git
+git clone https://github.com/fastsupport-cn/laravel-echo-server.git
 cd laravel-echo-server
+npm i
 tsc
 cd $cw
 ```
