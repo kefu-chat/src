@@ -72,19 +72,27 @@ class ConversationRepository
         return $conversations;
     }
 
-    /**
-     * 初始化会话
-     *
-     * @param Visitor $visitor
-     * @param $ip
-     * @param $url
-     * @return Conversation
-     */
-    public function initConversation(Visitor $visitor, $ip, $url)
+  /**
+   * 初始化会话
+   *
+   * @param Visitor $visitor
+   * @param string $ip
+   * @param string $url
+   * @param string $userAgent
+   * @param array<int,string> $languages
+   * @param string $title
+   * @param string $referer
+   * @return Conversation
+   */
+    public function initConversation(Visitor $visitor, $ip, $url, $userAgent, $languages, $title, $referer)
     {
         $conversation = new Conversation([
             'ip' => $ip,
             'url' => $url,
+            'userAgent' => $userAgent,
+            'languages' => $languages,
+            'title' => $title,
+            'referer' => $referer,
             'first_reply_at' => null,
             'last_reply_at' => null,
         ]);

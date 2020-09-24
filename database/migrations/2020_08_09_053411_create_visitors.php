@@ -22,6 +22,7 @@ class CreateVisitors extends Migration
             $table->string('phone', 15)->index()->comment('手机号');
             $table->string('avatar', 128)->nullable()->comment('头像');
             $table->text('memo')->nullable()->comment('备注');
+            $table->text('address')->nullable()->comment('地址');
 
             $table->timestamps();
         });

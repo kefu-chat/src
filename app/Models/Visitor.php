@@ -47,6 +47,7 @@ class Visitor extends AbstractModel implements JWTSubject, AuthAuthenticatable
         'phone',
         'avatar',
         'memo',
+        'address',
     ];
 
     public function conversations()

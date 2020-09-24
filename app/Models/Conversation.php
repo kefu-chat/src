@@ -45,10 +45,15 @@ class Conversation extends AbstractModel
         'last_reply_at',
         'ended_at',
         'online_status',
+        'title',
+        'userAgent',
+        'languages',
+        'referer',
     ];
 
     protected $casts = [
         'online_status' => 'bool',
+        'languages' => 'array',
     ];
     protected $dates = [
         'first_reply_at',

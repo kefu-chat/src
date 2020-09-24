@@ -24,6 +24,7 @@ class ConversationListTransformer extends AbstractTransformer
             'phone',
             'memo',
             'avatar',
+            'address',
         ]);
         $item->setAppends(['geo',]);
         $item->setVisible([
