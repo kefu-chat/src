@@ -6,22 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Messagingable;
 use App\Http\Transformers\ConversationDetailTransformer;
 use App\Http\Transformers\ConversationListTransformer;
-use App\Http\Transformers\ConversationListWithOnlineStatusTransformer;
 use App\Models\Conversation;
 use App\Models\User;
 use App\Repositories\ConversationRepository;
-use Illuminate\Database\Eloquent\InvalidCastException;
-use Illuminate\Database\Eloquent\JsonEncodingException;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
-use Spatie\Permission\Exceptions\PermissionDoesNotExist;
-use LogicException;
-use InvalidArgumentException;
 use Spatie\Permission\Models\Permission;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Vinkla\Hashids\Facades\Hashids;
 
 class ConversationController extends Controller
