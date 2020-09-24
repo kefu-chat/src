@@ -10,7 +10,7 @@
 	"database": "redis",
 	"databaseConfig": {
 		"redis": {},
-        "publishPresence": true
+    "publishPresence": true
 	},
 	"devMode": true,
 	"host": null,
