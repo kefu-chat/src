@@ -42,7 +42,14 @@ Broadcast::channel('conversation.{conversation}', function ($user, Conversation 
     return false;
 }, ['guards' => ['visitor', 'api']]);
 
-Broadcast::channel('institution.{institution}', function (User $user, Institution $institution) {
+Broadcast::channel('institution.{institution}.unassigned', function (User $user, Institution $institution) {
+    if ($institution->id == $user->institution_id || ($user->hasPermissionTo(Permission::findByName('manager', 'api')) && $institution->enterprise_id = $user->enterprise_id)) {
+        return $user->setTransformer(ConversationUserTransformer::class);
+    }
+    return false;
+}, ['guards' => ['api']]);
+
+Broadcast::channel('institution.{institution}.assigned.{user}', function (User $user, Institution $institution) {
     if ($institution->id == $user->institution_id || ($user->hasPermissionTo(Permission::findByName('manager', 'api')) && $institution->enterprise_id = $user->enterprise_id)) {
         return $user->setTransformer(ConversationUserTransformer::class);
     }

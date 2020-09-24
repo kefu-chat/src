@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ConversationController extends Controller
@@ -97,10 +98,12 @@ class ConversationController extends Controller
         $channel = $request->input('channel_name');
         $user = $request->input('member');
 
-        $conversation = Conversation::findPublicIdOrFail(Arr::last(explode('presence-conversation.', $channel)));
-        $visitor = Visitor::findPublicIdOrFail(data_get($user, 'id'));
-
-        $conversation->offline($visitor);
+        try {
+            $conversation = Conversation::findPublicIdOrFail(Arr::last(explode('presence-conversation.', $channel)));
+            $visitor = Visitor::findPublicIdOrFail(data_get($user, 'id'));
+            $conversation->offline($visitor);
+        } catch (NotFoundHttpException $e) {
+        }
 
         return response()->success();
     }
