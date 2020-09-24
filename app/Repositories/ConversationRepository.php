@@ -94,7 +94,7 @@ class ConversationRepository
         //$conversation->user()->associate($user);
         $conversation->save();
 
-        broadcast(new ConversationIncoming($conversation));
+        //@TODO: broadcast(new VisitorIncoming($conversation));
 
         return $conversation;
     }

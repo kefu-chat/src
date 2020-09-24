@@ -46,6 +46,8 @@ class ConversationController extends Controller
         $conversations = $conversationRepository->listConversations($this->user, $offset, $type, ['messages',]);
 
         return response()->success([
+            'user_id' => $this->user->public_id,
+            'institution_id' => $this->user->institution->public_id,
             'conversations' => $conversations->setTransformer(ConversationListTransformer::class),
         ]);
     }

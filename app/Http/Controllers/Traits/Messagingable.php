@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Traits;
 
+use App\Broadcasting\ConversationIncoming;
 use App\Broadcasting\ConversationMessaging;
 use App\Http\Transformers\ConversationDetailTransformer;
 use App\Http\Transformers\MessageListTransformer;
@@ -124,6 +125,10 @@ trait Messagingable
         if ($this->isVisitor()) {
             if ($conversation->visitor_id != $this->user->id) {
                 abort(404);
+            }
+
+            if ($conversation->messages()->count() == 0) {
+                broadcast(new ConversationIncoming($conversation));
             }
         }
 

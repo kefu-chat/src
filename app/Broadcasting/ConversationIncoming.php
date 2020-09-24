@@ -38,10 +38,18 @@ class ConversationIncoming implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return [
-            new PresenceChannel('institution.' . $this->conversation->institution->public_id),
-            new PresenceChannel('enterprise.' . $this->conversation->institution->enterprise->public_id),
-        ];
+        return array_merge(
+            [
+                new PresenceChannel('institution.' . $this->conversation->institution->public_id),
+                new PresenceChannel('enterprise.' . $this->conversation->institution->enterprise->public_id),
+            ],
+            !$this->conversation->user_id ?
+                [
+                    new PresenceChannel('institution.' . $this->conversation->institution->public_id . '.unassigned')
+                ] : [
+                    new PresenceChannel('institution.' . $this->conversation->institution->public_id . '.assigned.' . $this->conversation->user->public_id)
+                ]
+        );
     }
 
     /**
