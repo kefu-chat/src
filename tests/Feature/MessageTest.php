@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use App\Broadcasting\ConversationAssigning;
+use App\Broadcasting\ConversationIncoming;
 use App\Broadcasting\ConversationMessaging;
+use App\Models\Institution;
 use App\Models\Message;
 use Faker\Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -51,30 +53,40 @@ class MessageTest extends ConversationTest
      */
     public function testMessageSendByVisitor()
     {
-        $conversationRes = $this->testConversationsFromSeeders();
-        $conversation_id = $conversationRes->json('data.conversation.id');
+        $this->artisan('migrate');
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\PermissionSeeder::class])->assertExitCode(0);
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\AdminSeeder::class])->assertExitCode(0);
 
-
+        $institution = Institution::first();
         $generator = app(Generator::class);
+        $url = $generator->url;
+
+        $initRes = $this->post(route('visitor.init', [
+            'institution_id' => $institution->public_id,
+            'unique_id' => Str::random(),
+            'url' => $url,
+            'languages' => ['zh-CN', 'en'],
+            'userAgent' => 'PHPUnit',
+        ], false))
+            ->assertOk();
+
+        $conversation_id = $initRes->json('data.conversation.id');
+
         $content = $generator->paragraph;
 
         Broadcast::shouldReceive('event')
-            ->once()
-            ->withArgs(fn ($arg) => $arg instanceof ConversationAssigning);
-
-        //Broadcast::shouldReceive('event')
-        //    ->once()
-        //    ->withArgs(fn ($arg) => $arg instanceof ConversationMessaging && $arg->getMessage()->content === $content);
+            ->withArgs(fn ($arg) => $arg instanceof ConversationIncoming);
 
         $this->post(route('conversation.message.send', [$conversation_id], false), [
             'type' => Message::TYPE_TEXT,
             'content' => $content,
         ], $this->authVisitor())
-            ->assertStatus(200)
-            ->assertJsonPath('success', true);
+            ->assertOk()
+            ->assertJsonPath('success', true)
+            ->assertSee($content);
 
         $this->get(route('conversation.message.list', [$conversation_id,], false), $this->authVisitor())
-            ->assertStatus(200)
+            ->assertOk()
             ->assertSee($content);
     }
 
@@ -83,29 +95,40 @@ class MessageTest extends ConversationTest
      */
     public function testAgentSeeVisitorMessage()
     {
-        $conversationRes = $this->testConversationsFromSeeders();
-        $conversation_id = $conversationRes->json('data.conversation.id');
+        $this->artisan('migrate');
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\PermissionSeeder::class])->assertExitCode(0);
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\AdminSeeder::class])->assertExitCode(0);
 
+        $institution = Institution::first();
         $generator = app(Generator::class);
+        $url = $generator->url;
+
+        $initRes = $this->post(route('visitor.init', [
+            'institution_id' => $institution->public_id,
+            'unique_id' => Str::random(),
+            'url' => $url,
+            'languages' => ['zh-CN', 'en'],
+            'userAgent' => 'PHPUnit',
+        ], false))
+            ->assertOk();
+
+        $conversation_id = $initRes->json('data.conversation.id');
+
         $content = $generator->paragraph;
 
         Broadcast::shouldReceive('event')
-            ->once()
-            ->withArgs(fn ($arg) => $arg instanceof ConversationAssigning);
+            ->withArgs(fn ($arg) => $arg instanceof ConversationIncoming);
 
-        // Broadcast::shouldReceive('event')
-        //     ->once()
-        //     ->withArgs(fn ($arg) => $arg instanceof ConversationMessaging && $arg->getMessage()->content === $content);
-
-        $this->post(route('conversation.message.send', [$conversation_id], false), [
+        $this->post(route('conversation.message.send', [$conversation_id,], false), [
             'type' => Message::TYPE_TEXT,
             'content' => $content,
         ], $this->authVisitor())
-            ->assertStatus(200)
-            ->assertJsonPath('success', true);
+            ->assertOk()
+            ->assertJsonPath('success', true)
+            ->assertSee($content);
 
-        $getConversationRes = $this->get(route('conversation.message.list', [$conversation_id,], false), $this->authManager());
-        $getConversationRes->assertStatus(200)
+        $this->get(route('conversation.message.list', [$conversation_id,], false), $this->authManager())
+            ->assertOk()
             ->assertSee($content);
     }
 

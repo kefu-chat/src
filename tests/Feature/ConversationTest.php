@@ -2,10 +2,15 @@
 
 namespace Tests\Feature;
 
+use App\Broadcasting\ConversationIncoming;
+use App\Models\Institution;
 use App\Models\Message;
 use App\Models\User;
+use App\Models\Visitor;
 use Faker\Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
 
@@ -115,5 +120,56 @@ class ConversationTest extends TestCase
         $this->get(route('conversation.message.list', [$conversation_id,], false), $this->authManager())
             ->assertOk()
             ->assertJsonPath('data.conversation.user.id', $manager->public_id);
+    }
+
+    /**
+     * 拉取待打招呼测试
+     */
+    public function testListUngreeted()
+    {
+        $this->artisan('migrate');
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\InstitutionsTableSeeder::class])->assertExitCode(0);
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\PermissionSeeder::class])->assertExitCode(0);
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\AdminSeeder::class])->assertExitCode(0);
+
+
+        $institution = Institution::first();
+        $generator = app(Generator::class);
+        $url = $generator->url;
+        $unique_id = Str::random();
+        $content = $generator->paragraph;
+
+        $initRes = $this->post(route('visitor.init', [
+            'institution_id' => $institution->public_id,
+            'unique_id' => $unique_id,
+            'url' => $url,
+            'languages' => ['zh-CN', 'en'],
+            'userAgent' => 'PHPUnit',
+        ], false))
+            ->assertOk()
+            ->assertSee('visitor_token')
+            ->assertJsonPath('data.visitor_type', 'Berear')
+            ->assertJsonPath('data.conversation.url', $url);
+
+
+        $this->get(route('conversation.list', ['type' => 'unassigned',], false), $this->authManager())
+            ->assertOk()
+            ->assertDontSee($unique_id);
+
+        $this->get(route('conversation.list-ungreeted', ['type' => 'online',], false), $this->authManager())
+            ->assertOk()
+            ->assertSee($unique_id);
+
+        $this->post(route('conversation.message.send', [$initRes->json('data.conversation.id')], false), [
+            'type' => Message::TYPE_TEXT,
+            'content' => $content,
+        ], $this->authVisitor())
+            ->assertOk()
+            ->assertJsonPath('success', true)
+            ->assertSee($content);
+
+        $this->get(route('conversation.list-ungreeted', ['type' => 'online',], false), $this->authManager())
+            ->assertOk()
+            ->assertDontSee($unique_id);
     }
 }

@@ -3,13 +3,50 @@
 namespace App\Repositories;
 
 use App\Broadcasting\ConversationAssigning;
-use App\Broadcasting\ConversationIncoming;
 use App\Models\Conversation;
+use App\Models\Institution;
 use App\Models\User;
 use App\Models\Visitor;
 
 class ConversationRepository
 {
+    /**
+     * 拉取网站下未打过招呼的会话
+     * @param Institution $institution
+     * @param int|null $offset
+     * @param string|null $type
+     * @return Conversation[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Conversation>
+     */
+    public function listUngreetedConversations(Institution $institution, $offset, $type)
+    {
+        /**
+         * @var Conversation|Builder $query
+         */
+        $query = app(Conversation::class);
+
+        /**
+         * @var Conversation[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Conversation> $conversations
+         */
+        $conversations = $query->whereDoesntHave('visitorMessages')
+            ->when($offset, function ($query) use ($offset) {
+                /**
+                 * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                 */
+                return $query->where('id', '<', $offset);
+            })
+            ->when($type == 'online', function ($query) {
+                /**
+                 * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                 */
+                return $query->where('online_status', true);
+            })
+            ->latest()
+            ->limit(20)
+            ->get();
+
+        return $conversations;
+    }
+
     /**
      * 拉取会话
      *
@@ -72,18 +109,18 @@ class ConversationRepository
         return $conversations;
     }
 
-  /**
-   * 初始化会话
-   *
-   * @param Visitor $visitor
-   * @param string $ip
-   * @param string $url
-   * @param string $userAgent
-   * @param array<int,string> $languages
-   * @param string $title
-   * @param string $referer
-   * @return Conversation
-   */
+    /**
+     * 初始化会话
+     *
+     * @param Visitor $visitor
+     * @param string $ip
+     * @param string $url
+     * @param string $userAgent
+     * @param array<int,string> $languages
+     * @param string $title
+     * @param string $referer
+     * @return Conversation
+     */
     public function initConversation(Visitor $visitor, $ip, $url, $userAgent, $languages, $title, $referer)
     {
         $conversation = new Conversation([

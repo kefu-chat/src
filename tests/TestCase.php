@@ -13,22 +13,28 @@ abstract class TestCase extends BaseTestCase
 
     protected function authManager()
     {
+        if (auth()->guard('visitor')->user()) {
+            auth()->guard('visitor')->logout();
+        }
         auth()->guard('api')->setUser(User::permission('manager')->latest()->firstOrFail());
         return ['Authorization' => 'Bearer ' . JWTAuth::fromUser(auth()->guard('api')->user())];
     }
 
     protected function authSupport()
     {
+        if (auth()->guard('visitor')->user()) {
+            auth()->guard('visitor')->logout();
+        }
         auth()->guard('api')->setUser(User::permission('support')->latest()->firstOrFail());
         return ['Authorization' => 'Bearer ' . JWTAuth::fromUser(auth()->guard('api')->user())];
     }
 
-    protected function authVisitor($token = null)
+    protected function authVisitor()
     {
-        if (!$token) {
-            auth()->guard('visitor')->setUser(Visitor::latest()->firstOrFail());
-            $token = JWTAuth::fromUser(auth()->guard('visitor')->user());
+        if (auth()->guard('api')->user()) {
+            auth()->guard('api')->logout();
         }
-        return ['Authorization' => 'Bearer ' . $token];
+        auth()->guard('visitor')->setUser(Visitor::latest()->firstOrFail());
+        return ['Authorization' => 'Bearer ' . JWTAuth::fromUser(auth()->guard('visitor')->user())];
     }
 }

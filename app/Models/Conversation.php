@@ -16,6 +16,7 @@ use App\Models\Traits\HasPublicId;
  * @property string|null $url 从那个页面来
  * @property string|null $first_reply_at 初次回复时间
  * @property string|null $last_reply_at 上次回复时间
+ * @property bool $online_status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Torann\GeoIP\GeoIP|\Torann\GeoIP\Location $geo
@@ -85,11 +86,27 @@ class Conversation extends AbstractModel
         return $this->hasMany(Message::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Message|\Illuminate\Database\Query\Builder
+     */
+    public function visitorMessages()
+    {
+        return $this->hasMany(Message::class)->where('sender_type', Visitor::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Message|\Illuminate\Database\Query\Builder
+     */
+    public function userMessages()
+    {
+        return $this->hasMany(Message::class)->where('sender_type', User::class);
+    }
+
     public function getGeoAttribute()
     {
         return geoip($this->ip)->toArray();
     }
-  
+
     public function offline(Visitor $visitor)
     {
         if ($visitor->id != $this->visitor_id) {

@@ -3,12 +3,10 @@
 namespace Tests\Feature;
 
 use App\Broadcasting\ConversationIncoming;
-use App\Broadcasting\ConversationMessaging;
 use App\Models\Institution;
 use App\Models\Message;
 use Faker\Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Str;
 use Tests\TestCase;

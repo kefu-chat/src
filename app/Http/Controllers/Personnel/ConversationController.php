@@ -9,6 +9,7 @@ use App\Http\Transformers\ConversationListTransformer;
 use App\Models\Conversation;
 use App\Models\User;
 use App\Repositories\ConversationRepository;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
@@ -20,9 +21,10 @@ class ConversationController extends Controller
     use Messagingable;
 
     /**
-     * Update the user's password.
+     * 拉取聊天
      *
      * @param  \Illuminate\Http\Request $request
+     * @param ConversationRepository $conversationRepository
      * @return \Illuminate\Http\Response
      */
     public function list(Request $request, ConversationRepository $conversationRepository)
@@ -35,13 +37,17 @@ class ConversationController extends Controller
         $type = $request->input('type');
         $request_offset = $request->input('offset');
         $offset = Arr::first(Hashids::decode($request_offset));
-        if (!$offset) {
-            if ($request_offset) {
+        if ($request_offset) {
+            if (!$offset) {
                 throw ValidationException::withMessages([
-                    'offset' => 'offset 无效!' . $request_offset . '-' . $offset,
+                    'offset' => 'offset 无效! CRC32校验失败' . $request_offset . '-' . $offset,
                 ]);
             }
-            $offset = 0;
+            if (crc32(Conversation::class) != Arr::last(Hashids::decode($request_offset))) {
+                throw ValidationException::withMessages([
+                    'offset' => 'offset 无效! CRC32校验失败' . $request_offset . '-' . $offset,
+                ]);
+            }
         }
         $conversations = $conversationRepository->listConversations($this->user, $offset, $type, ['messages',]);
 
@@ -77,6 +83,48 @@ class ConversationController extends Controller
 
         return response()->success([
             'conversation' => $conversation->setTransformer(ConversationDetailTransformer::class),
+        ]);
+    }
+
+    /**
+     * 拉取在线未咨询访客
+     *
+     * @param Request $request
+     * @param ConversationRepository $conversationRepository
+     * @return \Illuminate\Http\Response
+     */
+    public function listUngreeted(Request $request, ConversationRepository $conversationRepository)
+    {
+        $request->validate([
+            'offset' => ['nullable', 'string'],
+            'type' => ['nullable', 'string', 'in:all,online'],
+        ]);
+        $type = $request->input('type');
+        $request_offset = $request->input('offset');
+        $offset = Arr::first(Hashids::decode($request_offset));
+        if ($request_offset) {
+            if (!$offset) {
+                throw ValidationException::withMessages([
+                    'offset' => 'offset 无效! CRC32校验失败' . $request_offset . '-' . $offset,
+                ]);
+            }
+            if (crc32(Conversation::class) != Arr::last(Hashids::decode($request_offset))) {
+                throw ValidationException::withMessages([
+                    'offset' => 'offset 无效! CRC32校验失败' . $request_offset . '-' . $offset,
+                ]);
+            }
+        }
+
+        if (!$type) {
+            $type = 'online';
+        }
+
+        $conversations = $conversationRepository->listUngreetedConversations($this->user->institution, $offset, $type);
+
+        return response()->success([
+            'user_id' => $this->user->public_id,
+            'institution_id' => $this->user->institution->public_id,
+            'conversations' => $conversations->setTransformer(ConversationListTransformer::class),
         ]);
     }
 }
