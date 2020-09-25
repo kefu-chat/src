@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Broadcasting\ConversationAssigning;
 use App\Broadcasting\ConversationIncoming;
+use App\Broadcasting\ConversationMessaging;
 use App\Models\Institution;
 use App\Models\Message;
 use Faker\Generator;
@@ -66,7 +68,7 @@ class VisitorTest extends TestCase
         $content = $generator->paragraph;
 
         Broadcast::shouldReceive('event')
-            ->withArgs(fn ($arg) => $arg instanceof ConversationIncoming);
+            ->withArgs(fn ($arg) => $arg instanceof ConversationAssigning || $arg instanceof ConversationIncoming || $arg instanceof ConversationMessaging);
 
         $this->post(route('conversation.message.send', [$initRes->json('data.conversation.id')], false), [
             'type' => Message::TYPE_TEXT,

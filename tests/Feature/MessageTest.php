@@ -75,7 +75,7 @@ class MessageTest extends ConversationTest
         $content = $generator->paragraph;
 
         Broadcast::shouldReceive('event')
-            ->withArgs(fn ($arg) => $arg instanceof ConversationIncoming);
+            ->withArgs(fn ($arg) => $arg instanceof ConversationIncoming || $arg instanceof ConversationMessaging);
 
         $this->post(route('conversation.message.send', [$conversation_id], false), [
             'type' => Message::TYPE_TEXT,
@@ -117,7 +117,7 @@ class MessageTest extends ConversationTest
         $content = $generator->paragraph;
 
         Broadcast::shouldReceive('event')
-            ->withArgs(fn ($arg) => $arg instanceof ConversationIncoming);
+            ->withArgs(fn ($arg) => $arg instanceof ConversationIncoming || $arg instanceof ConversationMessaging);
 
         $this->post(route('conversation.message.send', [$conversation_id,], false), [
             'type' => Message::TYPE_TEXT,
@@ -145,8 +145,7 @@ class MessageTest extends ConversationTest
         $content = $generator->paragraph;
 
         Broadcast::shouldReceive('event')
-            ->once()
-            ->withArgs(fn ($arg) => $arg instanceof ConversationAssigning);
+            ->withArgs(fn ($arg) => $arg instanceof ConversationAssigning || $arg instanceof ConversationIncoming || $arg instanceof ConversationMessaging);
 
         // Broadcast::shouldReceive('event')
         //     ->once()

@@ -138,7 +138,7 @@ trait Messagingable
         $message->institution()->associate($this->user->institution);
         $message->save();
 
-        // broadcast(new ConversationMessaging($message));
+        broadcast(new ConversationMessaging($message));
 
         return response()->success([
             'message' => $message->setTransformer(MessageListTransformer::class),
