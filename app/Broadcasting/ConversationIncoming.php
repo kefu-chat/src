@@ -45,7 +45,6 @@ class ConversationIncoming implements ShouldBroadcast
             ],
             !$this->conversation->user_id ?
                 [
-                    new PresenceChannel('institution.' . $this->conversation->institution->public_id . '.unassigned')
                 ] : [
                     new PresenceChannel('institution.' . $this->conversation->institution->public_id . '.assigned.' . $this->conversation->user->public_id)
                 ]

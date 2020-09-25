@@ -22,11 +22,12 @@ class MessageListTransformer extends AbstractTransformer
             'sender_type_text',
         ]);
         $item->sender_id = $item->sender->public_id;
+        $item->conversation_id = $item->conversation->public_id;
 
         $item->setVisible([
             'id',
             //'visitor_id',
-            //'conversation_id',
+            'conversation_id',
             'type',
             'content',
             'sender',
