@@ -62,9 +62,9 @@ class MessageTest extends ConversationTest
             ->once()
             ->withArgs(fn ($arg) => $arg instanceof ConversationAssigning);
 
-        Broadcast::shouldReceive('event')
-            ->once()
-            ->withArgs(fn ($arg) => $arg instanceof ConversationMessaging && $arg->getMessage()->content === $content);
+        //Broadcast::shouldReceive('event')
+        //    ->once()
+        //    ->withArgs(fn ($arg) => $arg instanceof ConversationMessaging && $arg->getMessage()->content === $content);
 
         $this->post(route('conversation.message.send', [$conversation_id], false), [
             'type' => Message::TYPE_TEXT,
@@ -93,9 +93,9 @@ class MessageTest extends ConversationTest
             ->once()
             ->withArgs(fn ($arg) => $arg instanceof ConversationAssigning);
 
-        Broadcast::shouldReceive('event')
-            ->once()
-            ->withArgs(fn ($arg) => $arg instanceof ConversationMessaging && $arg->getMessage()->content === $content);
+        // Broadcast::shouldReceive('event')
+        //     ->once()
+        //     ->withArgs(fn ($arg) => $arg instanceof ConversationMessaging && $arg->getMessage()->content === $content);
 
         $this->post(route('conversation.message.send', [$conversation_id], false), [
             'type' => Message::TYPE_TEXT,
@@ -125,9 +125,9 @@ class MessageTest extends ConversationTest
             ->once()
             ->withArgs(fn ($arg) => $arg instanceof ConversationAssigning);
 
-        Broadcast::shouldReceive('event')
-            ->once()
-            ->withArgs(fn ($arg) => $arg instanceof ConversationMessaging && $arg->getMessage()->content === $content);
+        // Broadcast::shouldReceive('event')
+        //     ->once()
+        //     ->withArgs(fn ($arg) => $arg instanceof ConversationMessaging && $arg->getMessage()->content === $content);
 
         $this->post(route('conversation.message.send', [$conversation_id], false), [
             'type' => Message::TYPE_TEXT,

@@ -68,7 +68,7 @@ class VisitorTest extends TestCase
         $content = $generator->paragraph;
 
         Broadcast::shouldReceive('event')
-            ->withArgs(fn ($arg) => $arg instanceof ConversationIncoming || ($arg instanceof ConversationMessaging && $arg->getMessage()->content === $content));
+            ->withArgs(fn ($arg) => $arg instanceof ConversationIncoming);
 
         $this->post(route('conversation.message.send', [$initRes->json('data.conversation.id')], false), [
             'type' => Message::TYPE_TEXT,
