@@ -48,17 +48,6 @@ php artisan db:seed --class=Database\\Seeders\\VisitorsTableSeeder
 
 ## Socket 服务器启动
 
-需要单独编译 laravel-echo-server
-```bash
-cw=$(pwd)
-cd ../
-git clone https://github.com/fastsupport-cn/laravel-echo-server.git
-cd laravel-echo-server
-npm i
-tsc
-cd $cw
-```
-
 配置文件
 ```bash
 cp laravel-echo-server.json.example laravel-echo-server.json
@@ -66,7 +55,7 @@ cp laravel-echo-server.json.example laravel-echo-server.json
 
 启动服务
 ```
-../laravel-echo-server/bin/server.js start
+sh ./laravel-echo-server-start.sh
 ```
 
 ## 单元测试
