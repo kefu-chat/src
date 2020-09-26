@@ -16,7 +16,8 @@ class UserController extends Controller
     public function info(Request $request)
     {
         return response()->success([
-            'user' => $request->user(),
+            'user' => $this->user,
+            'institution' => $this->user->institution,
         ]);
     }
 }
