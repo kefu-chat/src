@@ -66,7 +66,7 @@ class ConversationRepository
         /**
          * @var Conversation[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Conversation> $conversations
          */
-        $conversations = $query->with(['visitor', 'user',])
+        $conversations = $query->with(['visitor', 'user', 'lastMessage',])
             ->when($user, function ($query) use ($user) {
                 /**
                  * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query

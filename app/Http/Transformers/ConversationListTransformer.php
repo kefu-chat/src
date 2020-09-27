@@ -16,6 +16,7 @@ class ConversationListTransformer extends AbstractTransformer
     public function transform($item)
     {
         optional($item->user)->setTransformer(ConversationUserTransformer::class);
+        optional($item->lastMessage)->setTransformer(MessageListTransformer::class);
         optional($item->visitor)->setVisible([
             'id',
             'unique_id',
@@ -26,7 +27,7 @@ class ConversationListTransformer extends AbstractTransformer
             'avatar',
             'address',
         ]);
-        $item->setAppends(['geo',]);
+        $item->setAppends(['geo', 'color', 'icon',]);
         $item->setVisible([
             'id',
             'visitor_id',
@@ -39,6 +40,9 @@ class ConversationListTransformer extends AbstractTransformer
             'visitor',
             'user',
             'geo',
+            'color',
+            'icon',
+            'lastMessage',
             'online_status',
         ]);
 

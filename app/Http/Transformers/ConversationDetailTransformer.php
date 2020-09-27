@@ -26,7 +26,7 @@ class ConversationDetailTransformer extends AbstractTransformer
             'avatar',
             'address',
         ]);
-        $item->setAppends(['geo',]);
+        $item->setAppends(['geo', 'color', 'icon',]);
         $item->setVisible([
             'id',
             'visitor_id',
@@ -39,6 +39,9 @@ class ConversationDetailTransformer extends AbstractTransformer
             'visitor',
             'user',
             'geo',
+            'icon',
+            'color',
+            'online_status',
         ]);
 
         return $item;

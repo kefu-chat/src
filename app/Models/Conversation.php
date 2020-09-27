@@ -22,7 +22,12 @@ use App\Models\Traits\HasPublicId;
  * @property-read \Torann\GeoIP\GeoIP|\Torann\GeoIP\Location $geo
  * @property-read \App\Models\User|null $user
  * @property-read \App\Models\Visitor $visitor
- * @property-read Conversation[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Conversation> $messages
+ * @property-read Message[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Message> $messages
+ * @property-read Message[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Message> $userMessages
+ * @property-read Message[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Message> $visitorMessages
+ * @property-read Message $lastMessage
+ * @property-read string $color
+ * @property-read string $icon
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation query()
@@ -100,6 +105,31 @@ class Conversation extends AbstractModel
     public function userMessages()
     {
         return $this->hasMany(Message::class)->where('sender_type', User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Message|\Illuminate\Database\Query\Builder
+     */
+    public function lastMessage()
+    {
+        return $this->hasOne(Message::class)->latest('id');
+    }
+
+    public function getColorAttribute()
+    {
+        $colors = [
+            "#eb2f96",
+            "#52c41a",
+            "#faad14",
+            "#0fc198",
+            "#896ee6",
+        ];
+        return $colors[$this->getOriginal('id') % count($colors)];
+    }
+
+    public function getIconAttribute()
+    {
+        return '/assets/tmp/img/random/' . ($this->getOriginal('id') % 50) . '.svg';
     }
 
     public function getGeoAttribute()
