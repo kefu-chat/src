@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
 
             $table->string('name');
             $table->string('avatar')->default(asset('img/default_avatar.svg'))->comment('头像');
-            $table->string('email')->unique()->comment('电子邮箱');
+            $table->string('email', 64)->unique()->comment('电子邮箱');
             $table->string('title')->nullable()->comment('职位');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
