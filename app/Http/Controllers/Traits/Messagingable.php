@@ -138,6 +138,9 @@ trait Messagingable
         $message->institution()->associate($this->user->institution);
         $message->save();
 
+        $conversation->fill(['last_reply_at' => now()]);
+        $conversation->save();
+
         broadcast(new ConversationMessaging($message));
 
         return response()->success([

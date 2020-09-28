@@ -104,7 +104,7 @@ class ConversationRepository
                 }
                 return $query;
             })
-            ->latest()->limit(20)->get();
+            ->orderByRaw('last_reply_at DESC, id DESC, created_at DESC')->limit(20)->get();
 
         return $conversations;
     }
