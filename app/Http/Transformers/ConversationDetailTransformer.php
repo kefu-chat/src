@@ -32,6 +32,7 @@ class ConversationDetailTransformer extends AbstractTransformer
             'visitor_id',
             'ip',
             'url',
+            'referer',
             'first_reply_at',
             'last_reply_at',
             'created_at',
