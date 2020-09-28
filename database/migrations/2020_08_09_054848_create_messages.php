@@ -16,7 +16,7 @@ class CreateMessages extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->bigIncrements('id')->unsigned();
             $table->unsignedBigInteger('institution_id')->index()->comment('组织 ID');
-            $table->string('sender_type')->index()->comment('发送人类型');
+            $table->string('sender_type', 90)->index()->comment('发送人类型');
             $table->unsignedBigInteger('sender_id')->index()->comment('发送人 ID');
             $table->unsignedBigInteger('conversation_id')->index()->comment('会话 ID');
             $table->tinyInteger('type')->index()->comment('1文字 2图片');
