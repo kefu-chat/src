@@ -12,6 +12,7 @@
     "require": {
         "php": "^7.3",
         "023pay/sdk": "^0.0.1",
+        "doctrine/dbal": "^2.11",
         "fideloper/proxy": "^4.2",
         "filp/whoops": "^2.7",
         "fruitcake/laravel-cors": "^2.0",
