@@ -32,13 +32,14 @@ return [
      * Matches the request origin. `[*]` allows all origins. Wildcards can be used, eg `*.mydomain.com`
      */
     'allowed_origins' => [
+        '*.ssls.com.cn',
+        '*.kefu.chat',
         '*.fastsupport.cn',
         '*.fastsupport.com.cn',
         '*.shankefu.cn',
         '*.fastsupport.cn:3000',
         '*.fastsupport.com.cn:3000',
         '*.shankefu.cn:3000',
-        'http://dev.digital-sign.com.cn',
         'http://127.0.0.1',
         'http://127.0.0.1:3000',
         'http://127.0.0.1:4200',
