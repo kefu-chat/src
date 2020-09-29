@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Enterprise;
 use App\Models\Institution;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -10,6 +11,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Permission;
 
 class RegisterController extends Controller
 {
@@ -66,17 +68,27 @@ class RegisterController extends Controller
     {
         try {
             DB::beginTransaction();
-            $institution = new Institution([
+            $enterprise = new Enterprise([
                 'name' => '未命名企业',
             ]);
+            $enterprise->save();
+
+            $institution = new Institution([
+                'name' => '未命名网站',
+                'website' => null,
+            ]);
+            $institution->enterprise()->associate($enterprise);
             $institution->save();
+
             $user = new User([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => bcrypt($data['password']),
             ]);
             $user->institution()->associate($institution);
+            $user->enterprise()->associate($enterprise);
             $user->save();
+            $user->givePermissionTo(Permission::findByName('manager', 'api'));
             DB::commit();
             return $user;
         } catch (\Exception $e) {

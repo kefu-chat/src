@@ -8,6 +8,7 @@ use App\Models\Traits\HasPublicId;
 use App\Models\Traits\SetTransformer;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -46,7 +47,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
  */
-class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
+class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
     use Notifiable, SetTransformer, HasInstitution, HasEnterprise, HasFactory, HasRoles, HasPublicId;
 
