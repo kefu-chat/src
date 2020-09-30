@@ -49,7 +49,7 @@ class ConversationController extends Controller
                 ]);
             }
         }
-        $conversations = $conversationRepository->listConversations($this->user, $offset, $type, ['messages',]);
+        $conversations = $conversationRepository->listConversations($this->user, $offset, $type, Conversation::STATUS_OPEN, ['messages',]);
 
         return response()->success([
             'user_id' => $this->user->public_id,

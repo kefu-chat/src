@@ -49,16 +49,17 @@ class ConversationRepository
         return $conversations;
     }
 
-    /**
-     * 拉取会话
-     *
-     * @param User $user
-     * @param int|null $offset
-     * @param string|null $type
-     * @param array $has
-     * @return Conversation[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Conversation>
-     */
-    public function listConversations(User $user, $offset, $type, $has = [])
+  /**
+   * 拉取会话
+   *
+   * @param User $user
+   * @param int|null $offset
+   * @param string|null $type
+   * @param bool $status 开关状态
+   * @param array $has
+   * @return Conversation[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Conversation>
+   */
+    public function listConversations(User $user, $offset, $type, $status = Conversation::STATUS_OPEN, $has = [])
     {
         /**
          * @var Conversation|Builder $query
@@ -69,6 +70,7 @@ class ConversationRepository
          * @var Conversation[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Conversation> $conversations
          */
         $conversations = $query->with(['visitor', 'user', 'lastMessage',])
+            ->where('status', $status)
             ->when($user, function ($query) use ($user) {
                 /**
                  * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
