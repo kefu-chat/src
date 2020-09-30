@@ -166,7 +166,7 @@ class ConversationRepository
      * @param Conversation $conversation
      * @return Conversation
      */
-    public function terminate(Conversation $conversation)
+    public function terminateManual(Conversation $conversation)
     {
         $conversation->fill(['status' => Conversation::STATUS_CLOSED]);
         $conversation->save();
