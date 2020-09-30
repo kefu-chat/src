@@ -166,9 +166,10 @@ class ConversationRepository
     /**
      * 终止对话
      * @param Conversation $conversation
+     * @param User $user
      * @return Conversation
      */
-    public function terminateManual(Conversation $conversation)
+    public function terminateManual(Conversation $conversation, User $user)
     {
         $conversation->fill(['status' => Conversation::STATUS_CLOSED]);
         $conversation->save();
@@ -178,7 +179,7 @@ class ConversationRepository
          * @var MessageRepository $messageRepository
          */
         $messageRepository = app(MessageRepository::class);
-        $message = $messageRepository->sendMessage($conversation, $conversation->user, true, false, Message::TYPE_TEXT, $conversation->institution->terminate_manual);
+        $message = $messageRepository->sendMessage($conversation, $user, true, false, Message::TYPE_TEXT, $conversation->institution->terminate_manual);
         broadcast(new ConversationTerminated($conversation, $message));
         return $conversation;
     }

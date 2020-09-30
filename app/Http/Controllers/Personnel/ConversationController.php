@@ -72,7 +72,7 @@ class ConversationController extends Controller
             abort(400, 'The conversation has already been closed');
         }
 
-        $conversationRepository->terminateManual($conversation);
+        $conversationRepository->terminateManual($conversation, $this->user);
 
         return response()->success();
     }
