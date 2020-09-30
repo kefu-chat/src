@@ -16,6 +16,7 @@ use App\Models\Traits\HasPublicId;
  * @property string|null $url 从那个页面来
  * @property string|null $first_reply_at 初次回复时间
  * @property string|null $last_reply_at 上次回复时间
+ * @property bool $status 状态 1开启 0 关闭
  * @property bool $online_status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -39,10 +40,33 @@ use App\Models\Traits\HasPublicId;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation whereUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation whereVisitorId($value)
+ * @property string|null $title 页面抬头
+ * @property string|null $userAgent 浏览器
+ * @property array|null $languages 语言
+ * @property string|null $referer 从那个页面来
+ * @property \Illuminate\Support\Carbon|null $ended_at 会话结束时间
+ * @property-read \App\Models\stirng $public_id
+ * @property-read \App\Models\Institution $institution
+ * @property-read int|null $messages_count
+ * @property-read int|null $user_messages_count
+ * @property-read int|null $visitor_messages_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereEndedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereInstitutionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereLanguages($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereOnlineStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereReferer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereUserAgent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereStatus($value)
+ * @mixin \Eloquent
  */
 class Conversation extends AbstractModel
 {
     use HasInstitution, HasPublicId;
+
+    const STATUS_CLOSED = false;
+    const STATUS_OPEN = true;
 
     protected $fillable = [
         'ip',
@@ -50,6 +74,7 @@ class Conversation extends AbstractModel
         'first_reply_at',
         'last_reply_at',
         'ended_at',
+        'status',
         'online_status',
         'title',
         'userAgent',
@@ -58,9 +83,11 @@ class Conversation extends AbstractModel
     ];
 
     protected $casts = [
+        'status' => 'bool',
         'online_status' => 'bool',
         'languages' => 'array',
     ];
+
     protected $dates = [
         'first_reply_at',
         'last_reply_at',

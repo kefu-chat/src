@@ -59,6 +59,25 @@ class ConversationController extends Controller
     }
 
     /**
+     * 结束对话
+     *
+     * @param Conversation $conversation
+     * @param \Illuminate\Http\Request $request
+     * @param ConversationRepository $conversationRepository
+     * @return \Illuminate\Http\Response
+     */
+    public function terminate(Conversation $conversation, Request $request, ConversationRepository $conversationRepository)
+    {
+        if (Conversation::STATUS_CLOSED == $conversation->status) {
+            abort(400, 'The conversation has already been closed');
+        }
+
+        $conversationRepository->terminate($conversation);
+
+        return response()->success();
+    }
+
+    /**
      * 转移给同事
      *
      * @param Conversation $conversation

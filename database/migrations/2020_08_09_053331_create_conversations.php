@@ -24,6 +24,7 @@ class CreateConversations extends Migration
             $table->string('userAgent')->nullable()->comment('浏览器');
             $table->string('languages')->nullable()->comment('语言');
             $table->string('referer')->nullable()->comment('从那个页面来');
+            $table->tinyInteger('status')->index()->default(1)->comment('状态 1开启 0 关闭');
             $table->tinyInteger('online_status')->default(1)->comment('会话在线状态');
             $table->timestamp('first_reply_at')->nullable()->comment('初次回复时间');
             $table->timestamp('last_reply_at')->nullable()->comment('上次回复时间');

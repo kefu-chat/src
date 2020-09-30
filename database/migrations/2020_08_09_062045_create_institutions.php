@@ -22,6 +22,8 @@ class CreateInstitutions extends Migration
             $table->string('billing_name')->nullable()->comment('财务负责人');
             $table->string('technical_phone')->nullable()->comment('技术负责人电话');
             $table->string('billing_phone')->nullable()->comment('财务负责人电话');
+            $table->string('terminate_manual')->default('本次对话已结束, 若您需要我们继续服务您可以重新打开咨询');
+            $table->string('terminate_timeout')->default('由于您长时间未回复, 本次对话已结束, 若您需要我们继续服务您可以重新打开咨询');
             $table->unsignedBigInteger('enterprise_id')->comment('企业 ID');
 
             $table->timestamps();

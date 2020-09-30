@@ -3,8 +3,10 @@
 namespace App\Repositories;
 
 use App\Broadcasting\ConversationAssigning;
+use App\Broadcasting\ConversationTerminated;
 use App\Models\Conversation;
 use App\Models\Institution;
+use App\Models\Message;
 use App\Models\User;
 use App\Models\Visitor;
 
@@ -156,6 +158,26 @@ class ConversationRepository
         $conversation->user()->associate($user);
         $conversation->save();
         broadcast(new ConversationAssigning($conversation, $user));
+        return $conversation;
+    }
+  
+    /**
+     * 终止对话
+     * @param Conversation $conversation
+     * @return Conversation
+     */
+    public function terminate(Conversation $conversation)
+    {
+        $conversation->fill(['status' => Conversation::STATUS_CLOSED]);
+        $conversation->save();
+        $conversation->institution->terminate_manual;
+
+        /**
+         * @var MessageRepository $messageRepository
+         */
+        $messageRepository = app(MessageRepository::class);
+        $message = $messageRepository->sendMessage($conversation, $conversation->user, true, false, Message::TYPE_TEXT, $conversation->institution->terminate_manual);
+        broadcast(new ConversationTerminated($conversation, $message));
         return $conversation;
     }
 }

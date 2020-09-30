@@ -105,43 +105,14 @@ trait Messagingable
      * @param ConversationRepository $conversationRepository
      * @return \Illuminate\Http\Response
      */
-    public function sendMessage(Conversation $conversation, Request $request, ConversationRepository $conversationRepository)
+    public function sendMessage(Conversation $conversation, Request $request, MessageRepository $messageRepository)
     {
         $request->validate($rules = [
             'type' => ['required', 'int', 'in:' . collect(Message::TYPE_MAP)->keys()->implode(','),],
             'content' => ['required', 'string'],
         ]);
 
-        if ($conversation->institution_id != $this->user->institution_id) {
-            abort(404);
-        }
-
-        if ($this->isUser()) {
-            if (!$conversation->user_id) {
-                $conversationRepository->assignConversation($conversation, $this->user);
-            }
-        }
-
-        if ($this->isVisitor()) {
-            if ($conversation->visitor_id != $this->user->id) {
-                abort(404);
-            }
-
-            if ($conversation->messages()->count() == 0) {
-                broadcast(new ConversationIncoming($conversation));
-            }
-        }
-
-        $message = new Message($request->only(collect($rules)->keys()->values()->toArray()));
-        $message->conversation()->associate($conversation);
-        $message->sender()->associate($this->user);
-        $message->institution()->associate($this->user->institution);
-        $message->save();
-
-        $conversation->fill(['last_reply_at' => now()]);
-        $conversation->save();
-
-        broadcast(new ConversationMessaging($message));
+        $message = $messageRepository->sendMessage($conversation, $this->user, $this->isUser(), $this->isVisitor(), $request->input('type'), $request->input('content'));
 
         return response()->success([
             'message' => $message->setTransformer(MessageListTransformer::class),

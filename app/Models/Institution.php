@@ -11,6 +11,8 @@ use App\Models\Traits\HasPublicId;
  * @property int $id
  * @property string|null $name 公司名字
  * @property string|null $website 网站
+ * @property string $terminate_manual
+ * @property string terminate_timeout
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
@@ -38,6 +40,8 @@ class Institution extends AbstractModel
     protected $fillable = [
         'name',
         'website',
+        'terminate_manual',
+        'terminate_timeout',
     ];
 
     /**
