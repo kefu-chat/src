@@ -171,15 +171,14 @@ class ConversationRepository
      */
     public function terminateManual(Conversation $conversation, User $user)
     {
-        $conversation->fill(['status' => Conversation::STATUS_CLOSED]);
-        $conversation->save();
-        $conversation->institution->terminate_manual;
-
         /**
          * @var MessageRepository $messageRepository
          */
         $messageRepository = app(MessageRepository::class);
         $message = $messageRepository->sendMessage($conversation, $user, true, false, Message::TYPE_TEXT, $conversation->institution->terminate_manual);
+
+        $conversation->fill(['status' => Conversation::STATUS_CLOSED]);
+        $conversation->save();
         broadcast(new ConversationTerminated($conversation, $message));
         return $conversation;
     }

@@ -48,6 +48,7 @@ class ConversationController extends Controller
             'url' => ['required', 'string',],
             'title' => ['nullable', 'string',],
             'referer' => ['nullable', 'string',],
+            'reopen' => ['nullable', 'bool',],
             'languages.*' => ['required', 'string',],
         ]);
         $ip = $request->getClientIp();
@@ -64,6 +65,7 @@ class ConversationController extends Controller
         $url = $request->input('url');
         $title = $request->input('title');
         $referer = $request->input('referer');
+        $reopen = $request->input('reopen');
         if (!Str::startsWith($url, ['https://', 'http://', 'file://'])) {
             throw ValidationException::withMessages([
                 'url' => 'The url format is invalid.',
@@ -81,7 +83,7 @@ class ConversationController extends Controller
             }
         }
         $conversation = $visitor->conversations()->latest('id')->first();
-        if (!$conversation) {
+        if (!$conversation || $reopen) {
             $conversation = $conversationRepository->initConversation($visitor, $ip, $url, $userAgent, $languages, $title, $referer);
         }
         $visitor_token = JWTAuth::fromUser($visitor);

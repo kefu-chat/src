@@ -44,6 +44,7 @@ class ConversationListTransformer extends AbstractTransformer
             'color',
             'icon',
             'lastMessage',
+            'status',
             'online_status',
         ]);
 

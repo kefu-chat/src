@@ -42,6 +42,7 @@ class ConversationDetailTransformer extends AbstractTransformer
             'geo',
             'icon',
             'color',
+            'status',
             'online_status',
         ]);
 
