@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Broadcasting\ConversationIncoming;
 use App\Broadcasting\ConversationMessaging;
-use App\Http\Transformers\MessageListTransformer;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
@@ -44,10 +43,6 @@ class MessageRepository
             if ($conversation->visitor_id != $user->id) {
                 abort(404);
             }
-
-            if ($conversation->messages()->count() == 0) {
-                broadcast(new ConversationIncoming($conversation));
-            }
         }
 
         $message = new Message([
@@ -63,7 +58,12 @@ class MessageRepository
         $conversation->save();
 
         broadcast(new ConversationMessaging($message));
-
+        if ($isVisitor) {
+            $conversation->setRelation('lastMessage', $message);
+            if ($conversation->messages()->count() == 1) {
+                broadcast(new ConversationIncoming($conversation));
+            }
+        }
         return $message;
     }
 

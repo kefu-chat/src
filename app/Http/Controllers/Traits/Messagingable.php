@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Traits;
 
-use App\Broadcasting\ConversationIncoming;
-use App\Broadcasting\ConversationMessaging;
 use App\Http\Transformers\ConversationDetailTransformer;
 use App\Http\Transformers\MessageListTransformer;
 use App\Models\Conversation;
