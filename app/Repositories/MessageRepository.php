@@ -45,6 +45,10 @@ class MessageRepository
             }
         }
 
+        if ($conversation->status == Conversation::STATUS_CLOSED) {
+            abort(400, 'The conversation has already been closed');
+        }
+
         $message = new Message([
             'type' => $type,
             'content' => $content,
