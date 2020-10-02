@@ -83,8 +83,11 @@ class ConversationController extends Controller
             }
         }
         $conversation = $visitor->conversations()->latest('id')->first();
-        if (!$conversation || $reopen) {
+        if (!$conversation) {
             $conversation = $conversationRepository->initConversation($visitor, $ip, $url, $userAgent, $languages, $title, $referer);
+        }
+        if ($reopen) {
+            $conversationRepository->reopen($conversation, $visitor);
         }
         $visitor_token = JWTAuth::fromUser($visitor);
 

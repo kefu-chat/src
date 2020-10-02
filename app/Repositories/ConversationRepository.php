@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Broadcasting\ConversationAssigning;
+use App\Broadcasting\ConversationIncoming;
 use App\Broadcasting\ConversationTerminated;
 use App\Models\Conversation;
 use App\Models\Institution;
@@ -180,6 +181,20 @@ class ConversationRepository
         $conversation->fill(['status' => Conversation::STATUS_CLOSED]);
         $conversation->save();
         broadcast(new ConversationTerminated($conversation, $message));
+        return $conversation;
+    }
+
+  /**
+   * 恢复对话
+   * @param Conversation $conversation
+   * @param Visitor $visitor
+   * @return Conversation
+   */
+    public function reopen(Conversation $conversation, Visitor $visitor)
+    {
+        $conversation->fill(['status' => Conversation::STATUS_OPEN]);
+        $conversation->save();
+        broadcast(new ConversationIncoming($conversation));
         return $conversation;
     }
 }
