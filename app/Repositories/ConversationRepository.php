@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Broadcasting\ConversationAssigning;
 use App\Broadcasting\ConversationIncoming;
 use App\Broadcasting\ConversationTerminated;
+use App\Broadcasting\VisitorIncoming;
 use App\Models\Conversation;
 use App\Models\Institution;
 use App\Models\Message;
@@ -220,7 +221,8 @@ class ConversationRepository
         //$conversation->user()->associate($user);
         $conversation->save();
 
-        //@TODO: broadcast(new VisitorIncoming($conversation));
+        //@TODO:
+        broadcast(new VisitorIncoming($conversation));
 
         return $conversation;
     }
