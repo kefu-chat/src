@@ -11,9 +11,39 @@ use Faker\Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Str;
+use Tests\TestCase;
 
-class MessageTest extends ConversationTest
+class MessageTest extends TestCase
 {
+    /**
+     * 测试表种子数据
+     *
+     * @return \Illuminate\Testing\TestResponse
+     */
+    public function testConversationsFromSeeders()
+    {
+        $this->artisan('migrate');
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\PermissionSeeder::class])->assertExitCode(0);
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\AdminSeeder::class])->assertExitCode(0);
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\VisitorsTableSeeder::class])->assertExitCode(0);
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\ConversationTableSeeder::class])->assertExitCode(0);
+        $this->artisan('db:seed', ['--class' => \Database\Seeders\MessageTableSeeder::class])->assertExitCode(0);
+
+        $listConversationRes = $this->get(route('conversation.list', ['type' => 'unassigned',], false), $this->authManager());
+        $listConversationRes->assertStatus(200);
+        $listConversationRes->assertJsonCount(1, 'data.conversations');
+
+        $conversation_id = $listConversationRes->json('data.conversations.0.id');
+
+        $getConversationRes = $this->get(route('conversation.message.list', [$conversation_id, 'type' => 'unassigned',], false), $this->authManager());
+        $getConversationRes->assertStatus(200);
+        $this->assertNotEmpty($getConversationRes->json('data.conversation'));
+        $this->assertNotEmpty($getConversationRes->json('data.messages'));
+        $this->assertFalse($getConversationRes->json('data.has_previous'));
+
+        return $getConversationRes;
+    }
+
     /**
      * 测试表种子数据
      *
