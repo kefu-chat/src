@@ -156,7 +156,7 @@ class Conversation extends AbstractModel
 
     public function getIconAttribute()
     {
-        return '/assets/tmp/img/random/' . ($this->getOriginal('id') % 50) . '.svg';
+        return '/assets/tmp/img/random/' . (($this->getOriginal('id') % 50) + 1) . '.svg';
     }
 
     public function getGeoAttribute()
