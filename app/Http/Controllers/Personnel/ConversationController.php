@@ -21,6 +21,27 @@ class ConversationController extends Controller
     use Messagingable;
 
     /**
+     * 统计会话数
+     *
+     * @param ConversationRepository $conversationRepository
+     * @return \Illuminate\Http\Response
+     */
+    public function count(ConversationRepository $conversationRepository)
+    {
+        $unassigned_count = $conversationRepository->count($this->user, 'unassigned', Conversation::STATUS_OPEN, ['messages',]);
+        $assigned_count = $conversationRepository->count($this->user, 'assigned', Conversation::STATUS_OPEN, ['messages',]);
+        $online_visitor_count = $conversationRepository->countUngreetedConversations($this->user->institution, 'online');
+        $visitor_count = $conversationRepository->countUngreetedConversations($this->user->institution, 'all');
+
+        return response()->success([
+            'unassigned_count' => $unassigned_count,
+            'assigned_count' => $assigned_count,
+            'online_visitor_count' => $online_visitor_count,
+            'visitor_count' => $visitor_count,
+        ]);
+    }
+
+    /**
      * 拉取聊天
      *
      * @param  \Illuminate\Http\Request $request

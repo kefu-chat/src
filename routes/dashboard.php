@@ -35,11 +35,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('user', 'Personnel\UserController@info')->name('user.info.agent');
 
     // 会话列表
+    Route::get('conversation/count', 'Personnel\ConversationController@count')->name('conversation.count');
     Route::get('conversation/list', 'Personnel\ConversationController@list')->name('conversation.list');
     Route::get('conversation/{conversation}/transfer/{user}', 'Personnel\ConversationController@transfer')->name('conversation.transfer');
     Route::post('conversation/{conversation}/terminate', 'Personnel\ConversationController@terminate')->name('conversation.terminate');
     Route::get('conversation/list-ungreeted', 'Personnel\ConversationController@listUngreeted')->name('conversation.list-ungreeted');
-  
+
 
     // 网站管理
     Route::post('institution/create', 'Personnel\InstitutionController@store')->name('institution.create')->middleware(['can:manager']);

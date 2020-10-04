@@ -13,6 +13,30 @@ use App\Models\Visitor;
 
 class ConversationRepository
 {
+
+    /**
+     * 统计网站下未打过招呼的会话个数
+     * @param Institution $institution
+     * @param string|null $type
+     * @return int
+     */
+    public function countUngreetedConversations(Institution $institution, $type)
+    {
+        /**
+         * @var Conversation|Builder $query
+         */
+        $query = app(Conversation::class);
+
+        return $query->whereDoesntHave('visitorMessages')
+            ->when($type == 'online', function ($query) {
+                /**
+                 * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                 */
+                return $query->where('online_status', true);
+            })
+            ->count();
+    }
+
     /**
      * 拉取网站下未打过招呼的会话
      * @param Institution $institution
@@ -50,16 +74,68 @@ class ConversationRepository
         return $conversations;
     }
 
-  /**
-   * 拉取会话
-   *
-   * @param User $user
-   * @param int|null $offset
-   * @param string|null $type
-   * @param bool $status 开关状态
-   * @param array $has
-   * @return Conversation[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Conversation>
-   */
+    /**
+     * 统计
+     *
+     * @param User $user
+     * @param string $type
+     * @param bool $status 开关状态
+     * @param array $has
+     * @return int
+     */
+    public function count(User $user, $type, $status = Conversation::STATUS_OPEN, $has = [])
+    {
+        /**
+         * @var Conversation|Builder $query
+         */
+        $query = app(Conversation::class);
+
+        return $query
+            ->where('status', $status)
+            ->when($user, function ($query) use ($user) {
+                /**
+                 * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                 */
+                return $query->whereHas('institution', function ($query) use ($user) {
+                    return $query->where('id', $user->institution_id);
+                });
+            })
+            ->when($type == 'unassigned', function ($query) {
+                /**
+                 * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                 */
+                return $query->where(function ($query) {
+                    /**
+                     * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                     */
+                    return $query->where('user_id', 0)
+                        ->orWhereNull('user_id');
+                });
+            }, function ($query) use ($user) {
+                return $query->where('user_id', $user->id);
+            })
+            ->when(count($has), function ($query) use ($has) {
+                /**
+                 * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                 */
+                foreach ($has as $needHas) {
+                    $query = $query->whereHas($needHas);
+                }
+                return $query;
+            })
+            ->count();
+    }
+
+    /**
+     * 拉取会话
+     *
+     * @param User $user
+     * @param int|null $offset
+     * @param string|null $type
+     * @param bool $status 开关状态
+     * @param array $has
+     * @return Conversation[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Conversation>
+     */
     public function listConversations(User $user, $offset, $type, $status = Conversation::STATUS_OPEN, $has = [])
     {
         /**
@@ -163,7 +239,7 @@ class ConversationRepository
         broadcast(new ConversationAssigning($conversation, $user));
         return $conversation;
     }
-  
+
     /**
      * 终止对话
      * @param Conversation $conversation
