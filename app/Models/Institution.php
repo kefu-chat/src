@@ -42,6 +42,7 @@ class Institution extends AbstractModel
         'website',
         'terminate_manual',
         'terminate_timeout',
+        'greeting_message',
     ];
 
     /**
