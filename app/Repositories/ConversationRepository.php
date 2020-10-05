@@ -28,7 +28,7 @@ class ConversationRepository
          */
         $query = app(Conversation::class);
 
-        return $query->whereDoesntHave('visitorMessages')
+        return $query->whereDoesntHave('messages')
             ->when($type == 'online', function ($query) {
                 /**
                  * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
@@ -55,7 +55,7 @@ class ConversationRepository
         /**
          * @var Conversation[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Conversation> $conversations
          */
-        $conversations = $query->whereDoesntHave('visitorMessages')
+        $conversations = $query->whereDoesntHave('messages')
             ->when($offset, function ($query) use ($offset) {
                 /**
                  * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
