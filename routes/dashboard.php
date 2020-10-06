@@ -61,9 +61,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // 员工管理
     Route::get('institution/{institution}/employee/list', 'Personnel\EmployeeController@list')->name('employee.list');
-    Route::post('institution/{institution}/employee/create', 'Personnel\EmployeeController@store')->name('employee.create')->middleware(['can:manager']);;
+    Route::post('institution/{institution}/employee/create', 'Personnel\EmployeeController@store')->name('employee.create')->middleware(['can:manager']);
     Route::get('institution/{institution}/employee/{user}/show', 'Personnel\EmployeeController@show')->name('employee.show');
-    Route::post('institution/{institution}/employee/{user}/update', 'Personnel\EmployeeController@update')->name('employee.update')->middleware(['can:manager']);;
-    Route::post('institution/{institution}/employee/{user}/deactivate', 'Personnel\EmployeeController@deactivate')->name('employee.deactivate')->middleware(['can:manager']);;
-    Route::post('institution/{institution}/employee/{user}/activate', 'Personnel\EmployeeController@activate')->name('employee.activate')->middleware(['can:manager']);;
+    Route::post('institution/{institution}/employee/{user}/update', 'Personnel\EmployeeController@update')->name('employee.update')->middleware(['can:manager']);
+    Route::post('institution/{institution}/employee/{user}/deactivate', 'Personnel\EmployeeController@deactivate')->name('employee.deactivate')->middleware(['can:manager']);
+    Route::post('institution/{institution}/employee/{user}/activate', 'Personnel\EmployeeController@activate')->name('employee.activate')->middleware(['can:manager']);
 });
