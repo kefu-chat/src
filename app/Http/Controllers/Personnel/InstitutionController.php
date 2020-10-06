@@ -4,11 +4,25 @@ namespace App\Http\Controllers\Personnel;
 
 use App\Http\Controllers\Controller;
 use App\Models\Institution;
-use App\Models\Plan;
 use Illuminate\Http\Request;
 
 class InstitutionController extends Controller
 {
+    /**
+     * List institution
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function list(Request $request)
+    {
+        $list = $this->user->enterprise->institutions()->paginate();
+
+        return response()->success([
+            'list' => $list,
+        ]);
+    }
+
     /**
      * Create institution
      *
@@ -37,7 +51,7 @@ class InstitutionController extends Controller
     public function show(Institution $institution, Request $request)
     {
         $user = $this->user;
-        if (!$user->enterprise->institutions->pluck('id')->contains($institution->id)) {
+        if ($user->enterprise_id != $institution->enterprise_id) {
             abort(404);
         }
         $institution->load(['users']);
@@ -57,7 +71,7 @@ class InstitutionController extends Controller
     public function update(Institution $institution, Request $request)
     {
         $user = $this->user;
-        if (!$user->enterprise->institutions->pluck('id')->contains($institution->id)) {
+        if ($user->enterprise_id != $institution->enterprise_id) {
             abort(404);
         }
 
@@ -79,7 +93,7 @@ class InstitutionController extends Controller
     public function delete(Institution $institution, Request $request)
     {
         $user = $this->user;
-        if (!$user->enterprise->institutions->pluck('id')->contains($institution->id)) {
+        if ($user->enterprise_id != $institution->enterprise_id) {
             abort(404);
         }
 

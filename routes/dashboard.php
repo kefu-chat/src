@@ -43,8 +43,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 
     // 网站管理
+    Route::get('institution/list', 'Personnel\InstitutionController@list')->name('institution.list');
     Route::post('institution/create', 'Personnel\InstitutionController@store')->name('institution.create')->middleware(['can:manager']);
-    Route::get('institution/{institution}', 'Personnel\InstitutionController@show')->name('institution.show');
+    Route::get('institution/{institution}/show', 'Personnel\InstitutionController@show')->name('institution.show');
     Route::post('institution/{institution}/update', 'Personnel\InstitutionController@update')->name('institution.update')->middleware(['can:manager']);
     Route::post('institution/{institution}/delete', 'Personnel\InstitutionController@delete')->name('institution.delete')->middleware(['can:manager']);
 
@@ -57,4 +58,12 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // 访客编辑
     Route::post('visitor/{visitor}/update', 'Personnel\VisitorController@update')->name('visitor.update');
+
+    // 员工管理
+    Route::get('institution/{institution}/employee/list', 'Personnel\EmployeeController@list')->name('employee.list');
+    Route::post('institution/{institution}/employee/create', 'Personnel\EmployeeController@store')->name('employee.create')->middleware(['can:manager']);;
+    Route::get('institution/{institution}/employee/{user}/show', 'Personnel\EmployeeController@show')->name('employee.show');
+    Route::post('institution/{institution}/employee/{user}/update', 'Personnel\EmployeeController@update')->name('employee.update')->middleware(['can:manager']);;
+    Route::post('institution/{institution}/employee/{user}/deactivate', 'Personnel\EmployeeController@deactivate')->name('employee.deactivate')->middleware(['can:manager']);;
+    Route::post('institution/{institution}/employee/{user}/activate', 'Personnel\EmployeeController@activate')->name('employee.activate')->middleware(['can:manager']);;
 });
