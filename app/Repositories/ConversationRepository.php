@@ -244,7 +244,9 @@ class ConversationRepository
          * @var MessageRepository $messageRepository
          */
         $messageRepository = app(MessageRepository::class);
-        $message = $messageRepository->sendMessage($conversation, $user, true, false, Message::TYPE_TEXT, $conversation->institution->terminate_manual);
+        if ($conversation->messages()->count()) {
+            $message = $messageRepository->sendMessage($conversation, $user, true, false, Message::TYPE_TEXT, $conversation->institution->terminate_manual);
+        }
 
         $conversation->fill(['status' => Conversation::STATUS_CLOSED]);
         $conversation->save();
