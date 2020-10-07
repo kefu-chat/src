@@ -71,4 +71,13 @@ class Institution extends AbstractModel
     {
         return $this->belongsTo(Enterprise::class);
     }
+
+    /**
+     * 会话
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Conversation|\Illuminate\Database\Query\Builder
+     */
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class);
+    }
 }

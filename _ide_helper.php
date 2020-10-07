@@ -15,10 +15,10 @@ namespace Illuminate\Contracts\Routing {
     class ResponseFactory
     {
         /**
-         * @param mixed $data
+         * @param mixed|null $data
          * @return \Illuminate\Http\JsonResponse
          */
-        public function success($data)
+        public function success($data = null)
         {
         }
 

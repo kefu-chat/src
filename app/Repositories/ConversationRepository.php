@@ -23,12 +23,7 @@ class ConversationRepository
      */
     public function countUngreetedConversations(Institution $institution, $type)
     {
-        /**
-         * @var Conversation|Builder $query
-         */
-        $query = app(Conversation::class);
-
-        return $query->whereDoesntHave('messages')
+        return $institution->conversations()->whereDoesntHave('messages')
             ->when($type == 'online', function ($query) {
                 /**
                  * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
@@ -48,14 +43,9 @@ class ConversationRepository
     public function listUngreetedConversations(Institution $institution, $offset, $type)
     {
         /**
-         * @var Conversation|Builder $query
-         */
-        $query = app(Conversation::class);
-
-        /**
          * @var Conversation[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Conversation> $conversations
          */
-        $conversations = $query->whereDoesntHave('messages')
+        $conversations = $institution->conversations()->whereDoesntHave('messages')
             ->when($offset, function ($query) use ($offset) {
                 /**
                  * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
