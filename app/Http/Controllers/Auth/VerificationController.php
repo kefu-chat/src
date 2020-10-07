@@ -61,6 +61,9 @@ class VerificationController extends Controller
     {
         $this->validate($request, ['email' => 'required|email']);
 
+        /**
+         * @var User $user
+         */
         $user = User::where('email', $request->email)->first();
 
         if (is_null($user)) {
