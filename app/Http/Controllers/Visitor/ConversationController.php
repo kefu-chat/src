@@ -36,7 +36,7 @@ class ConversationController extends Controller
     {
         $request->validate([
             'institution_id' => ['required', 'string',],
-            'unique_id' => ['required', 'string'],
+            'unique_id' => ['required'],
             'name' => ['nullable', 'string'],
             'email' => ['nullable', 'email'],
             'phone' => ['nullable', 'string'],

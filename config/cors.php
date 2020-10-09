@@ -31,25 +31,7 @@ return [
     /*
      * Matches the request origin. `[*]` allows all origins. Wildcards can be used, eg `*.mydomain.com`
      */
-    'allowed_origins' => [
-        '*.ssls.com.cn',
-        '*.kefu.chat',
-        '*.fastsupport.cn',
-        '*.fastsupport.com.cn',
-        '*.shankefu.cn',
-        '*.fastsupport.cn:3000',
-        '*.fastsupport.cn:5000',
-        '*.fastsupport.com.cn:3000',
-        '*.shankefu.cn:3000',
-        'http://127.0.0.1',
-        'http://127.0.0.1:3000',
-        'http://127.0.0.1:4200',
-        'http://127.0.0.1:5000',
-        'http://localhost',
-        'http://localhost:3000',
-        'http://localhost:4200',
-        'http://localhost:5000',
-    ],
+    'allowed_origins' => ['*'],
 
     /*
      * Patterns that can be used with `preg_match` to match the origin.
