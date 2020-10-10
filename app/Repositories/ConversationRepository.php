@@ -240,6 +240,8 @@ class ConversationRepository
      */
     public function terminateManual(Conversation $conversation, User $user)
     {
+        $message = null;
+
         /**
          * @var MessageRepository $messageRepository
          */
@@ -250,7 +252,11 @@ class ConversationRepository
 
         $conversation->fill(['status' => Conversation::STATUS_CLOSED]);
         $conversation->save();
-        broadcast(new ConversationTerminated($conversation, $message));
+
+        if ($message) {
+            broadcast(new ConversationTerminated($conversation, $message));
+        }
+
         return $conversation;
     }
 
