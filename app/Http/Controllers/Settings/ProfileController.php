@@ -23,7 +23,7 @@ class ProfileController extends Controller
             'title' => ['nullable', 'string'],
             'avatar' => ['nullable', 'url'],
         ]);
-        tap($user)->update($request->only('name', 'email', 'title'));
+        tap($user)->update($request->only('name', 'email', 'title', 'avatar'));
 
         return response()->success([
             'user' => $user,
