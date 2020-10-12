@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "33217662c9c3e83e3b49a7864c6fa2ba",
+    "content-hash": "d22e507c81444f0a36bb63273329df3a",
     "packages": [
         {
             "name": "023pay/sdk",
@@ -6157,6 +6157,55 @@
                 "php"
             ],
             "time": "2020-07-22T23:32:04+00:00"
+        },
+        {
+            "name": "xiaohuilam/laravel-aliyun-waf-trustedproxy",
+            "version": "v0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/xiaohuilam/laravel-aliyun-waf-trustedproxy.git",
+                "reference": "11735ed79fd772b0f4c0efe9aeccf6df48b4ee86"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/xiaohuilam/laravel-aliyun-waf-trustedproxy/zipball/11735ed79fd772b0f4c0efe9aeccf6df48b4ee86",
+                "reference": "11735ed79fd772b0f4c0efe9aeccf6df48b4ee86",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "laravel/framework": ">=5.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Xiaohuilam\\LaravelAliyunWafTrustedproxy\\LaravelAliyunWafTrustedproxyServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Xiaohuilam\\LaravelAliyunWafTrustedproxy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "xiaohui.lam",
+                    "email": "xiaohui.lam@aliyun.com"
+                }
+            ],
+            "description": "add aliyun waf's ip ranges to trust proxy",
+            "time": "2019-06-19T10:08:38+00:00"
         },
         {
             "name": "yansongda/laravel-pay",

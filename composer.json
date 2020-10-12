@@ -28,6 +28,7 @@
         "torann/geoip": "^3.0",
         "tymon/jwt-auth": "^1.0",
         "vinkla/hashids": "^9.0",
+        "xiaohuilam/laravel-aliyun-waf-trustedproxy": "^0.0.1",
         "yansongda/laravel-pay": "^2.3"
     },
     "require-dev": {
