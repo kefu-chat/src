@@ -44,6 +44,7 @@ class ConversationDetailTransformer extends AbstractTransformer
             'color',
             'status',
             'online_status',
+            'title',
         ]);
 
         return $item;

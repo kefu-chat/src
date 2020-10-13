@@ -46,6 +46,7 @@ class ConversationListTransformer extends AbstractTransformer
             'lastMessage',
             'status',
             'online_status',
+            'title',
         ]);
 
         return $item;
