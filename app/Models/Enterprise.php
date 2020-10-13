@@ -38,10 +38,19 @@ class Enterprise extends Model
     protected $fillable = [
         'name',
         'serial',
+        'profile',
+        'country',
+        'address',
+        'phone',
+        'geographic',
     ];
 
     protected $dates = [
         'plan_expires_at',
+    ];
+
+    protected $casts = [
+        'geographic' => 'array',
     ];
 
     /**

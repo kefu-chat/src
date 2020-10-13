@@ -50,6 +50,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('institution/{institution}/delete', 'Personnel\InstitutionController@delete')->name('institution.delete')->middleware(['can:manager']);
 
     // 套餐管理
+    Route::get('enterprise', 'Personnel\EnterpriseController@show')->name('enterprise.show');
     Route::get('enterprise/plan', 'Personnel\PlanController@show')->name('enterprise.plan.show');
     Route::post('enterprise/plan/upgrade/{plan}', 'Personnel\PlanController@upgrade')->name('enterprise.plan.upgrade');
     Route::post('enterprise/plan/upgrade/{order}/pay/alipay', 'Personnel\PlanController@alipay')->name('enterprise.plan.upgrade.alipay');

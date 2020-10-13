@@ -11,5 +11,6 @@ namespace App\Interfaces;
  * @param string $isp 联通
  * @param string $area 中国广东省深圳市腾讯计算机系统联通节
  */
-interface Geo {
+interface Geo
+{
 }
