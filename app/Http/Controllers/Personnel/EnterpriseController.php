@@ -28,8 +28,10 @@ class EnterpriseController extends Controller
             'address' => ['nullable', 'string'],
             'phone' => ['nullable', 'string'],
             'geographic' => ['nullable', 'array'],
-            'geographic.province' => ['nullable', 'string'],
-            'geographic.city' => ['nullable', 'string'],
+            'geographic.province.key' => ['nullable', 'integer'],
+            'geographic.city.key' => ['nullable', 'integer'],
+            'geographic.area.key' => ['nullable', 'integer'],
+            'geographic.street.key' => ['nullable', 'integer'],
         ]);
         $enterprise = $this->user->enterprise;
         $enterprise->fill($request->only([
@@ -41,6 +43,7 @@ class EnterpriseController extends Controller
             'phone',
             'geographic',
         ]));
+        $enterprise->save();
         return response()->success(['enterprise' => $enterprise]);
     }
 }

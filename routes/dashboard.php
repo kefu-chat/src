@@ -49,13 +49,18 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('institution/{institution}/update', 'Personnel\InstitutionController@update')->name('institution.update')->middleware(['can:manager']);
     Route::post('institution/{institution}/delete', 'Personnel\InstitutionController@delete')->name('institution.delete')->middleware(['can:manager']);
 
-    // 套餐管理
+    // 企业资料
     Route::get('enterprise', 'Personnel\EnterpriseController@show')->name('enterprise.show');
+    Route::post('enterprise/update', 'Personnel\EnterpriseController@update')->name('enterprise.update');
+
+    // 套餐管理
     Route::get('enterprise/plan', 'Personnel\PlanController@show')->name('enterprise.plan.show');
     Route::post('enterprise/plan/upgrade/{plan}', 'Personnel\PlanController@upgrade')->name('enterprise.plan.upgrade');
     Route::post('enterprise/plan/upgrade/{order}/pay/alipay', 'Personnel\PlanController@alipay')->name('enterprise.plan.upgrade.alipay');
     Route::post('enterprise/plan/upgrade/{order}/pay/wechatpay', 'Personnel\PlanController@wechatpay')->name('enterprise.plan.upgrade.wechatpay');
 
+    // 地理位置
+    Route::get('location/list', 'LocationController@list')->name('location.list');
 
     // 访客编辑
     Route::post('visitor/{visitor}/update', 'Personnel\VisitorController@update')->name('visitor.update');
