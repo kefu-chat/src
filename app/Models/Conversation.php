@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\HasInstitution;
 use App\Models\Traits\HasPublicId;
+use itbdw\Ip\IpLocation;
 
 /**
  * App\Models\Conversation
@@ -20,7 +21,7 @@ use App\Models\Traits\HasPublicId;
  * @property bool $online_status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Torann\GeoIP\GeoIP|\Torann\GeoIP\Location $geo
+ * @property-read \App\Interfaces\Geo $geo
  * @property-read \App\Models\User|null $user
  * @property-read \App\Models\Visitor $visitor
  * @property-read Message[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Message> $messages
@@ -161,7 +162,7 @@ class Conversation extends AbstractModel
 
     public function getGeoAttribute()
     {
-        return geoip($this->ip)->toArray();
+        return IpLocation::getLocation($this->ip);
     }
 
     public function offline(Visitor $visitor)
