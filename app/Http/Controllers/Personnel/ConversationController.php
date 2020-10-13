@@ -30,12 +30,14 @@ class ConversationController extends Controller
     {
         $unassigned_count = $conversationRepository->count($this->user, 'unassigned', Conversation::STATUS_OPEN, ['messages',]);
         $assigned_count = $conversationRepository->count($this->user, 'assigned', Conversation::STATUS_OPEN, ['messages',]);
+        $history_count = $conversationRepository->count($this->user, 'assigned', Conversation::STATUS_CLOSED, ['messages',]);
         $online_visitor_count = $conversationRepository->countUngreetedConversations($this->user->institution, 'online');
         $visitor_count = $conversationRepository->countUngreetedConversations($this->user->institution, 'all');
 
         return response()->success([
             'unassigned_count' => $unassigned_count,
             'assigned_count' => $assigned_count,
+            'history_count' => $history_count,
             'online_visitor_count' => $online_visitor_count,
             'visitor_count' => $visitor_count,
         ]);
@@ -52,12 +54,18 @@ class ConversationController extends Controller
     {
         $request->validate([
             'offset' => ['nullable', 'string'],
-            'type' => ['string', 'in:assigned,unassigned'],
+            'type' => ['string', 'in:assigned,unassigned,history'],
         ]);
 
         $type = $request->input('type');
         $request_offset = $request->input('offset');
         $offset = Arr::first(Hashids::decode($request_offset));
+        $status = Conversation::STATUS_OPEN;
+        if ($type == 'history') {
+            $type = 'assigned';
+            $status = Conversation::STATUS_CLOSED;
+        }
+
         if ($request_offset) {
             if (!$offset) {
                 throw ValidationException::withMessages([
@@ -70,7 +78,7 @@ class ConversationController extends Controller
                 ]);
             }
         }
-        $conversations = $conversationRepository->listConversations($this->user, $offset, $type, Conversation::STATUS_OPEN, ['messages',]);
+        $conversations = $conversationRepository->listConversations($this->user, $offset, $type, $status, ['messages',]);
 
         return response()->success([
             'user_id' => $this->user->public_id,
