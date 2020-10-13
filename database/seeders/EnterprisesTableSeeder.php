@@ -25,6 +25,18 @@ class EnterprisesTableSeeder extends Seeder
         $enterprise = new Enterprise([
             'name' => $generator->company,
             'serial' => Str::random(15),
+            'geographic' => [
+                'province' => [
+                    'key' => $generator->postcode,
+                ],
+                'city' => [
+                    'key' => $generator->postcode,
+                ],
+            ],
+            'address' => $generator->address,
+            'profile' => $generator->sentence,
+            'country' => 'China',
+            'phone' => $generator->phoneNumber,
         ]);
         $enterprise->plan()->associate($plan);
         $enterprise->save();

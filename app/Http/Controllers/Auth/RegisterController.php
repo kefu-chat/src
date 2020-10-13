@@ -70,6 +70,14 @@ class RegisterController extends Controller
             DB::beginTransaction();
             $enterprise = new Enterprise([
                 'name' => '未命名企业',
+                'geographic' => [
+                    'province' => [
+                        'key' => 0,
+                    ],
+                    'city' => [
+                        'key' => 0,
+                    ],
+                ]
             ]);
             $enterprise->save();
 
