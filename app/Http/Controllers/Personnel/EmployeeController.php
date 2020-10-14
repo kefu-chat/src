@@ -33,10 +33,10 @@ class EmployeeController extends Controller
     public function list(Institution $institution, Request $request)
     {
         $this->validateInstitution($institution);
-        $employees = $institution->users()->paginate();
+        $employees = $institution->users()->withCount(['conversations',])->paginate();
 
         return response()->success([
-            'employees' => $employees,
+            'list' => $employees,
         ]);
     }
 
