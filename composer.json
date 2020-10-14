@@ -12,7 +12,6 @@
     "require": {
         "php": "^7.3",
         "023pay/sdk": "^0.0.1",
-        "aoxiang/province-city-area": "dev-master",
         "doctrine/dbal": "^2.11",
         "fastsupport-cn/province-city-area": "1.2.2",
         "fideloper/proxy": "^4.2",

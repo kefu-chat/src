@@ -16,7 +16,7 @@ class LocationController extends Controller
     public function list(Request $request)
     {
         $request->validate([
-            'parent_id' => ['nullable', 'integer'],
+            'parent_id' => ['nullable', 'numeric'],
         ]);
 
         $list = ProvinceCityArea::where('parent_id', $request->input('parent_id', 0))->get();
