@@ -52,6 +52,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     // 企业资料
     Route::get('enterprise', 'Personnel\EnterpriseController@show')->name('enterprise.show');
     Route::post('enterprise/update', 'Personnel\EnterpriseController@update')->name('enterprise.update');
+    Route::get('enterprise/name-suggest', 'Personnel\EnterpriseController@search')->name('enterprise.suggest');
+    Route::get('enterprise/name-suggest-detail', 'Personnel\EnterpriseController@searchDetail')->name('enterprise.suggest.detail');
 
     // 套餐管理
     Route::get('enterprise/plan', 'Personnel\PlanController@show')->name('enterprise.plan.show');
