@@ -43,6 +43,10 @@ class Institution extends AbstractModel
         'terminate_manual',
         'terminate_timeout',
         'greeting_message',
+        'technical_name',
+        'technical_phone',
+        'billing_name',
+        'billing_phone',
     ];
 
     /**

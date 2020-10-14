@@ -49,7 +49,7 @@ class EmployeeController extends Controller
      */
     public function store(Institution $institution, Request $request)
     {
-        $request->input([
+        $request->validate([
             'name' => ['nullable', 'string',],
             'email' => ['nullable', 'email',],
             'password' => ['nullable', 'string', 'min:6', 'max:16'],
@@ -102,7 +102,7 @@ class EmployeeController extends Controller
      */
     public function update(Institution $institution, User $user, Request $request)
     {
-        $request->input([
+        $request->validate([
             'name' => ['nullable', 'string',],
             'email' => ['nullable', 'email',],
             'password' => ['nullable', 'string', 'min:6', 'max:16'],

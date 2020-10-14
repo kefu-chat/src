@@ -32,7 +32,17 @@ class InstitutionController extends Controller
     public function store(Request $request)
     {
         $institution = new Institution();
-        $institution->fill($request->only(['name', 'website', ]));
+        $institution->fill($request->only([
+            'name',
+            'website',
+            'terminate_manual',
+            'terminate_timeout',
+            'greeting_message',
+            'technical_name',
+            'technical_phone',
+            'billing_name',
+            'billing_phone',
+        ]));
         $institution->enterprise()->associate($this->user->enterprise);
         $institution->save();
 
@@ -75,7 +85,17 @@ class InstitutionController extends Controller
             abort(404);
         }
 
-        $institution->fill($request->only(['name', 'website',]));
+        $institution->fill($request->only([
+            'name',
+            'website',
+            'terminate_manual',
+            'terminate_timeout',
+            'greeting_message',
+            'technical_name',
+            'technical_phone',
+            'billing_name',
+            'billing_phone',
+        ]));
         $institution->save();
 
         return response()->success([
