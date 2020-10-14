@@ -16,7 +16,7 @@ class InstitutionController extends Controller
      */
     public function list(Request $request)
     {
-        $list = $this->user->enterprise->institutions()->paginate();
+        $list = $this->user->enterprise->institutions()->withCount(['users',])->paginate();
 
         return response()->success([
             'list' => $list,
