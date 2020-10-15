@@ -18,6 +18,10 @@ php artisan jwt:secret
 php artisan migrate
 ```
 
+```bash
+#导入省市区街道数据库
+php artisan pca:refreshData -d jd
+```
 
 ```bash
 #初始化套餐信息
