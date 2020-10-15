@@ -143,12 +143,14 @@ class EmployeeController extends Controller
     {
         $this->validateInstitution($institution);
         if (!$this->user->hasPermissionTo(Permission::findByName('manager', 'api'))) {
-            abort(403);
+            abort(403, '无法禁用管理员');
         }
         if ($user->institution_id != $institution->id) {
             abort(404);
         }
-
+        if ($user->id == $this->user->id) {
+            abort(400, '无法禁用自己');
+        }
         $user->delete();
 
         return response()->success([
