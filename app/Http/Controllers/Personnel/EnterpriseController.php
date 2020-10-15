@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Personnel;
 
+use Aoxiang\Pca\Models\ProvinceCityArea;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
@@ -89,6 +90,24 @@ class EnterpriseController extends Controller
         $info = json_decode($info->getBody());
         if ($info->status !== 0) {
             abort(400, $info->msg);
+        }
+
+        $gis = (new Client())->get('https://apis.map.qq.com/ws/geocoder/v1/?' . http_build_query([
+            'address' => $info->data->regAddr,
+            'key' => 'ZFRBZ-XKKR5-PVHIY-QE65O-SKO7Q-6SFHQ',
+        ]));
+        $gis = json_decode($gis->getBody());
+        $info->data->province = $gis->result->address_components->province;
+        $info->data->city = $gis->result->address_components->city;
+        $info->data->area = $gis->result->address_components->district;
+        $info->data->street = $gis->result->address_components->street;
+        $info->data->province_code = data_get(ProvinceCityArea::where('name', 'LIKE', preg_replace('/(省|市|特别行政区|自治区)/', '', $info->data->province))->first(), 'id');
+        $info->data->city_code = data_get(ProvinceCityArea::where('name', 'LIKE', $info->data->city)->first(), 'id');
+        $info->data->area_code = data_get(ProvinceCityArea::where('name', 'LIKE', $info->data->area)->first(), 'id');
+        $info->data->street_code = data_get(ProvinceCityArea::where('name', 'LIKE', $info->data->street)->first(), 'id');
+        if (!$info->data->city_code && $info->data->area_code) {
+            $info->data->city_code = $info->data->area_code;
+            $info->data->city = $info->data->area;
         }
 
         return response()->success($info->data);
