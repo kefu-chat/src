@@ -42,6 +42,8 @@ class InstitutionController extends Controller
             'technical_phone',
             'billing_name',
             'billing_phone',
+            'timeout',
+            'theme',
         ]));
         $institution->enterprise()->associate($this->user->enterprise);
         $institution->save();
@@ -95,6 +97,8 @@ class InstitutionController extends Controller
             'technical_phone',
             'billing_name',
             'billing_phone',
+            'timeout',
+            'theme',
         ]));
         $institution->save();
 
