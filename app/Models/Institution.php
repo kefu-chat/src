@@ -18,6 +18,7 @@ use App\Models\Traits\HasPublicId;
  * @property string $billing_name
  * @property string $billing_phone
  * @property string $theme
+ * @property integer $timeout
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
@@ -53,6 +54,7 @@ class Institution extends AbstractModel
         'billing_name',
         'billing_phone',
         'theme',
+        'timeout',
     ];
 
     /**

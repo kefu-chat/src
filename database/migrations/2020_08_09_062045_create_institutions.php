@@ -42,6 +42,18 @@ class CreateInstitutions extends Migration
                 'green3',
                 'blue-light',
             ])->default('default')->comment('网站配色方案');
+            $table->enum('timeout', [
+                180,
+                300,
+                600,
+                900,
+                1800,
+                3600,
+                7200,
+                21600,
+                43200,
+                86400,
+            ])->default('default')->comment('会话超时自动关闭时间');
             $table->unsignedBigInteger('enterprise_id')->comment('企业 ID');
 
             $table->timestamps();
