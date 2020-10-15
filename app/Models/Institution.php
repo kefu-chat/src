@@ -12,7 +12,12 @@ use App\Models\Traits\HasPublicId;
  * @property string|null $name 公司名字
  * @property string|null $website 网站
  * @property string $terminate_manual
- * @property string terminate_timeout
+ * @property string $terminate_timeout
+ * @property string $technical_name
+ * @property string $technical_phone
+ * @property string $billing_name
+ * @property string $billing_phone
+ * @property string $theme
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
@@ -47,6 +52,7 @@ class Institution extends AbstractModel
         'technical_phone',
         'billing_name',
         'billing_phone',
+        'theme',
     ];
 
     /**
