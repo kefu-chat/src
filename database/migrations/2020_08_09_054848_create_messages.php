@@ -21,6 +21,7 @@ class CreateMessages extends Migration
             $table->unsignedBigInteger('conversation_id')->index()->comment('会话 ID');
             $table->tinyInteger('type')->index()->comment('1文字 2图片');
             $table->text('content')->comment('内容');
+            $table->text('options')->nullable()->comment('可选项, 用于机器人规则');
 
             $table->timestamps();
         });

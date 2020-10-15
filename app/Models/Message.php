@@ -12,6 +12,7 @@ use App\Models\Traits\HasPublicId;
  * @property int $conversation_id 会话 ID
  * @property int $type 1文字 2图片
  * @property string $content 内容
+ * @property null|string[] $options 可选项 用于机器人规则
  * @property string $sender_type
  * @property int $sender_id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -47,6 +48,11 @@ class Message extends AbstractModel
     protected $fillable = [
         'type',
         'content',
+        'options',
+    ];
+
+    protected $casts = [
+        'options' => 'array',
     ];
 
     public function conversation()
