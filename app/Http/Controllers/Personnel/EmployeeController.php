@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Personnel;
 
 use App\Http\Controllers\Controller;
+use App\Models\DeletedUser;
 use App\Models\Institution;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -78,10 +79,11 @@ class EmployeeController extends Controller
      * 展示员工
      *
      * @param Institution $institution
+     * @param DeletedUser $user
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Institution $institution, User $user, Request $request)
+    public function show(Institution $institution, DeletedUser $user, Request $request)
     {
         $this->validateInstitution($institution);
         if ($user->institution_id != $institution->id) {
@@ -97,10 +99,11 @@ class EmployeeController extends Controller
      * 更新员工
      *
      * @param Institution $institution
+     * @param DeletedUser $user
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Institution $institution, User $user, Request $request)
+    public function update(Institution $institution, DeletedUser $user, Request $request)
     {
         $request->validate([
             'name' => ['nullable', 'string',],
@@ -135,11 +138,11 @@ class EmployeeController extends Controller
      * 禁用员工
      *
      * @param Institution $institution
-     * @param User $user
+     * @param DeletedUser $user
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deactivate(Institution $institution, User $user, Request $request)
+    public function deactivate(Institution $institution, DeletedUser $user, Request $request)
     {
         $this->validateInstitution($institution);
         if (!$this->user->hasPermissionTo(Permission::findByName('manager', 'api'))) {
@@ -162,11 +165,11 @@ class EmployeeController extends Controller
      * 恢复被禁用员工
      *
      * @param Institution $institution
-     * @param User $user
+     * @param DeletedUser $user
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function activate(Institution $institution, User $user, Request $request)
+    public function activate(Institution $institution, DeletedUser $user, Request $request)
     {
         $this->validateInstitution($institution);
         if (!$this->user->hasPermissionTo(Permission::findByName('manager', 'api'))) {
@@ -187,11 +190,11 @@ class EmployeeController extends Controller
      * 修改客服的密码
      *
      * @param Institution $institution
-     * @param User $user
+     * @param DeletedUser $user
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function changePassword(Institution $institution, User $user, Request $request)
+    public function changePassword(Institution $institution, DeletedUser $user, Request $request)
     {
         $request->validate(['password' => 'required|min:6|confirmed',]);
         $this->validateInstitution($institution);

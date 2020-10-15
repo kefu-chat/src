@@ -85,12 +85,13 @@ trait HasPublicId
      * 解密 public_id
      *
      * @param string $public_id
+     * @param bool $verify_model
      * @return int
      */
-    protected static function decodePublicId($public_id)
+    protected static function decodePublicId($public_id, $verify_model = true)
     {
         $decode = Hashids::decode($public_id);
-        if (Arr::last($decode) != crc32(static::class)) {
+        if ($verify_model && Arr::last($decode) != crc32(static::class)) {
             abort(404, '路由 ID 拼错了， CRC32校验失败: crc32(' . static::class . ')=' . crc32(static::class) . ', 但传的是 ' . Arr::last($decode)) . ' in ' . $public_id;
         }
         return Arr::first($decode);
