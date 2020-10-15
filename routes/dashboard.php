@@ -74,4 +74,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('institution/{institution}/employee/{user}/update', 'Personnel\EmployeeController@update')->name('employee.update')->middleware(['can:manager']);
     Route::post('institution/{institution}/employee/{user}/deactivate', 'Personnel\EmployeeController@deactivate')->name('employee.deactivate')->middleware(['can:manager']);
     Route::post('institution/{institution}/employee/{user}/activate', 'Personnel\EmployeeController@activate')->name('employee.activate')->middleware(['can:manager']);
+    Route::post('institution/{institution}/employee/{user}/change-password', 'Personnel\EmployeeController@changePassword')->name('employee.change-password')->middleware(['can:manager']);
 });

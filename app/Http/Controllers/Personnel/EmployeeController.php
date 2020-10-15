@@ -182,4 +182,31 @@ class EmployeeController extends Controller
             'employee' => $user,
         ]);
     }
+
+    /**
+     * 修改客服的密码
+     *
+     * @param Institution $institution
+     * @param User $user
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changePassword(Institution $institution, User $user, Request $request)
+    {
+        $request->validate(['password' => 'required|min:6|confirmed',]);
+        $this->validateInstitution($institution);
+        if (!$this->user->hasPermissionTo(Permission::findByName('manager', 'api'))) {
+            abort(403);
+        }
+        if ($user->institution_id != $institution->id) {
+            abort(404);
+        }
+
+        $user->fill(['password' => bcrypt($request->input('password'))]);
+        $user->save();
+
+        return response()->success([
+            'employee' => $user,
+        ]);
+    }
 }
