@@ -53,7 +53,7 @@ class CreateInstitutions extends Migration
                 21600,
                 43200,
                 86400,
-            ])->default('default')->comment('会话超时自动关闭时间');
+            ])->default('900')->comment('会话超时自动关闭时间');
             $table->unsignedBigInteger('enterprise_id')->comment('企业 ID');
 
             $table->timestamps();
