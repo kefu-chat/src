@@ -212,4 +212,31 @@ class EmployeeController extends Controller
             'employee' => $user,
         ]);
     }
+
+    /**
+     * 修改客服的权限
+     *
+     * @param Institution $institution
+     * @param User $user
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changePermission(Institution $institution, User $user, Request $request)
+    {
+        $request->validate(['permission' => ['required', 'exists:permissions,name' ]]);
+        $this->validateInstitution($institution);
+        if (!$this->user->hasPermissionTo(Permission::findByName('manager', 'api'))) {
+            abort(403);
+        }
+        if ($user->institution_id != $institution->id) {
+            abort(404);
+        }
+
+        $permission = Permission::findByName($request->input('permission', 'api'));
+        $user->syncPermissions($permission);
+
+        return response()->success([
+            'employee' => $user,
+        ]);
+    }
 }
