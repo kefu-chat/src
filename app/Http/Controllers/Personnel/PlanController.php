@@ -24,6 +24,7 @@ class PlanController extends Controller
     public function show(Request $request)
     {
         $plan = $this->user->enterprise->plan;
+        $plan->expires_at = $this->user->enterprise->plan_expires_at;
 
         return response()->success([
             'plan' => $plan,
