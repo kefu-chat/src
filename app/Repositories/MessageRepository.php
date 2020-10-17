@@ -8,6 +8,7 @@ use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
 use App\Models\Visitor;
+use App\Notifications\NewMessage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class MessageRepository
@@ -23,7 +24,7 @@ class MessageRepository
      * @param string $content
      * @return Message
      */
-    public function sendMessage(Conversation $conversation, JWTSubject $user, bool $isUser, bool $isVisitor, int $type, string $content)
+    public function sendMessage(Conversation $conversation, $user, bool $isUser, bool $isVisitor, int $type, string $content)
     {
         /**
          * @var ConversationRepository $conversationRepository
@@ -62,6 +63,8 @@ class MessageRepository
         $conversation->save();
 
         broadcast(new ConversationMessaging($message));
+        ($message->sender_type == User::class ? $conversation->visitor : $conversation->user)->notify(new NewMessage($message));
+
         if ($isVisitor) {
             $conversation->setRelation('lastMessage', $message);
             if ($conversation->messages()->count() == 1) {

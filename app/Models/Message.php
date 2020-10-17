@@ -19,6 +19,7 @@ use App\Models\Traits\HasPublicId;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Conversation $conversation
  * @property-read string $sender_type_text
+ * @property User|Visitor $sender
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message query()

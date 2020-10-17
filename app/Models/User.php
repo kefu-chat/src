@@ -14,8 +14,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use NotificationChannels\WebPush\HasPushSubscriptions;
 use Spatie\Permission\Traits\HasRoles;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
@@ -52,7 +52,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  */
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
-    use Notifiable, SetTransformer, HasInstitution, HasEnterprise, HasFactory, HasRoles, HasPublicId, SoftDeletes, Pushable;
+    use Notifiable, SetTransformer, HasInstitution, HasEnterprise, HasFactory, HasRoles, HasPublicId, SoftDeletes, HasPushSubscriptions;
 
     protected $guard_name = 'api';
 

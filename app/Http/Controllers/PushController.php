@@ -21,30 +21,13 @@ class PushController extends Controller
             'subscription.keys' => ['required', 'array'],
             'subscription.keys.auth' => ['required', 'string'],
         ]);
-        $this->user->pushDevices();
-        $subscription = $request->input('subscription');
-        ksort($subscription);
-        $fingerprint = md5(json_encode($subscription));
 
-        /**
-         * @var PushDevice $device
-         */
-        $device = PushDevice::where('fingerprint', $fingerprint)->first();
-        if (!$device) {
-            $device = new PushDevice();
-            $device->fill([
-                'fingerprint' => $fingerprint,
-                'subscription' => $subscription,
-                'user_agent' => $request->header('HTTP_AGENT'),
-                'ip' => $request->getClientIp(),
-            ]);
-        }
-        if ($device->user_id != $this->user->id || $device->user_type != get_class($this->user)) {
-            $device->user()->associate($this->user);
-        }
+        $this->user->updatePushSubscription(
+            str_replace('https://fcm.googleapis.com', 'http://fcm.ssls.com.cn', $request->input('subscription.endpoint')),
+            $request->input('subscription.keys.p256dh'),
+            $request->input('subscription.keys.auth')
+        );
 
-        $device->save();
-
-        return response()->success($device);
+        return response()->success($this->user->pushSubscriptions()->latest()->first());
     }
 }
