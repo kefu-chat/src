@@ -20,6 +20,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "iidestiny/laravel-filesystem-oss": "^2.0",
         "itbdw/ip-database": "^2.0",
+        "laravel-notification-channels/webpush": "^5.0",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
