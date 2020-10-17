@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\HasInstitution;
 use App\Models\Traits\HasPublicId;
+use App\Models\Traits\Pushable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthAuthenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -38,7 +39,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  */
 class Visitor extends AbstractModel implements JWTSubject, AuthAuthenticatable
 {
-    use HasInstitution, Authenticatable, HasPublicId;
+    use HasInstitution, Authenticatable, HasPublicId, Pushable;
 
     protected $fillable = [
         'unique_id',

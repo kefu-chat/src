@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\HasEnterprise;
 use App\Models\Traits\HasInstitution;
 use App\Models\Traits\HasPublicId;
+use App\Models\Traits\Pushable;
 use App\Models\Traits\SetTransformer;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
@@ -51,7 +52,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  */
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
-    use Notifiable, SetTransformer, HasInstitution, HasEnterprise, HasFactory, HasRoles, HasPublicId, SoftDeletes;
+    use Notifiable, SetTransformer, HasInstitution, HasEnterprise, HasFactory, HasRoles, HasPublicId, SoftDeletes, Pushable;
 
     protected $guard_name = 'api';
 
