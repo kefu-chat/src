@@ -3,7 +3,9 @@
 namespace App\Broadcasting;
 
 use App\Http\Transformers\MessageListTransformer;
+use App\Interfaces\ShoudWebpush;
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -11,7 +13,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 /**
  * 消息 Socket, 访客侧和客服侧共用
  */
-class ConversationMessaging implements ShouldBroadcast
+class ConversationMessaging implements ShouldBroadcast, ShoudWebpush
 {
     use InteractsWithSockets;
 
@@ -67,5 +69,26 @@ class ConversationMessaging implements ShouldBroadcast
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * 获取webpush的通知对象
+     *
+     * @return array
+     */
+    public function getWebpushNotification()
+    {
+        return [
+            'title' => '您收到回复',
+            'body' => '您收到回复(' . $this->message->sender->name . '): ' . ($this->message->type == Message::TYPE_TEXT ? $this->message->content : '[图片消息]'),
+        ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWebpushSubscriber()
+    {
+        return [$this->message->sender_type === User::class ? $this->message->conversation->visitor : $this->message->conversation->user];
     }
 }

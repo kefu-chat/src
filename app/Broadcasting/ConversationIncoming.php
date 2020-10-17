@@ -3,6 +3,7 @@
 namespace App\Broadcasting;
 
 use App\Http\Transformers\ConversationDetailTransformer;
+use App\Interfaces\ShoudWebpush;
 use App\Models\Conversation;
 use App\Models\Message;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -12,7 +13,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 /**
  * 新会话 Socket
  */
-class ConversationIncoming implements ShouldBroadcast
+class ConversationIncoming implements ShouldBroadcast, ShoudWebpush
 {
     use InteractsWithSockets;
 
@@ -69,5 +70,26 @@ class ConversationIncoming implements ShouldBroadcast
     public function broadcastWith()
     {
         return $this->conversation->setTransformer(ConversationDetailTransformer::class)->toArray();
+    }
+
+    /**
+     * 获取webpush的通知对象
+     *
+     * @return array
+     */
+    public function getWebpushNotification()
+    {
+        return [
+            'title' => '新会话接入',
+            'body' => '新会话接入: ' . $this->conversation->visitor->name,
+        ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWebpushSubscriber()
+    {
+        return [$this->conversation->user];
     }
 }

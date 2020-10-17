@@ -29,6 +29,15 @@ use App\Models\Traits\HasPublicId;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereVisitorId($value)
+ * @property int $institution_id 组织 ID
+ * @property-read \App\Models\stirng $public_id
+ * @property-read \App\Models\Institution $institution
+ * @property-read User|Visitor $sender
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereInstitutionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereOptions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereSenderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereSenderType($value)
+ * @mixin \Eloquent
  */
 class Message extends AbstractModel
 {
