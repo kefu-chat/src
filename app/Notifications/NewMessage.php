@@ -5,13 +5,17 @@ namespace App\Notifications;
 use App\Models\Message;
 use App\Models\User;
 use App\Models\Visitor;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\HasPushSubscriptions;
 use NotificationChannels\WebPush\WebPushMessage;
 use NotificationChannels\WebPush\WebPushChannel;
 
-class NewMessage extends Notification
+class NewMessage extends Notification implements ShouldQueue
 {
+    use Queueable;
+
     /**
      * @var Message
      */
