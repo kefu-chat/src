@@ -43,17 +43,17 @@ class NewMessage extends Notification
     {
         return (new WebPushMessage)
             ->title('“' . $this->notification->sender->name . '”发来了新消息!')
-            ->{$this->notification->type === Message::TYPE_IMAGE ? 'image' : 'body'}($this->notification->content)
             ->action('查看', 'view')
+            ->data(['id' => $this->notification->public_id, 'conversation_id' => $this->notification->conversation->public_id])
             //->options(['TTL' => 1000])
             //->icon('/approved-icon.png')
-            // ->data(['id' => $this->notification->id])
-            // ->badge()
-            // ->dir()
-            // ->lang()
-            // ->renotify()
-            // ->requireInteraction()
+            //->badge()
+            //->dir()
+            //->lang()
+            //->renotify()
+            //->requireInteraction()
             ->tag($this->notification->sender->name . '(#' . $this->notification->conversation->public_id . ')')
-            ->vibrate(1);
+            ->vibrate(1)
+            ->{$this->notification->type === Message::TYPE_IMAGE ? 'image' : 'body'}($this->notification->content);
     }
 }
