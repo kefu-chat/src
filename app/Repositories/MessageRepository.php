@@ -63,7 +63,10 @@ class MessageRepository
         $conversation->save();
 
         broadcast(new ConversationMessaging($message));
-        ($message->sender_type == User::class ? $conversation->visitor : $conversation->user)->notify(new NewMessage($message));
+        $notifiable = ($message->sender_type == User::class ? $conversation->visitor : $conversation->user);
+        if ($notifiable) {
+            $notifiable->notify(new NewMessage($message));
+        }
 
         if ($isVisitor) {
             $conversation->setRelation('lastMessage', $message);
