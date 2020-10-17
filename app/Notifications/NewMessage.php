@@ -42,7 +42,7 @@ class NewMessage extends Notification
     public function toWebPush($notifiable)
     {
         return (new WebPushMessage)
-            ->title('Approved!')
+            ->title('“' . $this->notification->sender->name . '”发来了新消息!')
             ->{$this->notification->type === Message::TYPE_IMAGE ? 'image' : 'body'}($this->notification->content)
             ->action('查看', 'view')
             //->options(['TTL' => 1000])
