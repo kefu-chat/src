@@ -41,7 +41,7 @@ class PlansTableSeeder extends Seeder
         Plan::firstOrCreate([
             'name' => '专业版',
         ], [
-            'price_monthly' => 100,
+            'price_monthly' => 180,
             'price_annually' => 800,
             'price_biennially' => 1500,
             'price_triennially' => 2250,
@@ -64,7 +64,7 @@ class PlansTableSeeder extends Seeder
         Plan::firstOrCreate([
             'name' => '企业版',
         ], [
-            'price_monthly' => 500,
+            'price_monthly' => 400,
             'price_annually' => 2800,
             'price_biennially' => 5200,
             'price_triennially' => 7800,
