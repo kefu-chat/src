@@ -57,9 +57,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // 套餐管理
     Route::get('enterprise/plan', 'Personnel\PlanController@show')->name('enterprise.plan.show');
+    Route::get('enterprise/plan/upgrade/order/list', 'Personnel\PlanController@orderList')->name('enterprise.plan.order-list');
     Route::post('enterprise/plan/upgrade/{plan}', 'Personnel\PlanController@upgrade')->name('enterprise.plan.upgrade');
     Route::post('enterprise/plan/upgrade/{order}/pay/alipay', 'Personnel\PlanController@alipay')->name('enterprise.plan.upgrade.alipay');
     Route::post('enterprise/plan/upgrade/{order}/pay/wechatpay', 'Personnel\PlanController@wechatpay')->name('enterprise.plan.upgrade.wechatpay');
+    Route::post('enterprise/plan/upgrade/{order}/cancel', 'Personnel\PlanController@cancel')->name('enterprise.plan.upgrade.cancel');
 
     // 地理位置
     Route::get('location/list', 'LocationController@list')->name('location.list');

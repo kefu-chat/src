@@ -108,4 +108,36 @@ class PlanController extends Controller
             'pay' => $order->wechatpay
         ]);
     }
+
+    /**
+     * 列出订单
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function orderList(Request $request)
+    {
+        return response()->success([
+            'list' => $this->user->enterprise->orders()->with(['plan',])->paginate($request->input('per_page', 5)),
+        ]);
+    }
+
+    /**
+     * 取消订单
+     *
+     * @param Order $order
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function cancel(Order $order, Request $request)
+    {
+        if ($order->status != Order::STATUS_UNPAID) {
+            abort(400, 'Can only cancel unpaid order');
+        }
+        $order->fill(['status' => Order::STATUS_CANCELLED]);
+        $order->save();
+        return response()->success([
+            'order' => $order->load(['plan',]),
+        ]);
+    }
 }

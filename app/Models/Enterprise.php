@@ -71,4 +71,14 @@ class Enterprise extends Model
     {
         return $this->belongsTo(Plan::class);
     }
+
+    /**
+     * 企业下面的升级订单们
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Order|\Illuminate\Database\Query\Builder
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }
