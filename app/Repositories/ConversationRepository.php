@@ -30,6 +30,12 @@ class ConversationRepository
                  */
                 return $query->where('online_status', true);
             })
+            ->when($type == 'offline', function ($query) {
+                /**
+                 * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                 */
+                return $query->where('online_status', false);
+            })
             ->count();
     }
 
@@ -57,6 +63,12 @@ class ConversationRepository
                  * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
                  */
                 return $query->where('online_status', true);
+            })
+            ->when($type == 'offline', function ($query) {
+                /**
+                 * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                 */
+                return $query->where('online_status', false);
             })
             ->latest()
             ->limit(20)

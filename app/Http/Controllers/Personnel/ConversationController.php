@@ -9,7 +9,6 @@ use App\Http\Transformers\ConversationListTransformer;
 use App\Models\Conversation;
 use App\Models\User;
 use App\Repositories\ConversationRepository;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
@@ -32,6 +31,7 @@ class ConversationController extends Controller
         $assigned_count = $conversationRepository->count($this->user, 'assigned', Conversation::STATUS_OPEN, ['messages',]);
         $history_count = $conversationRepository->count($this->user, 'assigned', Conversation::STATUS_CLOSED, ['messages',]);
         $online_visitor_count = $conversationRepository->countUngreetedConversations($this->user->institution, 'online');
+        $offline_visitor_count = $conversationRepository->countUngreetedConversations($this->user->institution, 'offline');
         $visitor_count = $conversationRepository->countUngreetedConversations($this->user->institution, 'all');
 
         return response()->success([
@@ -39,6 +39,7 @@ class ConversationController extends Controller
             'assigned_count' => $assigned_count,
             'history_count' => $history_count,
             'online_visitor_count' => $online_visitor_count,
+            'offline_visitor_count' => $offline_visitor_count,
             'visitor_count' => $visitor_count,
         ]);
     }
@@ -145,7 +146,7 @@ class ConversationController extends Controller
     {
         $request->validate([
             'offset' => ['nullable', 'string'],
-            'type' => ['nullable', 'string', 'in:all,online'],
+            'type' => ['nullable', 'string', 'in:all,online,offline'],
         ]);
         $type = $request->input('type');
         $request_offset = $request->input('offset');
