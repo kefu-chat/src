@@ -24,6 +24,24 @@ class ConversationController extends Controller
     use Messagingable;
 
     /**
+     * 获取网站配置
+     *
+     * @param Institution $institution
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getConfig(Institution $institution, Request $request)
+    {
+        $institution->setVisible([
+            'name',
+            'terminate_manual',
+            'terminate_timeout',
+            'greeting_message',
+            'theme',
+        ]);
+        return response()->jsonp($request->input('callback'), $institution);
+    }
+
+    /**
      * 初始化访客和会话
      *
      * @param Request $request
