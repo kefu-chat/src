@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('cancel:subscription-expired-enterprise')->dailyAt('00:00');
+        $schedule->command('clear:empty-visitor')->dailyAt('01:00');
     }
 
     /**
