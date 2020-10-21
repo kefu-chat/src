@@ -35,7 +35,7 @@ class EnterprisesTableSeeder extends Seeder
             ],
             'address' => $generator->address,
             'profile' => $generator->sentence,
-            'country' => 'China',
+            'country' => 'CN',
             'phone' => $generator->phoneNumber,
         ]);
         $enterprise->plan()->associate($plan);
