@@ -31,12 +31,14 @@ class ConversationController extends Controller
      */
     public function getConfig(Institution $institution, Request $request)
     {
+        $institution->greeter = $institution->users->random();
         $institution->setVisible([
             'name',
             'terminate_manual',
             'terminate_timeout',
             'greeting_message',
             'theme',
+            'greeter',
         ]);
         return response()->jsonp($request->input('callback'), $institution);
     }
