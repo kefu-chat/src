@@ -245,6 +245,34 @@ class ConversationRepository
     }
 
     /**
+     * 超时终止对话
+     * @param Conversation $conversation
+     * @return Conversation
+     */
+    public function terminateTimeout(Conversation $conversation)
+    {
+        $message = null;
+        $user = $conversation->user ?? $conversation->institution->users->random();
+
+        /**
+         * @var MessageRepository $messageRepository
+         */
+        $messageRepository = app(MessageRepository::class);
+        if ($conversation->messages()->count()) {
+            $message = $messageRepository->sendMessage($conversation, $user, true, false, Message::TYPE_TEXT, $conversation->institution->terminate_timeout);
+        }
+
+        $conversation->fill(['status' => Conversation::STATUS_CLOSED]);
+        $conversation->save();
+
+        if ($message) {
+            broadcast(new ConversationTerminated($conversation, $message));
+        }
+
+        return $conversation;
+    }
+
+    /**
      * 终止对话
      * @param Conversation $conversation
      * @param User $user
