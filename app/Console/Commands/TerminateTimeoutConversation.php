@@ -44,7 +44,7 @@ class TerminateTimeoutConversation extends Command
                 /**
                  * @var Institution|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
                  */
-                return $query->whereRaw(DB::raw('unix_timestamp(CURRENT_TIMESTAMP)-unix_timestamp(messages.created_at)>institutions.timeout'));
+                return $query->whereRaw(DB::raw('unix_timestamp(CURRENT_TIMESTAMP)-unix_timestamp(messages.updated_at)>institutions.timeout'));
             });
         })->chunk(50, function (Collection $conversations) {
             $conversations->each(function (Conversation $conversation) {
