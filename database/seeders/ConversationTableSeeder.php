@@ -40,6 +40,9 @@ class ConversationTableSeeder extends Seeder
             'url' => $generator->url,
             'first_reply_at' => $generator->dateTimeThisYear,
             'last_reply_at' => $generator->dateTimeThisYear,
+            'userAgent' => $generator->userAgent,
+            'languages' => [$generator->languageCode, $generator->languageCode,],
+            'referer' => $generator->url,
         ]);
         $conversation->institution()->associate($institution);
         $conversation->visitor()->associate($visitor);

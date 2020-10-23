@@ -212,7 +212,6 @@ return [
     'TZ',
     'TH',
     'GB',
-    'US',
     'UY',
     'VG',
     'VI',
@@ -252,5 +251,4 @@ return [
     'SS',
     'CW',
     'SX',
-    'DE',
 ];

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\HasInstitution;
 use App\Models\Traits\HasPublicId;
+use DeviceDetector\DeviceDetector;
 use itbdw\Ip\IpLocation;
 
 /**
@@ -183,5 +184,18 @@ class Conversation extends AbstractModel
         $this->fill(['online_status' => true,]);
         $this->save();
         return $this;
+    }
+
+    public function getDeviceAttribute()
+    {
+        $info = new DeviceDetector($this->userAgent);
+        $info->parse();
+
+        return [
+            'os' => data_get($info->getOs(), 'name'),
+            'os_version' => data_get($info->getOs(), 'version'),
+            'browser' => data_get($info->getClient(), 'name'),
+            'browser_version' => data_get($info->getClient(), 'version'),
+        ];
     }
 }
