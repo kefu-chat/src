@@ -63,7 +63,13 @@ class ConversationController extends Controller
             'avatar' => ['nullable', 'string'],
             'memo' => ['nullable', 'string'],
             'address' => ['nullable', 'string'],
-            'userAgent' => ['required', 'string',],
+            'userAgent' => ['required', 'string', function ($column, $value) {
+                if (Str::contains($value, config('blacklist.userAgent'))) {
+                    throw ValidationException::withMessages([
+                        'userAgent' => '非法请求',
+                    ]);
+                }
+            },],
             'languages' => ['required', 'array',],
             'url' => ['required', 'string',],
             'title' => ['nullable', 'string',],
