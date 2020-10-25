@@ -108,9 +108,15 @@ class ConversationController extends Controller
                 goto init;
             }
         }
+        if (!$visitor) {
+            abort(404);
+        }
         $conversation = $visitor->conversations()->latest('id')->first();
         if (!$conversation) {
             $conversation = $conversationRepository->initConversation($visitor, $ip, $url, $userAgent, $languages, $title, $referer);
+        }
+        if (!$conversation) {
+            abort(404);
         }
         if ($reopen) {
             $conversationRepository->reopen($conversation, $visitor);
