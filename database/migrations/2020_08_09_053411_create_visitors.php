@@ -16,7 +16,7 @@ class CreateVisitors extends Migration
         Schema::create('visitors', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('institution_id')->index()->comment('组织 ID');
-            $table->string('unique_id', 32)->unique()->comment('唯一 ID');
+            $table->string('unique_id', 32)->comment('唯一 ID');
             $table->string('name', 120)->index()->comment('名字');
             $table->string('email', 120)->index()->comment('电子邮件');
             $table->string('phone', 15)->index()->comment('手机号');
@@ -25,6 +25,8 @@ class CreateVisitors extends Migration
             $table->text('address')->nullable()->comment('地址');
 
             $table->timestamps();
+
+            $table->unique(['unique_id', 'institution_id']);
         });
     }
 
