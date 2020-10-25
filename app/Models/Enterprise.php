@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\HasPublicId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Models\Permission;
 
 /**
  * App\Models\Enterprise
@@ -19,6 +20,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Institution[] $institutions
  * @property-read \App\Models\Plan $plan
  * @property-read int|null $institutions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read int|null $users_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $managers
+ * @property-read int|null $managers_count
  * @method static \Illuminate\Database\Eloquent\Builder|Enterprise newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Enterprise newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Enterprise query()
@@ -80,5 +85,25 @@ class Enterprise extends Model
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    /**
+     * 企业下面的全部成员们
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|User|\Illuminate\Database\Query\Builder
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    /**
+     * 企业下面的全部管理员们
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|User|\Illuminate\Database\Query\Builder
+     */
+    public function managers()
+    {
+        return $this->hasMany(User::class)->permission(Permission::findByName('maanger', 'api'));
     }
 }

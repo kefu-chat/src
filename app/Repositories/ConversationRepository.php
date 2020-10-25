@@ -252,7 +252,14 @@ class ConversationRepository
     public function terminateTimeout(Conversation $conversation)
     {
         $message = null;
-        $user = $conversation->user ?? $conversation->institution->users->random();
+        $user = $conversation->user;
+        if (!$user) {
+            if ($conversation->institution->users->count()) {
+                $user = $conversation->institution->users->random();
+            } else {
+                $user = $conversation->institution->enterprise->managers->random();
+            }
+        }
 
         /**
          * @var MessageRepository $messageRepository
