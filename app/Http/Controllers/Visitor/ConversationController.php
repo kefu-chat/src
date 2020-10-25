@@ -24,6 +24,26 @@ class ConversationController extends Controller
     use Messagingable;
 
     /**
+     * 获取网站配置
+     *
+     * @param Institution $institution
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getConfig(Institution $institution, Request $request)
+    {
+        $institution->greeter = $institution->users->random();
+        $institution->setVisible([
+            'name',
+            'terminate_manual',
+            'terminate_timeout',
+            'greeting_message',
+            'theme',
+            'greeter',
+        ]);
+        return response()->jsonp($request->input('callback'), $institution);
+    }
+
+    /**
      * 初始化访客和会话
      *
      * @param Request $request
@@ -43,7 +63,13 @@ class ConversationController extends Controller
             'avatar' => ['nullable', 'string'],
             'memo' => ['nullable', 'string'],
             'address' => ['nullable', 'string'],
-            'userAgent' => ['required', 'string',],
+            'userAgent' => ['required', 'string', function ($column, $value) {
+                if (Str::contains($value, config('blacklist.userAgent'))) {
+                    throw ValidationException::withMessages([
+                        'userAgent' => '非法请求',
+                    ]);
+                }
+            },],
             'languages' => ['required', 'array',],
             'url' => ['required', 'string',],
             'title' => ['nullable', 'string',],
@@ -82,9 +108,15 @@ class ConversationController extends Controller
                 goto init;
             }
         }
+        if (!$visitor) {
+            abort(404);
+        }
         $conversation = $visitor->conversations()->latest('id')->first();
         if (!$conversation) {
             $conversation = $conversationRepository->initConversation($visitor, $ip, $url, $userAgent, $languages, $title, $referer);
+        }
+        if (!$conversation) {
+            abort(404);
         }
         if ($reopen) {
             $conversationRepository->reopen($conversation, $visitor);

@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Asm89\Stack\CorsService;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Arr;
@@ -28,6 +29,29 @@ class Handler extends ExceptionHandler
         'password',
         'password_confirmation',
     ];
+
+    /**
+     * Prepare a JSON response for the given exception.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $e
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function prepareJsonResponse($request, Throwable $e)
+    {
+        /**
+         * @var CorsService $cors
+         */
+        $cors = app(CorsService::class);
+        $response = parent::prepareJsonResponse($request, $e);
+
+        if (!$response->headers->has('Access-Control-Allow-Origin')) {
+            // Add the CORS headers to the Response
+            $response = $cors->addActualRequestHeaders($response, $request);
+        }
+
+        return $response;
+    }
 
     /**
      * Prepare a response for the given exception.

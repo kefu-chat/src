@@ -27,7 +27,7 @@ class ConversationListTransformer extends AbstractTransformer
             'avatar',
             'address',
         ]);
-        $item->setAppends(['geo', 'color', 'icon',]);
+        $item->setAppends(['geo', 'color', 'icon', 'device',]);
         $item->setVisible([
             'id',
             'visitor_id',
@@ -47,6 +47,7 @@ class ConversationListTransformer extends AbstractTransformer
             'status',
             'online_status',
             'title',
+            'device',
         ]);
 
         return $item;

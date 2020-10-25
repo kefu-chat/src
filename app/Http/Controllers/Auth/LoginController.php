@@ -59,12 +59,15 @@ class LoginController extends Controller
 
         $token = (string) $this->guard()->getToken();
         $expiration = $this->guard()->getPayload()->get('exp');
+        $user = auth()->user();
+        $user->institution_id = $user->institution->public_id;
+        $user->enterprise_id = $user->enterprise->public_id;
 
         return response()->success([
             'token' => $token,
             'token_type' => 'Bearer',
             'expires_in' => $expiration - time(),
-            'user' => auth()->user(),
+            'user' => $user,
             'institution' => auth()->user()->institution,
         ]);
     }

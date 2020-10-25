@@ -19,7 +19,7 @@ class CreateEnterprises extends Migration
             $table->string('name')->nullable()->comment('企业名称');
             $table->string('serial')->nullable()->comment('公司注册号');
             $table->string('profile')->nullable()->comment('公司简介');
-            $table->string('country')->nullable()->comment('国家');
+            $table->enum('country', config('country'))->nullable()->default('CN')->comment('国家');
             $table->string('address')->nullable()->comment('地址');
             $table->string('phone')->nullable()->comment('联系电话');
             $table->text('geographic')->nullable()->comment('所在省市');

@@ -30,6 +30,12 @@ class ConversationRepository
                  */
                 return $query->where('online_status', true);
             })
+            ->when($type == 'offline', function ($query) {
+                /**
+                 * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                 */
+                return $query->where('online_status', false);
+            })
             ->count();
     }
 
@@ -57,6 +63,12 @@ class ConversationRepository
                  * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
                  */
                 return $query->where('online_status', true);
+            })
+            ->when($type == 'offline', function ($query) {
+                /**
+                 * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                 */
+                return $query->where('online_status', false);
             })
             ->latest()
             ->limit(20)
@@ -229,6 +241,41 @@ class ConversationRepository
         $conversation->user()->associate($user);
         $conversation->save();
         broadcast(new ConversationAssigning($conversation, $user));
+        return $conversation;
+    }
+
+    /**
+     * 超时终止对话
+     * @param Conversation $conversation
+     * @return Conversation
+     */
+    public function terminateTimeout(Conversation $conversation)
+    {
+        $message = null;
+        $user = $conversation->user;
+        if (!$user) {
+            if ($conversation->institution->users->count()) {
+                $user = $conversation->institution->users->random();
+            } else {
+                $user = $conversation->institution->enterprise->managers->random();
+            }
+        }
+
+        /**
+         * @var MessageRepository $messageRepository
+         */
+        $messageRepository = app(MessageRepository::class);
+        if ($conversation->messages()->count()) {
+            $message = $messageRepository->sendMessage($conversation, $user, true, false, Message::TYPE_TEXT, $conversation->institution->terminate_timeout);
+        }
+
+        $conversation->fill(['status' => Conversation::STATUS_CLOSED]);
+        $conversation->save();
+
+        if ($message) {
+            broadcast(new ConversationTerminated($conversation, $message));
+        }
+
         return $conversation;
     }
 
