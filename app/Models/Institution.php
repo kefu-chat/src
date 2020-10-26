@@ -38,6 +38,24 @@ use App\Models\Traits\HasPublicId;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Institution whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Institution whereWebsite($value)
  * @mixin \Eloquent
+ * @property string $greeting_message 打招呼文本
+ * @property int $enterprise_id 企业 ID
+ * @property string|null $noreply
+ * @property string|null $noreply_timeout 超时时间
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Conversation[] $conversations
+ * @property-read int|null $conversations_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Institution whereBillingName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Institution whereBillingPhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Institution whereEnterpriseId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Institution whereGreetingMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Institution whereNoreply($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Institution whereNoreplyTimeout($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Institution whereTechnicalName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Institution whereTechnicalPhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Institution whereTerminateManual($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Institution whereTerminateTimeout($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Institution whereTheme($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Institution whereTimeout($value)
  */
 class Institution extends AbstractModel
 {
@@ -55,6 +73,8 @@ class Institution extends AbstractModel
         'billing_phone',
         'theme',
         'timeout',
+        'noreply',
+        'noreply_timeout',
     ];
 
     /**

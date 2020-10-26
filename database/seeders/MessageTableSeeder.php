@@ -45,6 +45,7 @@ class MessageTableSeeder extends Seeder
 
             broadcast(new ConversationMessaging($message));
         }
+        $conversation->fill(['user_last_reply_at' => now()]);
 
         $count = mt_rand(1, 3);
         for ($i = 0; $i < $count; $i++) {
@@ -60,6 +61,8 @@ class MessageTableSeeder extends Seeder
 
             broadcast(new ConversationMessaging($message));
         }
+        $conversation->fill(['visitor_last_reply_at' => now()]);
+        $conversation->save();
 
         echo $conversation->id . PHP_EOL;
     }

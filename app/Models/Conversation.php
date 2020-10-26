@@ -62,6 +62,11 @@ use itbdw\Ip\IpLocation;
  * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereStatus($value)
  * @mixin \Eloquent
+ * @property-read mixed $device
+ * @property \Illuminate\Support\Carbon|null $visitor_last_reply_at 访客最后回复时间
+ * @property \Illuminate\Support\Carbon|null $user_last_reply_at 客服最后回复时间
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereUserLastReplyAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereVisitorLastReplyAt($value)
  */
 class Conversation extends AbstractModel
 {
@@ -69,6 +74,8 @@ class Conversation extends AbstractModel
 
     const STATUS_CLOSED = false;
     const STATUS_OPEN = true;
+    const NOREPLY_STATUS_NO = 0;
+    const NOREPLY_STATUS_YES = 1;
 
     protected $fillable = [
         'ip',
@@ -82,6 +89,9 @@ class Conversation extends AbstractModel
         'userAgent',
         'languages',
         'referer',
+        'noreply_status',
+        'visitor_last_reply_at',
+        'user_last_reply_at',
     ];
 
     protected $casts = [
@@ -94,6 +104,8 @@ class Conversation extends AbstractModel
         'first_reply_at',
         'last_reply_at',
         'ended_at',
+        'visitor_last_reply_at',
+        'user_last_reply_at',
     ];
 
     /**

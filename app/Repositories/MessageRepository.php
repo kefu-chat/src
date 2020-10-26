@@ -60,6 +60,15 @@ class MessageRepository
         $message->save();
 
         $conversation->fill(['last_reply_at' => now()]);
+        if (get_class($user) == User::class) {
+            $conversation->fill([
+                'user_last_reply_at' => now(),
+            ]);
+        } else if (get_class($user) == Visitor::class) {
+            $conversation->fill([
+                'visitor_last_reply_at' => now(),
+            ]);
+        }
         $conversation->save();
 
         broadcast(new ConversationMessaging($message));
