@@ -21,7 +21,7 @@ class CreateConversations extends Migration
             $table->string('ip', 64)->index()->comment('访客 IP');
             $table->string('url')->nullable()->comment('从那个页面来');
             $table->string('title')->nullable()->comment('页面抬头');
-            $table->string('userAgent')->nullable()->comment('浏览器');
+            $table->text('userAgent')->nullable()->comment('浏览器');
             $table->string('languages')->nullable()->comment('语言');
             $table->string('referer')->nullable()->comment('从那个页面来');
             $table->tinyInteger('status')->index()->default(1)->comment('状态 1开启 0 关闭');
