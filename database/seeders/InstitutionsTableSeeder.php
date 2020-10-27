@@ -22,7 +22,7 @@ class InstitutionsTableSeeder extends Seeder
         $enterprise = Enterprise::latest('id')->first();
         $institution = new Institution([
             'name' => $generator->company,
-            'website' => $generator->url,
+            'website' => 'https://' . $generator->domainName,
         ]);
         $institution->enterprise()->associate($enterprise);
         $institution->save();
