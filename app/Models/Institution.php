@@ -59,6 +59,20 @@ use App\Models\Traits\HasPublicId;
  */
 class Institution extends AbstractModel
 {
+    const DEFAULT = [
+        'terminate_manual' => '本次对话已结束, 若您需要我们继续服务您可以重新打开咨询',
+        'terminate_timeout' => '900',
+        'greeting_message' => '您好, 请问有什么可以帮您的?',
+        'technical_name' => '技术联系人',
+        'technical_phone' => '',
+        'billing_name' => '财务联系人',
+        'billing_phone' => '',
+        'timeout' => '900',
+        'theme' => 'default',
+        'noreply' => '我们客服目前无法回复, 请留下您的 QQ、微信、E-mail 或者 手机联系方式, 我们会第一时间给您回复',
+        'noreply_timeout' => '60',
+    ];
+
     use HasPublicId, HasEnterprise;
 
     protected $fillable = [
