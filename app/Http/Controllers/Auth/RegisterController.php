@@ -3,21 +3,20 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Traits\ValidateCaptcha;
 use App\Models\Enterprise;
 use App\Models\Institution;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Models\Permission;
 
 class RegisterController extends Controller
 {
-    use RegistersUsers;
+    use RegistersUsers, ValidateCaptcha;
 
     /**
      * Create a new controller instance.
@@ -45,25 +44,6 @@ class RegisterController extends Controller
         return response()->json($user);
     }
 
-    public function validateCaptcha(array $data)
-    {
-        $captcha_answer = $data['captcha_answer'];
-        $captcha_challenge = $data['captcha_challenge'];
-
-        list($answer, $tk, $expires_timestamp) = decrypt($captcha_challenge);
-        if (strtolower($captcha_answer) != strtolower($answer)) {
-            throw ValidationException::withMessages([
-                'captcha_answer' => '验证码错误，请重试',
-            ]);
-        }
-
-        if (!Cache::forget('captcha_' . $tk)) {
-            throw ValidationException::withMessages([
-                'captcha_answer' => '验证码失效！请重新获取',
-            ]);
-        }
-    }
-
     /**
      * Get a validator for an incoming registration request.
      *
@@ -72,7 +52,11 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        $this->validateCaptcha($data);
+        $captcha_answer = $data['captcha_answer'];
+        $captcha_challenge = $data['captcha_challenge'];
+
+        $this->validateCaptcha($captcha_challenge, $captcha_answer);
+
         return Validator::make($data, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',

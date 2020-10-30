@@ -18,14 +18,15 @@ class CaptchaController extends Controller
     public function svg(Request $request)
     {
         $tk = Str::random();
+        $times = 5;
         $expires = now()->addMinute(10);
         $captcha = SVGCaptcha::getInstance(4, 100, 40, SVGCaptcha::EASY);
         list($answer, $svg) = $captcha->getSVGCaptcha();
 
-        Cache::put('captcha_' . $tk, $answer, $expires->diffInSeconds(now()));
+        Cache::put('captcha_' . $tk, $times, $expires->diffInSeconds(now()));
 
         return response()->success([
-            'captcha_image' => 'data:image/svg+xml;base64,' . base64_encode($svg),
+            'captcha_image' => str_replace([PHP_EOL, '  '], ' ', preg_replace('/[ ]+/', ' ', $svg)),
             'captcha_challenge' => encrypt([$answer, $tk, $expires->getTimestamp()]),
         ]);
     }

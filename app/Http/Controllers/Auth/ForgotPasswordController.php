@@ -3,12 +3,30 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Traits\ValidateCaptcha;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 
 class ForgotPasswordController extends Controller
 {
-    use SendsPasswordResetEmails;
+    use SendsPasswordResetEmails, ValidateCaptcha;
+
+    /**
+     * Validate the email for the given request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
+    protected function validateEmail(Request $request)
+    {
+        $request->validate([
+            'captcha_challenge' => 'required|string',
+            'captcha_answer' => 'required|string',
+            'email' => 'required|email',
+        ]);
+
+        $this->validateCaptcha($request->input('captcha_challenge'), $request->input('captcha_answer'));
+    }
 
     /**
      * Create a new controller instance.
