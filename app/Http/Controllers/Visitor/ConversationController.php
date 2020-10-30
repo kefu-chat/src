@@ -121,6 +121,7 @@ class ConversationController extends Controller
         if ($reopen) {
             $conversationRepository->reopen($conversation, $visitor);
         }
+        $conversationRepository->alive($conversation);
         $visitor_token = JWTAuth::fromUser($visitor);
 
         return response()->success([

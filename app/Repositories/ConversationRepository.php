@@ -11,6 +11,8 @@ use App\Models\Institution;
 use App\Models\Message;
 use App\Models\User;
 use App\Models\Visitor;
+use Illuminate\Database\Eloquent\MassAssignmentException;
+use InvalidArgumentException;
 
 class ConversationRepository
 {
@@ -226,6 +228,21 @@ class ConversationRepository
         //@TODO:
         broadcast(new VisitorIncoming($conversation));
 
+        return $conversation;
+    }
+
+    /**
+     * 访客在线了
+     *
+     * @param Conversation $conversation
+     * @return Conversation
+     */
+    public function alive(Conversation $conversation)
+    {
+        $conversation->fill([
+            'online_status' => true,
+        ]);
+        $conversation->save();
         return $conversation;
     }
 
