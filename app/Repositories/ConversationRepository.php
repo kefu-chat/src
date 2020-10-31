@@ -11,12 +11,9 @@ use App\Models\Institution;
 use App\Models\Message;
 use App\Models\User;
 use App\Models\Visitor;
-use Illuminate\Database\Eloquent\MassAssignmentException;
-use InvalidArgumentException;
 
 class ConversationRepository
 {
-
     /**
      * 统计网站下未打过招呼的会话个数
      * @param Institution $institution
