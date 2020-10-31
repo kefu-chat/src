@@ -48,6 +48,8 @@ class ClearEmptyVisitor extends Command
                 });
                 $visitor->delete();
             });
+
+            return true;
         });
         return 0;
     }

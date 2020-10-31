@@ -50,6 +50,8 @@ class TerminateTimeoutConversation extends Command
                     $conversationRepository = app(ConversationRepository::class);
                     $conversationRepository->terminateTimeout($conversation);
                 });
+
+                return true;
             });
 
         return 0;

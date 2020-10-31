@@ -40,10 +40,13 @@ class VisitorTimeout extends Command
             $echo_list = collect(Redis::connection('echo')->mget($channels->toArray()));
             $no_members_offline = $echo_list->filter(fn($res) => !$res || strlen($res) < 10);
             $has_members_offline = $echo_list->filter(fn($res) => $res && strlen($res) > 10 && count(collect(json_decode($res))->where('user_info.user_type_text', 'visitor')));
-            $offlines = $list->only($no_members_offline->keys()->merge($has_members_offline->keys())->toArray());
-            $offlines->each(function (Conversation $conversation) {
+            $offlines = $no_members_offline->keys()->merge($has_members_offline->keys());
+            $offlines->each(function ($key) use ($list) {
+                $conversation = $list[$key];
                 $conversation->offline($conversation->visitor);
             });
+
+            return true;
         });
         return 0;
     }

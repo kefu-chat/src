@@ -47,6 +47,8 @@ class CancelSubscriptionExpiredEnterprise extends Command
                 $enterprise->save();
                 //@TODO: 发送通知
             });
+
+            return true;
         });
         return 0;
     }

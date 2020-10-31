@@ -80,6 +80,8 @@ class ProcessConversationNoreply extends Command
                     $messageRepository = app(MessageRepository::class);
                     $messageRepository->sendMessage($conversation, $user, true, false, Message::TYPE_TEXT, $conversation->institution->noreply);
                 });
+
+                return true;
             });
 
         return 0;
