@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\URL;
 
 class VerifyEmail extends Notification
 {
+    const EXPIRES_TTL = 60 * 24;
+
     /**
      * Get the verification URL for the given notifiable.
      *
@@ -22,7 +24,7 @@ class VerifyEmail extends Notification
 
         $url = URL::temporarySignedRoute(
             'verification.verify',
-            Carbon::now()->addMinutes(60),
+            Carbon::now()->addMinutes(self::EXPIRES_TTL),
             ['user' => $notifiable->public_id]
         );
 

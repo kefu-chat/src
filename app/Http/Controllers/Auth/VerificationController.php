@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\VerifyEmail;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -30,6 +31,16 @@ class VerificationController extends Controller
      */
     public function verify(Request $request, User $user)
     {
+        $request->validate([
+            'expires' => 'required',
+        ]);
+
+        if (intval($request->input('expires')) < now()->subMinutes(VerifyEmail::EXPIRES_TTL)->getTimestamp()) {
+            return response()->json([
+                'status' => trans('verification.link_expired'),
+            ], 400);
+        }
+
         if (! URL::hasValidSignature($request)) {
             return response()->json([
                 'status' => trans('verification.invalid'),
