@@ -232,21 +232,6 @@ class ConversationRepository
     }
 
     /**
-     * 访客在线了
-     *
-     * @param Conversation $conversation
-     * @return Conversation
-     */
-    public function alive(Conversation $conversation)
-    {
-        $conversation->fill([
-            'online_status' => true,
-        ]);
-        $conversation->save();
-        return $conversation;
-    }
-
-    /**
      * 将会话转移给客服
      *
      * @param Conversation $conversation

@@ -74,6 +74,8 @@ class Conversation extends AbstractModel
 
     const STATUS_CLOSED = false;
     const STATUS_OPEN = true;
+    const STATUS_ONLINE = true;
+    const STATUS_OFFLINE = false;
     const NOREPLY_STATUS_NO = 0;
     const NOREPLY_STATUS_YES = 1;
 
@@ -194,6 +196,7 @@ class Conversation extends AbstractModel
             abort(404);
         }
         $this->fill(['online_status' => true,]);
+        $this->updateTimestamps();
         $this->save();
         return $this;
     }
