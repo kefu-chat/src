@@ -7,11 +7,27 @@
 |
 */
 
-Route::group(['middleware' => 'auth:api', 'as' => 'rocket.', 'prefix' => 'v1/',], function () {
-    Route::get('info', 'InfoController@info')->name('info'); //https://docs.rocket.chat/api/rest-api/methods/authentication/login
-    Route::post('login', 'InfoController@info')->name('login'); //https://docs.rocket.chat/api/rest-api/methods/authentication/login
+Route::group(['as' => 'rocket.',], function () {
+    Route::get('info', 'InfoController@info')->name('info');
 
+    Route::group(['prefix' => 'v1/',], function () {
+        Route::get('info', 'InfoController@info')->name('info'); //https://docs.rocket.chat/api/rest-api/methods/authentication/login
+        Route::get('commands.list', 'InfoController@commandsList')->name('commands.list');
+        Route::get('roles.list', 'InfoController@rolesList')->name('roles.list');
+        Route::get('emoji-custom.list', 'InfoController@emojiCustomList')->name('emoji-custom.list');
+
+
+    });
+});
+
+Route::group(['middleware' =>'guest:api', 'as' => 'rocket.', 'prefix' => 'v1/',], function () {
+    Route::post('login', 'InfoController@login')->name('login'); //https://docs.rocket.chat/api/rest-api/methods/authentication/login
+});
+
+Route::group(['middleware' => 'auth:api', 'as' => 'rocket.', 'prefix' => 'v1/',], function () {
     Route::group(['as' => 'channels.', 'prefix' => 'channels.',], function () {
+        Route::get('list', 'ChannelController@list')->name('list'); //hhttps://docs.rocket.chat/api/rest-api/methods/channels/list
+        Route::get('list.joined', 'ChannelController@listJoined')->name('listJoined'); //hhttps://docs.rocket.chat/api/rest-api/methods/channels/list-joined
         Route::get('info', 'ChannelController@info')->name('info'); //https://docs.rocket.chat/api/rest-api/methods/channels/info
         Route::get('members', 'ChannelController@members')->name('members'); //https://docs.rocket.chat/api/rest-api/methods/channels/members
         Route::get('messages', 'ChannelController@messages')->name('messages'); //https://docs.rocket.chat/api/rest-api/methods/channels/messages
@@ -34,7 +50,4 @@ Route::group(['middleware' => 'auth:api', 'as' => 'rocket.', 'prefix' => 'v1/',]
         Route::get('getStatus', 'UserController@getStatus')->name('getStatus'); //https://docs.rocket.chat/api/rest-api/methods/users/getstatus
         Route::get('getAvatar', 'UserController@getAvatar')->name('getAvatar'); //https://docs.rocket.chat/api/rest-api/methods/users/getavatar
     });
-});
-
-Route::group(['middleware' => 'guest:api'], function () {
 });
