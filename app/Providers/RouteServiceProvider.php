@@ -27,6 +27,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapVisitorRoutes();
         $this->mapChatRoutes();
         $this->mapBroadcastingRoutes();
+        $this->mapRocketRoutes();
 
         // $this->mapWebRoutes();
 
@@ -90,6 +91,21 @@ class RouteServiceProvider extends ServiceProvider
         ->middleware('api')
         ->namespace($this->namespace)
             ->group(base_path('routes/chat.php'));
+    }
+
+    /**
+     * Define the "chat" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapRocketRoutes()
+    {
+        Route::prefix('api')
+        ->middleware('api')
+        ->namespace($this->namespace . '\\Rocket')
+            ->group(base_path('routes/rocket.php'));
     }
 
     /**
