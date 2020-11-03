@@ -102,8 +102,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapRocketRoutes()
     {
-        Route::prefix('api')
-        ->middleware('api')
+        Route::middleware('api')
         ->namespace($this->namespace . '\\Rocket')
             ->group(base_path('routes/rocket.php'));
     }
