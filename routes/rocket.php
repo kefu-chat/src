@@ -32,7 +32,12 @@ Route::group(['as' => 'rocket.',], function () {
 });
 
 Route::group(['middleware' =>'guest:api', 'as' => 'rocket.', 'prefix' => 'api/v1/',], function () {
-    Route::post('login', 'InfoController@login')->name('login'); //https://docs.rocket.chat/api/rest-api/methods/authentication/login
+    Route::post('login', 'UserController@login')->name('login'); //https://docs.rocket.chat/api/rest-api/methods/authentication/login
+
+    Route::group(['as' => 'users.',], function () {
+        Route::post('register', 'UserController@register')->name('register'); //https://docs.rocket.chat/api/rest-api/methods/users/register
+        Route::post('forgotPassword', 'UserController@forgotPassword')->name('forgotPassword'); //https://docs.rocket.chat/api/rest-api/methods/users/forgotpassword
+    });
 });
 
 Route::group(['middleware' => 'auth:api', 'as' => 'rocket.', 'prefix' => 'api/v1/',], function () {
@@ -58,8 +63,6 @@ Route::group(['middleware' => 'auth:api', 'as' => 'rocket.', 'prefix' => 'api/v1
     });
 
     Route::group(['as' => 'users.',], function () {
-        Route::post('users.register', 'UserController@register')->name('register'); //https://docs.rocket.chat/api/rest-api/methods/users/register
-        Route::post('users.forgotPassword', 'UserController@forgotPassword')->name('forgotPassword'); //https://docs.rocket.chat/api/rest-api/methods/users/forgotpassword
         Route::get('users.info', 'UserController@info')->name('info'); //https://docs.rocket.chat/api/rest-api/methods/users/info
         Route::post('users.update', 'UserController@update')->name('update'); //https://docs.rocket.chat/api/rest-api/methods/users/update
         Route::post('users.updateOwnBasicInfo', 'UserController@updateOwnBasicInfo')->name('updateOwnBasicInfo'); //https://docs.rocket.chat/api/rest-api/methods/users/updateOwnBasicInfo
