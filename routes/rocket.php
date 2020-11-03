@@ -35,8 +35,8 @@ Route::group(['middleware' =>'guest:api', 'as' => 'rocket.', 'prefix' => 'api/v1
     Route::post('login', 'UserController@login')->name('login'); //https://docs.rocket.chat/api/rest-api/methods/authentication/login
 
     Route::group(['as' => 'users.',], function () {
-        Route::post('register', 'UserController@register')->name('register'); //https://docs.rocket.chat/api/rest-api/methods/users/register
-        Route::post('forgotPassword', 'UserController@forgotPassword')->name('forgotPassword'); //https://docs.rocket.chat/api/rest-api/methods/users/forgotpassword
+        Route::post('users.register', 'UserController@register')->name('register'); //https://docs.rocket.chat/api/rest-api/methods/users/register
+        Route::post('users.forgotPassword', 'UserController@forgotPassword')->name('forgotPassword'); //https://docs.rocket.chat/api/rest-api/methods/users/forgotpassword
     });
 });
 

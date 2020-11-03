@@ -8,6 +8,9 @@ class MethodCallController extends RocketBaseController
 {
     public function licenseGetModules(Request $request)
     {
-        return '{"message":"{\"msg\":\"result\",\"result\":[]}","success":true}';
+        return response()->json([
+            'message' => '{"msg":"result","result":[]}',
+            'success' => true,
+        ]);
     }
 }
