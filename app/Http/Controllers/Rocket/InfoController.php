@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Rocket;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class InfoController extends Controller
+class InfoController extends RocketBaseController
 {
     public function info(Request $request)
     {
@@ -19,74 +19,74 @@ class InfoController extends Controller
 
     public function login(Request $request)
     {
-        return '{
-            "status": "success",
-            "data": {
-                "userId": "ZoDTNEi6yHkn7hTQc",
-                "authToken": "aIPZH9uTQO0d4N4GAvMrqow5y0V-qLB0_QC-JxmQCEN",
-                "me": {
-                    "_id": "ZoDTNEi6yHkn7hTQc",
-                    "services": {
-                        "password": {
-                            "bcrypt": "$2b$10$t07WtgGGpqbtSj.PpCx2GebHdaMhcoQnVCVpqyhNvnLhs/VNn4ihS"
-                        },
-                        "email2fa": {
-                            "enabled": true
-                        }
-                    },
-                    "emails": [{
-                        "address": "88436812@qq.com",
-                        "verified": false
-                    }],
-                    "status": "offline",
-                    "active": true,
-                    "_updatedAt": "2020-11-03T02:17:15.730Z",
-                    "roles": ["admin"],
-                    "name": "admin",
-                    "username": "admin",
-                    "statusConnection": "offline",
-                    "utcOffset": 8,
-                    "settings": {
-                        "preferences": {
-                            "enableAutoAway": true,
-                            "idleTimeLimit": 300,
-                            "desktopNotificationRequireInteraction": false,
-                            "audioNotifications": "mentions",
-                            "desktopNotifications": "all",
-                            "mobileNotifications": "all",
-                            "unreadAlert": true,
-                            "useEmojis": true,
-                            "convertAsciiEmoji": true,
-                            "autoImageLoad": true,
-                            "saveMobileBandwidth": true,
-                            "collapseMediaByDefault": false,
-                            "hideUsernames": false,
-                            "hideRoles": false,
-                            "hideFlexTab": false,
-                            "hideAvatars": false,
-                            "sidebarGroupByType": true,
-                            "sidebarViewMode": "medium",
-                            "sidebarHideAvatar": false,
-                            "sidebarShowUnread": false,
-                            "sidebarSortby": "activity",
-                            "showMessageInMainThread": false,
-                            "sidebarShowFavorites": true,
-                            "sendOnEnter": "normal",
-                            "messageViewMode": 0,
-                            "emailNotificationMode": "mentions",
-                            "newRoomNotification": "door",
-                            "newMessageNotification": "chime",
-                            "muteFocusedConversations": true,
-                            "notificationsSoundVolume": 100,
-                            "sidebarShowDiscussion": true,
-                            "language": "zh-CN"
-                        }
-                    },
-                    "language": "zh-CN",
-                    "avatarUrl": "https://debug.rocket.chat/avatar/admin"
-                }
-            }
-        }';
+        return response()->json([
+            "status" => "success",
+            "data" => [
+                "userId" => "ZoDTNEi6yHkn7hTQc",
+                "authToken" => "aIPZH9uTQO0d4N4GAvMrqow5y0V-qLB0_QC-JxmQCEN",
+                "me" => [
+                    "_id" => "ZoDTNEi6yHkn7hTQc",
+                    "services" => [
+                        "password" => [
+                            "bcrypt" => '$2y$10$O1LsztJ7iF9Vu4tsnaoOuuYz6XR9YSmsC7LzuSy4qOde9Z1e0.mbq',
+                        ],
+                        "email2fa" => [
+                            "enabled" => true
+                        ]
+                    ],
+                    "emails" => [[
+                        "address" => "88436812@qq.com",
+                        "verified" => false
+                    ]],
+                    "status" => "offline",
+                    "active" => true,
+                    "_updatedAt" => "2020-11-03T02:17:15.730Z",
+                    "roles" => ["admin"],
+                    "name" => "admin",
+                    "username" => "admin",
+                    "statusConnection" => "offline",
+                    "utcOffset" => 8,
+                    "settings" => [
+                        "preferences" => [
+                            "enableAutoAway" => true,
+                            "idleTimeLimit" => 300,
+                            "desktopNotificationRequireInteraction" => false,
+                            "audioNotifications" => "mentions",
+                            "desktopNotifications" => "all",
+                            "mobileNotifications" => "all",
+                            "unreadAlert" => true,
+                            "useEmojis" => true,
+                            "convertAsciiEmoji" => true,
+                            "autoImageLoad" => true,
+                            "saveMobileBandwidth" => true,
+                            "collapseMediaByDefault" => false,
+                            "hideUsernames" => false,
+                            "hideRoles" => false,
+                            "hideFlexTab" => false,
+                            "hideAvatars" => false,
+                            "sidebarGroupByType" => true,
+                            "sidebarViewMode" => "medium",
+                            "sidebarHideAvatar" => false,
+                            "sidebarShowUnread" => false,
+                            "sidebarSortby" => "activity",
+                            "showMessageInMainThread" => false,
+                            "sidebarShowFavorites" => true,
+                            "sendOnEnter" => "normal",
+                            "messageViewMode" => 0,
+                            "emailNotificationMode" => "mentions",
+                            "newRoomNotification" => "door",
+                            "newMessageNotification" => "chime",
+                            "muteFocusedConversations" => true,
+                            "notificationsSoundVolume" => 100,
+                            "sidebarShowDiscussion" => true,
+                            "language" => "zh-CN"
+                        ]
+                    ],
+                    "language" => "zh-CN",
+                    "avatarUrl" => "https://" . $this->getApiDomain() . "/avatar/admin"
+                ]
+            ]
+        ]);
     }
 
     public function commandsList()

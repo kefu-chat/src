@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Rocket;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UserController extends RocketBaseController
 {
     public function presence(Request $request)
     {

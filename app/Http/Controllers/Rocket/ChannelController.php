@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Rocket;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ChannelController extends Controller
+class ChannelController extends RocketBaseController
 {
     public function list(Request $request)
     {
