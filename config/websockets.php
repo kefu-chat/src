@@ -30,7 +30,7 @@ return [
             'path' => env('PUSHER_APP_PATH'),
             'capacity' => null,
             'enable_client_messages' => true,
-            'enable_statistics' => true,
+            'enable_statistics' => env('LARAVEL_WEBSOCKETS_ENABLE_STATISTICS', false),
         ],
     ],
 
@@ -48,7 +48,6 @@ return [
      * Leave this empty if you want to accept requests from all hosts.
      */
     'allowed_origins' => [
-        '*',
     ],
 
     /*
