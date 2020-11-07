@@ -37,6 +37,7 @@ class VisitorTimeout extends Command
          */
         $query->with(['visitor',])->where('online_status', true)->chunk(100, function (Collection $list) {
             $channels = $list->pluck('public_id')->map(fn($id) => 'presence-conversation.' . $id . ':members');
+            // TODO: 重写校验离线的逻辑
             $echo_list = collect(Redis::connection('echo')->mget($channels->toArray()));
             $no_members_offline = $echo_list->filter(fn($res) => !$res || strlen($res) < 10);
             $has_members_offline = $echo_list->filter(fn($res) => $res && strlen($res) > 10 && count(collect(json_decode($res))->where('user_info.user_type_text', 'visitor')));

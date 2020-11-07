@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('clear:empty-visitor')->dailyAt('01:00')->withoutOverlapping();
         $schedule->command('terminate:timeout-conversation')->everyMinute()->withoutOverlapping(300);
         $schedule->command('conversation:noreply')->everyMinute()->withoutOverlapping(300);
-        $schedule->command('visitor:timeout')->hourly()->withoutOverlapping(3300);
+        // $schedule->command('visitor:timeout')->hourly()->withoutOverlapping(3300);
     }
 
     /**
