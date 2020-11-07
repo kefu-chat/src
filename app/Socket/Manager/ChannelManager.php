@@ -39,6 +39,9 @@ class ChannelManager extends ArrayChannelManager
         $each = collect(Arr::get($this->channels, $connection->app->id, []))->each;
 
         collect(Arr::get($this->channels, $connection->app->id, []))->each(function ($channel) use ($connection) {
+            if (!method_exists($channel, 'getName') || !method_exists($channel, 'getUsers') || !method_exists($channel, 'getSockets')) {
+                return;
+            }
             /**
              * @var PrivateChannel|PresenceChannel $channel
              */

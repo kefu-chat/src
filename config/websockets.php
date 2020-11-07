@@ -32,6 +32,17 @@ return [
             'enable_client_messages' => true,
             'enable_statistics' => env('LARAVEL_WEBSOCKETS_ENABLE_STATISTICS', false),
         ],
+        [
+            'id' => 'websocket',
+            'name' => 'realtime-api',
+            'key' => 'websocket',
+            'secret' => env('PUSHER_APP_SECRET'),
+            'path' => '/',
+            'capacity' => null,
+            'enable_client_messages' => true,
+            'enable_statistics' => env('LARAVEL_WEBSOCKETS_ENABLE_STATISTICS', false),
+        ],
+
     ],
 
     /*
