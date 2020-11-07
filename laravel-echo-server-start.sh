@@ -1,9 +1,1 @@
-cw=$(pwd) && \
-mkdir -p ../laravel-echo-server && \
-cd ../laravel-echo-server && \
-git init && \
-git pull https://github.com/fastsupport-cn/laravel-echo-server.git master && \
-npm i && \
-tsc && \
-cd "$cw" && \
-node ../laravel-echo-server/bin/server.js start
+php artisan websocket:serve --host=127.0.0.1 --port=6003
