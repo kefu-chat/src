@@ -43,6 +43,7 @@ class ChannelManager extends ArrayChannelManager
              * @var PrivateChannel|PresenceChannel $channel
              */
             if (Arr::get($channel->getSubscribedConnections(), $connection->socketId)) {
+                // TODO: Log if fail
                 Http::post(route('broadcasting.conversation.leavel'), [
                     'channel_name' => $channel->getName(),
                     'member' => Arr::get($channel->getUsers(), Arr::get($channel->getSockets(), $connection->socketId)),
