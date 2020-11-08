@@ -46,11 +46,12 @@ Route::group(['middleware' => 'auth:api', 'as' => 'rocket.', 'prefix' => 'api/v1
     });
 
     Route::group(['as' => 'channels.',], function () {
-        Route::get('channels.list', 'ChannelController@list')->name('list'); //hhttps://docs.rocket.chat/api/rest-api/methods/channels/list
-        Route::get('channels.list.joined', 'ChannelController@listJoined')->name('listJoined'); //hhttps://docs.rocket.chat/api/rest-api/methods/channels/list-joined
+        Route::get('channels.list', 'ChannelController@list')->name('list'); //https://docs.rocket.chat/api/rest-api/methods/channels/list
+        Route::get('channels.list.joined', 'ChannelController@listJoined')->name('listJoined'); //https://docs.rocket.chat/api/rest-api/methods/channels/list-joined
         Route::get('channels.info', 'ChannelController@info')->name('info'); //https://docs.rocket.chat/api/rest-api/methods/channels/info
         Route::get('channels.members', 'ChannelController@members')->name('members'); //https://docs.rocket.chat/api/rest-api/methods/channels/members
         Route::get('channels.messages', 'ChannelController@messages')->name('messages'); //https://docs.rocket.chat/api/rest-api/methods/channels/messages
+        Route::get('channels.history', 'ChannelController@history')->name('history'); //https://docs.rocket.chat/api/rest-api/methods/channels/history
         Route::get('channels.moderators', 'ChannelController@moderators')->name('moderators'); //https://docs.rocket.chat/api/rest-api/methods/channels/moderators
         Route::post('channels.join', 'ChannelController@join')->name('join'); //https://docs.rocket.chat/api/rest-api/methods/channels/join
         Route::post('channels.leave', 'ChannelController@leave')->name('leave'); //https://docs.rocket.chat/api/rest-api/methods/channels/leave
@@ -58,8 +59,29 @@ Route::group(['middleware' => 'auth:api', 'as' => 'rocket.', 'prefix' => 'api/v1
         Route::post('channels.kick', 'ChannelController@kick')->name('kick'); //https://docs.rocket.chat/api/rest-api/methods/channels/kick
     });
 
+    Route::group(['as' => 'groups.',], function () {
+        Route::get('groups.list', 'GroupController@list')->name('list'); //https://docs.rocket.chat/api/rest-api/methods/groups/list
+        Route::get('groups.list.all', 'GroupController@listAll')->name('listall'); //https://docs.rocket.chat/api/rest-api/methods/groups/listall
+        Route::get('groups.info', 'GroupController@info')->name('info'); //https://docs.rocket.chat/api/rest-api/methods/groups/info
+        Route::get('groups.members', 'GroupController@members')->name('members'); //https://docs.rocket.chat/api/rest-api/methods/groups/members
+        Route::get('groups.messages', 'GroupController@messages')->name('messages'); //https://docs.rocket.chat/api/rest-api/methods/groups/messages
+        Route::get('groups.history', 'GroupController@history')->name('history'); //https://docs.rocket.chat/api/rest-api/methods/groups/history
+        Route::get('groups.moderators', 'GroupController@moderators')->name('moderators'); //https://docs.rocket.chat/api/rest-api/methods/groups/moderators
+        Route::post('groups.create', 'GroupController@create')->name('create'); //https://docs.rocket.chat/api/rest-api/methods/groups/create
+        Route::post('groups.delete', 'GroupController@delete')->name('delete'); //https://docs.rocket.chat/api/rest-api/methods/groups/delete
+        Route::post('groups.rename', 'GroupController@rename')->name('rename'); //https://docs.rocket.chat/api/rest-api/methods/groups/rename
+        Route::post('groups.leave', 'GroupController@leave')->name('leave'); //https://docs.rocket.chat/api/rest-api/methods/groups/leave
+        Route::post('groups.invite', 'GroupController@invite')->name('invite'); //https://docs.rocket.chat/api/rest-api/methods/groups/invite
+        Route::post('groups.kick', 'GroupController@kick')->name('kick'); //https://docs.rocket.chat/api/rest-api/methods/groups/kick
+    });
+
+    Route::group(['as' => 'chat.',], function () {
+        Route::get('chat.syncMessages', 'ChatController@syncMessages')->name('syncMessages'); //https://docs.rocket.chat/api/rest-api/methods/chat/syncMessages
+        Route::get('chat.sendMessages', 'ChatController@sendMessages')->name('sendMessages'); //https://docs.rocket.chat/api/rest-api/methods/chat/sendMessages
+    });
+
     Route::group(['as' => 'rooms.',], function () {
-        Route::get('rooms.get', 'RoomController@get')->name('get'); //hhttps://docs.rocket.chat/api/rest-api/methods/rooms/get
+        Route::get('rooms.get', 'RoomController@get')->name('get'); //https://docs.rocket.chat/api/rest-api/methods/rooms/get
     });
 
     Route::group(['as' => 'users.',], function () {
@@ -76,6 +98,7 @@ Route::group(['middleware' => 'auth:api', 'as' => 'rocket.', 'prefix' => 'api/v1
 
     Route::group(['as' => 'subscriptions.',], function () {
         Route::get('subscriptions.get', 'SubscriptionController@get')->name('get'); //https://docs.rocket.chat/api/rest-api/methods/subscriptions/get
+        Route::post('subscriptions.read', 'SubscriptionController@read')->name('read'); //https://docs.rocket.chat/api/rest-api/methods/subscriptions/read
     });
 
     Route::group(['as' => 'permissions.',], function () {
