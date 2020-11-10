@@ -7,6 +7,10 @@
 |
 */
 
+use BeyondCode\LaravelWebSockets\Facades\WebSocketsRouter;
+
+WebSocketsRouter::webSocket('/websocket', \App\Socket\Handler\RocketHandler::class);
+
 Route::group(['as' => 'rocket.',], function () {
     Route::group(['prefix' => 'api',], function () {
         Route::get('info', 'InfoController@info')->name('info');
