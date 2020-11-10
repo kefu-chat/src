@@ -2,6 +2,7 @@
 
 namespace App\Socket\Handler;
 
+use ArrayObject;
 use BeyondCode\LaravelWebSockets\Apps\App;
 use BeyondCode\LaravelWebSockets\WebSockets\WebSocketHandler;
 use Illuminate\Support\Str;
@@ -33,28 +34,29 @@ class RocketHandler extends WebSocketHandler
          * @var \App\Socket\Message\IncommingMessage $payload
          */
         $payload = json_decode($msg->getPayload());
+        payload_route:
         switch(data_get($payload, 'msg')) {
             case 'connect':
-                $connection->send(['msg' => 'connected', 'server_id' => '0', 'session' => Str::random(),]);
+                $connection->send(json_encode(['msg' => 'connected', 'server_id' => '0', 'session' => Str::random(),]));
                 break;
 
             case 'ping':
-                $connection->send(['msg' => 'pong']);
+                $connection->send(json_encode(['msg' => 'pong']));
                 break;
 
             case 'sub':
                 break;
 
+            case 'login':
+                $connection->send(json_encode(['msg' => 'result', 'result' => []]));
+                break;
+
             case 'method':
-                switch(data_get($payload, 'method')) {
-                    case 'connect':
-                        break;
-
-                    case 'login':
-                        $connection->send(['msg' => 'result', 'id' => $payload->id, 'result' => []]);
-                        break;
-                }
-
+                $params = data_get($payload, 'params');
+                $payload = new ArrayObject([
+                    'msg' => data_get($payload, 'method'),
+                ] + $params);
+                goto payload_route;
                 break;
 
         }
