@@ -18,8 +18,10 @@ use App\Models\Traits\HasPublicId;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Conversation $conversation
+ * @property-read User|Visitor $sender
+ * @property-read string $public_id
  * @property-read string $sender_type_text
- * @property User|Visitor $sender
+ * @property-read string $message_type_text_english text 或者 image
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message query()
@@ -30,6 +32,11 @@ use App\Models\Traits\HasPublicId;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereVisitorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereInstitutionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereOptions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereSenderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereSenderType($value)
+ * @mixin \Eloquent
  */
 class Message extends AbstractModel
 {
@@ -40,6 +47,10 @@ class Message extends AbstractModel
     const TYPE_MAP = [
         self::TYPE_TEXT => '文本消息',
         self::TYPE_IMAGE => '图片消息',
+    ];
+    const TYPE_MAP_ENGLISH = [
+        self::TYPE_TEXT => 'text',
+        self::TYPE_IMAGE => 'image',
     ];
     const SENDER_TYPE_MAP = [
         User::class => 'user',
@@ -69,5 +80,10 @@ class Message extends AbstractModel
     public function getSenderTypeTextAttribute()
     {
         return data_get(self::SENDER_TYPE_MAP, $this->sender_type, $this->sender_type);
+    }
+
+    public function getMessageTypeTextEnglishAttribute()
+    {
+        return data_get(self::TYPE_MAP_ENGLISH, $this->type, $this->type);
     }
 }

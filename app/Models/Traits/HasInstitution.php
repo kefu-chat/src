@@ -7,7 +7,8 @@ use App\Models\Institution;
 /**
  * 机构的
  *
- * @property Institution $institution
+ * @property int $institution_id 组织 ID
+ * @property-read Institution $institution
  */
 trait HasInstitution
 {

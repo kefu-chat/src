@@ -58,6 +58,6 @@ class NewMessage extends Notification implements ShouldQueue
             //->requireInteraction()
             ->tag($this->notification->sender->name . '(#' . $this->notification->conversation->public_id . ')')
             ->vibrate(1)
-            ->{$this->notification->type === Message::TYPE_IMAGE ? 'image' : 'body'}($this->notification->content);
+            ->{$this->notification->message_type_text_english}($this->notification->content);
     }
 }

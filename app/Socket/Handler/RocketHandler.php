@@ -35,7 +35,7 @@ class RocketHandler extends WebSocketHandler
          */
         $payload = json_decode($msg->getPayload());
         payload_route:
-        switch(data_get($payload, 'msg')) {
+        switch (data_get($payload, 'msg')) {
             case 'connect':
                 $connection->send(json_encode(['msg' => 'connected', 'server_id' => '0', 'session' => Str::random(),]));
                 break;
@@ -58,7 +58,6 @@ class RocketHandler extends WebSocketHandler
                 ] + $params);
                 goto payload_route;
                 break;
-
         }
     }
 }
