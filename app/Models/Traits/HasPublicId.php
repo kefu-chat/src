@@ -33,7 +33,7 @@ trait HasPublicId
 
     /**
      * 哈希ID
-     * @return stirng
+     * @return string
      */
     public function getPublicIdAttribute()
     {
