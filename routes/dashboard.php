@@ -17,6 +17,7 @@ Route::group(['middleware' => 'guest:api'], function () {
     Route::post('register', 'Auth\RegisterController@register');
     Route::post('captcha', 'CaptchaController@svg');
 
+    Route::post('login-via-miniapp', 'Auth\LoginController@loginViaMiniApp')->name('login.via.miniapp');
     Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
     Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
