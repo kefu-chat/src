@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Exceptions\VerifyEmailException;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\LoginViaMiniapp;
+use App\Models\UserSocialite;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -13,6 +14,8 @@ use Illuminate\Validation\ValidationException;
 class LoginController extends Controller
 {
     use AuthenticatesUsers, LoginViaMiniapp;
+
+    protected $socialiteType = UserSocialite::TYPE_EMAIL;
 
     /**
      * Create a new controller instance.
@@ -106,5 +109,15 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         $this->guard()->logout();
+    }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return $this->socialiteType;
     }
 }
