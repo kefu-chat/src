@@ -17,11 +17,7 @@ class SocialiteUserProvider extends EloquentUserProvider
      */
     public function retrieveByCredentials(array $credentials)
     {
-        if (
-            empty($credentials) ||
-            (count($credentials) === 1 &&
-                Str::contains($this->firstCredentialKey($credentials), 'password'))
-        ) {
+        if (empty($credentials) || (count($credentials) === 1 && Str::contains($this->firstCredentialKey($credentials), 'password'))) {
             return;
         }
 
@@ -60,8 +56,7 @@ class SocialiteUserProvider extends EloquentUserProvider
         $model = $this->createModel();
 
         $retrievedModel = $this->newModelQuery($model)->whereHas('userLogins', fn (Builder $query) =>
-            $query->where('type', $model->getAuthIdentifierName())->where('account', $identifier)
-        )->first();
+        $query->where('type', $model->getAuthIdentifierName())->where('account', $identifier))->first();
 
         if (!$retrievedModel) {
             return;
