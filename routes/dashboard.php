@@ -79,4 +79,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('institution/{institution}/employee/{user}/activate', 'Personnel\EmployeeController@activate')->name('employee.activate')->middleware(['can:manager']);
     Route::post('institution/{institution}/employee/{user}/change-password', 'Personnel\EmployeeController@changePassword')->name('employee.change-password')->middleware(['can:manager']);
     Route::post('institution/{institution}/employee/{user}/change-permission', 'Personnel\EmployeeController@changePermission')->name('employee.change-permission')->middleware(['can:manager']);
+
+    Route::get('security/binding/{type}', 'Settings\SecurityController@bind')->name('security.bind');
 });
