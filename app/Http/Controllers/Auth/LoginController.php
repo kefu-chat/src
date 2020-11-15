@@ -64,6 +64,10 @@ class LoginController extends Controller
         $user->institution_id = $user->institution->public_id;
         $user->enterprise_id = $user->enterprise->public_id;
 
+        foreach ($user->userSocialites as $socialite) {
+            $user->{$socialite->type} = $socialite->account;
+        }
+
         return response()->success([
             'token' => $token,
             'token_type' => 'Bearer',

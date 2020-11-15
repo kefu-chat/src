@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Personnel;
 
 use App\Http\Controllers\Controller;
+use App\Models\UserSocialite;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -15,8 +16,13 @@ class UserController extends Controller
      */
     public function info(Request $request)
     {
+        $user = $this->user;
+        foreach ($user->userSocialites as $socialite) {
+            $user->{$socialite->type} = $socialite->account;
+        }
+
         return response()->success([
-            'user' => $this->user,
+            'user' => $user,
             'institution' => $this->user->institution,
         ]);
     }

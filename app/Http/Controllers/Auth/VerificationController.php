@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserSocialite;
 use App\Notifications\VerifyEmail;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
@@ -53,7 +54,9 @@ class VerificationController extends Controller
             ], 400);
         }
 
-        $user->markEmailAsVerified();
+        $socialite = $user->userSocialites->where('type', UserSocialite::TYPE_EMAIL)->first();
+        $socialite->fill(['verified_at' => now()]);
+        $socialite->save();
 
         event(new Verified($user));
 
@@ -75,7 +78,7 @@ class VerificationController extends Controller
         /**
          * @var User $user
          */
-        $user = User::where('email', $request->email)->first();
+        $user = User::whereHas('userSocialites', fn ($query) => $query->where('type', UserSocialite::TYPE_EMAIL)->where('account', $request->email))->firstOrFail();
 
         if (is_null($user)) {
             throw ValidationException::withMessages([

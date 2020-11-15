@@ -7,6 +7,7 @@ use App\Http\Controllers\Traits\ValidateCaptcha;
 use App\Models\Enterprise;
 use App\Models\Institution;
 use App\Models\User;
+use App\Models\UserSocialite;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
@@ -96,13 +97,22 @@ class RegisterController extends Controller
 
             $user = new User([
                 'name' => $data['name'],
-                'email' => $data['email'],
                 'password' => bcrypt($data['password']),
             ]);
             $user->institution()->associate($institution);
             $user->enterprise()->associate($enterprise);
             $user->save();
             $user->givePermissionTo(Permission::findByName('manager', 'api'));
+
+
+            $userSocialite = new UserSocialite();
+            $userSocialite->fill([
+                'type' => UserSocialite::TYPE_EMAIL,
+                'account' => $data['email'],
+            ]);
+            $userSocialite->user()->associate($user);
+            $userSocialite->save();
+
             DB::commit();
             return $user;
         } catch (\Exception $e) {

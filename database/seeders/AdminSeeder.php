@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Enterprise;
 use App\Models\Institution;
 use App\Models\User;
+use App\Models\UserSocialite;
 use Faker\Generator;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -37,7 +38,6 @@ class AdminSeeder extends Seeder
 
         $user = new User([
             'name' => 'admin',
-            'email' => 'admin@admin.com',
             'title' => $generator->jobTitle,
             'password' => '$2y$10$KvdJSsvIZb7B53GP/h5NFuPDtNJLRwgXB75kYT7ueYI6bWdNNwPym', //password_hash('123456', 1),
             'email_verified_at' => now(),
@@ -46,6 +46,15 @@ class AdminSeeder extends Seeder
         $user->enterprise()->associate($enterprise);
         $user->save();
         $user->givePermissionTo($permission);
+
+        $userSocialite = new UserSocialite();
+        $userSocialite->fill([
+            'type' => UserSocialite::TYPE_EMAIL,
+            'account' => 'admin@admin.com',
+        ]);
+        $userSocialite->user()->associate($user);
+        $userSocialite->save();
+        $user->markEmailAsVerified();
 
         echo 'admin@admin.com' . PHP_EOL;
         echo '123456' . PHP_EOL;

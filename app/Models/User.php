@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Models\Traits\HasEnterprise;
 use App\Models\Traits\HasInstitution;
 use App\Models\Traits\HasPublicId;
-use App\Models\Traits\Pushable;
 use App\Models\Traits\SetTransformer;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
@@ -25,17 +24,29 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property int $enterprise_id 企业 ID
  * @property int $institution_id 网站 ID
  * @property string $name
- * @property string $email
- * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property string $avatar 头像
+ * @property string|null $title 职位
  * @property string|null $password
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Conversation[] $conversations
- * @property-read int|null $conversations_count
  * @property-read \App\Models\Institution $institution
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read \App\Models\Enterprise $enterprise
+ * @property-read \App\Models\stirng $public_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Conversation[] $conversations
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OAuthProvider[] $oauthProviders
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\NotificationChannels\WebPush\PushSubscription[] $pushSubscriptions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserSocialite[] $userSocialites
+ * @property-read int|null $conversations_count
+ * @property-read int|null $oauth_providers_count
+ * @property-read int|null $permissions_count
+ * @property-read int|null $push_subscriptions_count
+ * @property-read int|null $roles_count
+ * @property-read int|null $user_socialites_count
  * @property-read int|null $notifications_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
@@ -49,6 +60,16 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|User onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions)
+ * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereAvatar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereEnterpriseId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
+ * @mixin \Eloquent
  */
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
@@ -62,7 +83,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'avatar', 'title',
+        'name', 'password', 'avatar', 'title',
     ];
 
     /**
@@ -72,15 +93,6 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      */
     protected $hidden = [
         'password', 'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
     ];
 
     /**
@@ -137,5 +149,37 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function conversations()
     {
         return $this->hasMany(Conversation::class);
+    }
+
+    /**
+     * 用户的登录方式们
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|UserSocialite|\Illuminate\Database\Query\Builder
+     */
+    public function userSocialites()
+    {
+        return $this->hasMany(UserSocialite::class);
+    }
+
+    /**
+     * Mark the given user's email as verified.
+     *
+     * @return bool
+     */
+    public function markEmailAsVerified()
+    {
+        $socialite = $this->userSocialites->where('type', UserSocialite::TYPE_EMAIL)->first();
+        $socialite->fill(['verified_at' => now()]);
+        $socialite->save();
+    }
+
+    /**
+     * Determine if the user has verified their email address.
+     *
+     * @return bool
+     */
+    public function hasVerifiedEmail()
+    {
+        $socialite = $this->userSocialites->where('type', UserSocialite::TYPE_EMAIL)->first();
+        return !!$socialite->verified_at;
     }
 }

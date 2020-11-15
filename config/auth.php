@@ -73,7 +73,7 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
+            'driver' => 'socialite',
             'model' => App\Models\User::class,
         ],
 
@@ -110,5 +110,4 @@ return [
             'expire' => 60,
         ],
     ],
-
 ];
