@@ -28,7 +28,7 @@ class SecurityController extends Controller
                  */
                 $app = app('wechat.mini_program');
                 return response()->success([
-                    'qr' => base64_encode($app->app_code->getUnlimit('bind-' . $this->user->id, [
+                    'qr' => base64_encode($app->app_code->getUnlimit('bind-' . $this->user->id . '-' . crc32(md5(config('app.key') . $this->user->id)), [
                         //'page' => '/pages/bind/qr',
                         'is_hyaline' => true,
                     ])),
