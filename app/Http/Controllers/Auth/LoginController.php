@@ -10,6 +10,9 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @method \Tymon\JWTAuth\JWTGuard|\Illuminate\Contracts\Auth\StatefulGuard guard()
+ */
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
