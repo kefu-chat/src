@@ -17,7 +17,6 @@ Route::group(['middleware' => 'guest:api'], function () {
     Route::post('register', 'Auth\RegisterController@register');
     Route::post('captcha', 'CaptchaController@svg');
 
-    Route::post('login-via-miniapp', 'Auth\LoginController@loginViaMiniApp')->name('login.via.miniapp');
     Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
     Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
@@ -26,6 +25,9 @@ Route::group(['middleware' => 'guest:api'], function () {
 
     Route::post('oauth/{driver}', 'Auth\OAuthController@redirectToProvider');
     Route::get('oauth/{driver}/callback', 'Auth\OAuthController@handleProviderCallback')->name('oauth.callback');
+
+    Route::post('login-via-miniapp', 'Auth\LoginController@loginViaMiniApp')->name('login.via.miniapp');
+    Route::post('security/binding/{type}/confirm', 'Settings\SecurityController@bindConfirm')->name('security.bind-confirm');
 });
 
 Route::group(['middleware' => 'auth:api'], function () {
@@ -81,5 +83,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('institution/{institution}/employee/{user}/change-password', 'Personnel\EmployeeController@changePassword')->name('employee.change-password')->middleware(['can:manager']);
     Route::post('institution/{institution}/employee/{user}/change-permission', 'Personnel\EmployeeController@changePermission')->name('employee.change-permission')->middleware(['can:manager']);
 
-    Route::get('security/binding/{type}', 'Settings\SecurityController@bind')->name('security.bind');
+    Route::get('security/binding/{type}', 'Settings\SecurityController@bindQr')->name('security.bind');
 });

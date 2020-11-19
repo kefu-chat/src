@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Exceptions\VerifyEmailException;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Traits\LoginViaMiniapp;
 use App\Models\UserSocialite;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -13,7 +12,7 @@ use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
-    use AuthenticatesUsers, LoginViaMiniapp;
+    use AuthenticatesUsers;
 
     protected $socialiteType = UserSocialite::TYPE_EMAIL;
 
@@ -119,5 +118,32 @@ class LoginController extends Controller
     public function username()
     {
         return $this->socialiteType;
+    }
+
+    /**
+     * 小程序登录
+     */
+    public function loginViaMiniApp(Request $request)
+    {
+        $request->validate([
+            'code' => ['required', 'string'],
+        ]);
+
+        /**
+         * @var \EasyWeChat\MiniProgram\Application $app
+         */
+        $app = app('wechat.mini_program');
+        $login = $app->auth->session($request->input('code'));
+        $openid = data_get($login, 'openid', false);
+        if (!$openid) {
+            // TODO: error
+            throw ValidationException::withMessages([
+                'code' => $login['errmsg'],
+            ]);
+        }
+
+        $request->merge(['wxapp' => $openid]);
+        $this->socialiteType = UserSocialite::TYPE_WXAPP;
+        return $this->login($request);
     }
 }
