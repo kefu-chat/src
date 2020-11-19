@@ -18,6 +18,7 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     protected $socialiteType = UserSocialite::TYPE_EMAIL;
+    protected $rules = ['password' => 'required|string',];
 
     /**
      * Create a new controller instance.
@@ -124,6 +125,21 @@ class LoginController extends Controller
     }
 
     /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            $this->username() => 'required|string',
+        ] + $this->rules);
+    }
+
+    /**
      * 小程序登录
      */
     public function loginViaMiniApp(Request $request)
@@ -147,6 +163,7 @@ class LoginController extends Controller
 
         $request->merge(['wxapp' => $openid]);
         $this->socialiteType = UserSocialite::TYPE_WXAPP;
+        $this->rules = [];
         return $this->login($request);
     }
 }
