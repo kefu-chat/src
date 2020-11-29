@@ -3,6 +3,7 @@
 namespace App\Auth;
 
 use Illuminate\Auth\EloquentUserProvider;
+use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
@@ -42,6 +43,18 @@ class SocialiteUserProvider extends EloquentUserProvider
         }
 
         return $query->first();
+    }
+
+    /**
+     * Validate a user against the given credentials.
+     *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @param  array  $credentials
+     * @return bool
+     */
+    public function validateCredentials(UserContract $user, array $credentials)
+    {
+        return !!$user;
     }
 
     /**
