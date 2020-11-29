@@ -169,8 +169,16 @@ class ConversationRepository
                     return $query->where('user_id', 0)
                         ->orWhereNull('user_id');
                 });
-            }, function ($query) use ($user) {
+            })
+            ->when($type == 'assigned' || $type == 'history', function ($query) use ($user) {
                 return $query->where('user_id', $user->id);
+            })
+            ->when($type == 'active', function ($query) use ($user) {
+                return $query->where(function ($query) use ($user) {
+                    return $query->where('user_id', $user->id)
+                        ->orWhere('user_id', 0)
+                        ->orWhereNull('user_id');
+                });
             })
             ->when($offset, function ($query) use ($offset) {
                 /**
