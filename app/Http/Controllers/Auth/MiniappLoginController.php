@@ -64,9 +64,7 @@ class MiniappLoginController extends LoginController
         $login = $client->session($request->input('code'));
         $openid = data_get($login, 'openid', false);
         if (!$openid) {
-            throw ValidationException::withMessages([
-                'code' => $login['errmsg'],
-            ]);
+            return $this->sendFailedLoginResponse($request->merge(['errmsg' => $login['errmsg']]));
         }
 
         $request->merge(['wxapp' => $openid]);
@@ -80,7 +78,7 @@ class MiniappLoginController extends LoginController
     {
         return response()->json([
             'success' => false,
-            'message' => trans('auth.failed'),
+            'message' => $request->input('errmsg', trans('auth.failed')),
             'code' => 401,
         ] + $this->sendLoginResponseExtra());
     }
