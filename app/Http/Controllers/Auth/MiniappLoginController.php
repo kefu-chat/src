@@ -72,4 +72,16 @@ class MiniappLoginController extends LoginController
         $request->merge(['wxapp' => $openid]);
         return $this->login($request);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        return response()->json([
+            'success' => false,
+            'message' => trans('auth.failed'),
+            'code' => 401,
+        ] + $this->sendLoginResponseExtra());
+    }
 }
