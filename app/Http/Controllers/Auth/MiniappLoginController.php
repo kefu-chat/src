@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Models\UserSocialite;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Overtrue\LaravelWeChat\Facade;
 
 class MiniappLoginController extends LoginController
 {
@@ -50,12 +49,6 @@ class MiniappLoginController extends LoginController
         $request->validate([
             'code' => ['required', 'string'],
         ]);
-
-        if (!app()->has('wechat.mini_program.auth')) {
-            app()->singleton('wechat.mini_program.auth', function () {
-                return Facade::miniProgram()->auth;
-            });
-        }
 
         /**
          * @var \EasyWeChat\MiniProgram\Auth\Client $client

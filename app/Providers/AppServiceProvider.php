@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Overtrue\LaravelWeChat\Facade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,6 +38,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        app()->bindIf('wechat.mini_program.auth', function () {
+            return Facade::miniProgram()->auth;
+        });
     }
 }
