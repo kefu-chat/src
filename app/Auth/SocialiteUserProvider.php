@@ -54,7 +54,13 @@ class SocialiteUserProvider extends EloquentUserProvider
      */
     public function validateCredentials(UserContract $user, array $credentials)
     {
-        return !!$user;
+        //logger()->info('wechat', $credentials);
+        if (!isset($credentials['password'])) {
+            return !!$user;
+        }
+
+        $plain = $credentials['password'];
+        return $this->hasher->check($plain, $user->getAuthPassword());
     }
 
     /**

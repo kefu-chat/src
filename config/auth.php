@@ -38,12 +38,12 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'api',
         ],
 
         'api' => [
             'driver' => 'jwt',
-            'provider' => 'users',
+            'provider' => 'api',
             'hash' => false,
         ],
 
@@ -72,7 +72,7 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'api' => [
             'driver' => 'socialite',
             'model' => App\Models\User::class,
         ],

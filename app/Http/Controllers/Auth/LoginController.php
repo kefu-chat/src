@@ -8,6 +8,7 @@ use App\Models\UserSocialite;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -28,6 +29,16 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Tymon\JWTAuth\JWTGuard|\Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard('api');
     }
 
     /**
@@ -137,33 +148,5 @@ class LoginController extends Controller
         $request->validate([
             $this->username() => 'required|string',
         ] + $this->rules);
-    }
-
-    /**
-     * 小程序登录
-     */
-    public function loginViaMiniApp(Request $request)
-    {
-        $request->validate([
-            'code' => ['required', 'string'],
-        ]);
-
-        /**
-         * @var \EasyWeChat\MiniProgram\Application $app
-         */
-        $app = app('wechat.mini_program');
-        $login = $app->auth->session($request->input('code'));
-        $openid = data_get($login, 'openid', false);
-        if (!$openid) {
-            // TODO: error
-            throw ValidationException::withMessages([
-                'code' => $login['errmsg'],
-            ]);
-        }
-
-        $request->merge(['wxapp' => $openid]);
-        $this->socialiteType = UserSocialite::TYPE_WXAPP;
-        $this->rules = [];
-        return $this->login($request);
     }
 }
