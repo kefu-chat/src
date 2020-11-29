@@ -13,10 +13,7 @@ class MiniappLoginController extends LoginController
     protected $rules = [];
 
     /**
-     * Get the needed authorization credentials from the request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * {@inheritDoc}
      */
     protected function credentials(Request $request)
     {
@@ -25,6 +22,9 @@ class MiniappLoginController extends LoginController
         ];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function validateLogin(Request $request)
     {
         $request->validate([
@@ -41,7 +41,7 @@ class MiniappLoginController extends LoginController
             'code' => ['required', 'string'],
         ]);
 
-        if (!app()->has('wechat.mini_program.auth') ) {
+        if (!app()->has('wechat.mini_program.auth')) {
             app()->singleton('wechat.mini_program.auth', function () {
                 return Facade::miniProgram()->auth;
             });
