@@ -32,7 +32,7 @@ class LoginMiniappTest extends TestCase
         $this->artisan('db:seed', ['--class' => \Database\Seeders\AdminSeeder::class])->assertExitCode(0);
 
         $login = $this->post(route('login.via.miniapp', [], false), ['code' => 'js-code']);
-        $login->assertStatus(200);
+        $login->assertOk();
         $login->assertJsonPath('success', true);
         $this->assertNotEmpty($login->json('data'));
         $this->assertNotEmpty($login->json('data.user'));
@@ -63,6 +63,7 @@ class LoginMiniappTest extends TestCase
         $this->artisan('db:seed', ['--class' => \Database\Seeders\AdminSeeder::class])->assertExitCode(0);
 
         $login = $this->post(route('login.via.miniapp', [], false), ['code' => 'bad-js-code']);
-        $login->assertStatus(422);
+        $login->assertOk();
+        $login->assertJsonPath('success', false);
     }
 }
