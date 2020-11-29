@@ -55,7 +55,7 @@ class ConversationController extends Controller
     {
         $request->validate([
             'offset' => ['nullable', 'string'],
-            'type' => ['string', 'in:assigned,unassigned,history'],
+            'type' => ['string', 'in:assigned,unassigned,active,history'],
         ]);
 
         $type = $request->input('type');
