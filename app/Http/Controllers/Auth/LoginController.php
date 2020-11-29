@@ -42,6 +42,20 @@ class LoginController extends Controller
     }
 
     /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        return [
+            $this->username() => $request->input($this->username()),
+            'password' => $request->input('password'),
+        ];
+    }
+
+    /**
      * Attempt to log the user into the application.
      *
      * @param  \Illuminate\Http\Request  $request

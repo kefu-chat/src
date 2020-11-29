@@ -4,13 +4,33 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\UserSocialite;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Overtrue\LaravelWeChat\Facade;
 
 class MiniappLoginController extends LoginController
 {
     protected $socialiteType = UserSocialite::TYPE_WXAPP;
     protected $rules = [];
+
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        return [
+            'wxapp' => $request->input('wxapp'),
+        ];
+    }
+
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            'wxapp' => 'required|string',
+        ]);
+    }
 
     /**
      * 小程序登录
@@ -21,11 +41,17 @@ class MiniappLoginController extends LoginController
             'code' => ['required', 'string'],
         ]);
 
+        if (!app()->has('wechat.mini_program.auth') ) {
+            app()->singleton('wechat.mini_program.auth', function () {
+                return Facade::miniProgram()->auth;
+            });
+        }
+
         /**
-         * @var \EasyWeChat\MiniProgram\Application $app
+         * @var \EasyWeChat\MiniProgram\Auth\Client $client
          */
-        $app = app('wechat.mini_program');
-        $login = $app->auth->session($request->input('code'));
+        $client = app('wechat.mini_program.auth');
+        $login = $client->session($request->input('code'));
         $openid = data_get($login, 'openid', false);
         if (!$openid) {
             throw ValidationException::withMessages([

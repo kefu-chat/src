@@ -12,6 +12,9 @@ use Spatie\Permission\Models\Permission;
 
 class AdminSeeder extends Seeder
 {
+    const ADMIN_EMAIL = 'admin@admin.com';
+    const ADMIN_OPENID = 'admin-openid';
+
     /**
      * Run the database seeds.
      *
@@ -49,11 +52,19 @@ class AdminSeeder extends Seeder
         $userSocialite = new UserSocialite();
         $userSocialite->fill([
             'type' => UserSocialite::TYPE_EMAIL,
-            'account' => 'admin@admin.com',
+            'account' => self::ADMIN_EMAIL,
             'verified_at' => now(),
         ]);
         $userSocialite->user()->associate($user);
         $userSocialite->save();
+        $wxappSocialite = new UserSocialite();
+        $wxappSocialite->fill([
+            'type' => UserSocialite::TYPE_WXAPP,
+            'account' => self::ADMIN_OPENID,
+            'verified_at' => now(),
+        ]);
+        $wxappSocialite->user()->associate($user);
+        $wxappSocialite->save();
         $user->markEmailAsVerified();
 
         echo 'admin@admin.com' . PHP_EOL;

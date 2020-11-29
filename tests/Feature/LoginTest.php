@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Database\Seeders\AdminSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,7 +14,7 @@ class LoginTest extends TestCase
         $this->artisan('db:seed', [ '--class' => \Database\Seeders\PermissionSeeder::class])->assertExitCode(0);
         $this->artisan('db:seed', [ '--class' => \Database\Seeders\AdminSeeder::class])->assertExitCode(0);
 
-        $login = $this->post(route('login', [], false), ['email' => 'admin@admin.com', 'password' => '123456']);
+        $login = $this->post(route('login', [], false), ['email' => AdminSeeder::ADMIN_EMAIL, 'password' => '123456']);
         $login->assertStatus(200);
         $login->assertJsonPath('success', true);
         $this->assertNotEmpty($login->json('data'));
@@ -29,7 +30,7 @@ class LoginTest extends TestCase
         $this->artisan('db:seed', [ '--class' => \Database\Seeders\PermissionSeeder::class])->assertExitCode(0);
         $this->artisan('db:seed', [ '--class' => \Database\Seeders\AdminSeeder::class])->assertExitCode(0);
 
-        $login = $this->post(route('login', [], false), ['email' => 'admin@admin.com', 'password' => '654321']);
+        $login = $this->post(route('login', [], false), ['email' => AdminSeeder::ADMIN_EMAIL, 'password' => '654321']);
         $login->assertStatus(422);
     }
 }

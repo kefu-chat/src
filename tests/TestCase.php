@@ -4,12 +4,42 @@ namespace Tests;
 
 use App\Models\User;
 use App\Models\Visitor;
+use EasyWeChat\Kernel\ServiceContainer;
+use EasyWeChat\MiniProgram\Auth\AccessToken;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
+
+    /**
+     * Create API Client mock object.
+     *
+     * @param string                                   $name
+     * @param array|string                             $methods
+     * @param \EasyWeChat\Kernel\ServiceContainer|null $app
+     *
+     * @return \Mockery\Mock
+     */
+    public function mockApiClient($name, $methods = [], ServiceContainer $app = null)
+    {
+        $methods = implode(',', array_merge([
+            'httpGet', 'httpPost', 'httpPostJson', 'httpUpload',
+            'request', 'requestRaw', 'requestArray', 'registerMiddlewares',
+        ], (array) $methods));
+
+        $client = \Mockery::mock(
+            $name . "[{$methods}]",
+            [
+                $app ?? \Mockery::mock(ServiceContainer::class),
+                \Mockery::mock(AccessToken::class),
+            ]
+        )->shouldAllowMockingProtectedMethods();
+        $client->allows()->registerHttpMiddlewares()->andReturnNull();
+
+        return $client;
+    }
 
     protected function authManager()
     {
