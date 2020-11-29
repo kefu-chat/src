@@ -33,6 +33,16 @@ class MiniappLoginController extends LoginController
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function sendLoginResponseExtra()
+    {
+        return [
+            'is_online' => true,
+        ];
+    }
+
+    /**
      * 小程序登录
      */
     public function loginViaMiniApp(Request $request)

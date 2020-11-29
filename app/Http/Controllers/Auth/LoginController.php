@@ -105,7 +105,17 @@ class LoginController extends Controller
             'expires_in' => $expiration - time(),
             'user' => $user,
             'institution' => auth()->user()->institution,
-        ]);
+        ] + $this->sendLoginResponseExtra());
+    }
+
+    /**
+     * 额外参数
+     *
+     * @return array
+     */
+    public function sendLoginResponseExtra()
+    {
+        return [];
     }
 
     /**
