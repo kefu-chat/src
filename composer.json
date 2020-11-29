@@ -82,6 +82,9 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi",
             "@php artisan jwt:secret"
+        ],
+        "echo": [
+            "@php artisan websocket:serve --host=127.0.0.1 --port=6003"
         ]
     }
 }
