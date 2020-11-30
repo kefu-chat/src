@@ -31,15 +31,18 @@ class SecurityController extends Controller
         $response = null;
         switch ($type) {
             case 'wechat':
-                /**
-                 * @var \EasyWeChat\MiniProgram\Application $app
-                 */
-                $app = app('wechat.mini_program');
+                // /**
+                //  * @var \EasyWeChat\MiniProgram\Application $app
+                //  */
+                // $app = app('wechat.mini_program');
+                // $response = [
+                //     'qr' => base64_encode($app->app_code->getUnlimit('bind-' . $this->user->id . '-' . crc32(md5(config('app.key') . $this->user->id)), [
+                //         //'page' => '/pages/bind/qr',
+                //         'is_hyaline' => true,
+                //     ])),
+                // ];
                 $response = [
-                    'qr' => base64_encode($app->app_code->getUnlimit('bind-' . $this->user->id . '-' . crc32(md5(config('app.key') . $this->user->id)), [
-                        //'page' => '/pages/bind/qr',
-                        'is_hyaline' => true,
-                    ])),
+                    'qr' => config('kefu.qr_url') . '/bind/bind?user=' . $this->user->public_id . '&sign=' . crc32(md5(config('app.key') . $this->user->id)),
                 ];
                 break;
 
