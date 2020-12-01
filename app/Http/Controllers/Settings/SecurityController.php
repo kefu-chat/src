@@ -15,6 +15,18 @@ use Throwable;
 class SecurityController extends Controller
 {
     /**
+     * 用户ID签名
+     */
+    protected function sign($user_id)
+    {
+        if (config('app.debug')) {
+            return $user_id;
+        } else {
+            return crc32(md5(config('app.key') . $user_id));
+        }
+    }
+
+    /**
      * 各种绑定
      *
      * @param string $type
@@ -42,7 +54,7 @@ class SecurityController extends Controller
                 //     ])),
                 // ];
                 $response = [
-                    'qr' => config('kefu.qr_url') . '/bind/bind?user=' . $this->user->public_id . '&sign=' . crc32(md5(config('app.key') . $this->user->id)),
+                    'qr' => config('kefu.qr_url') . '/pages/common/scan/scan?user=' . $this->user->id . '&sign=' . $this->sign($this->user->id),
                 ];
                 break;
 
