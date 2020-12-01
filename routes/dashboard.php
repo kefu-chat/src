@@ -84,5 +84,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('institution/{institution}/employee/{user}/change-password', 'Personnel\EmployeeController@changePassword')->name('employee.change-password')->middleware(['can:manager']);
     Route::post('institution/{institution}/employee/{user}/change-permission', 'Personnel\EmployeeController@changePermission')->name('employee.change-permission')->middleware(['can:manager']);
 
+    Route::get('security/binding', 'Settings\SecurityController@bindings')->name('security.bind.list');
     Route::get('security/binding/{type}', 'Settings\SecurityController@bindQr')->name('security.bind');
+    Route::post('security/binding/{type}/unbind', 'Settings\SecurityController@unbindConfirm')->name('security.unbind-confirm');
 });

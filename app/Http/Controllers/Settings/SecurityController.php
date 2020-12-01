@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use Throwable;
 
 class SecurityController extends Controller
 {
@@ -25,6 +24,17 @@ class SecurityController extends Controller
         } else {
             return crc32(md5(config('app.key') . $user_id));
         }
+    }
+
+    /**
+     * 已绑定的账号
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function bindings()
+    {
+        $bindings = $this->user->userSocialites()->pluck('type')->values();
+        return response()->success(['list' => $bindings,]);
     }
 
     /**
@@ -189,6 +199,58 @@ class SecurityController extends Controller
                 } catch (ModelNotFoundException $e) {
                     throw ValidationException::withMessages([
                         'user' => '无效 user',
+                    ]);
+                }
+
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
+        return response()->success($response);
+    }
+
+    /**
+     * 各种解绑确认
+     *
+     * @param string $type
+     * @return \Illuminate\Http\Response
+     */
+    public function unbindConfirm(string $type, Request $request)
+    {
+        Validator::make([
+            'type' => $type,
+        ], [
+            'type' => ['required', 'string', 'in:wechat'],
+        ]);
+        $response = null;
+        switch ($type) {
+            case 'wechat':
+                $user = null;
+                try {
+                    /**
+                     * @var User $user
+                     */
+                    $user = User::findOrFail($request->input('user'));
+                } catch (ModelNotFoundException $e) {
+                    throw ValidationException::withMessages([
+                        'user' => '无效 user',
+                    ]);
+                }
+                try {
+                    /**
+                     * @var UserSocialite $socialite
+                     */
+                    $socialite = UserSocialite::where([
+                        'user_id' => $user->id,
+                        'type' => UserSocialite::TYPE_WXAPP,
+                    ])->firstOrFail();
+                    $socialite->delete();
+                } catch (ModelNotFoundException $e) {
+                    throw ValidationException::withMessages([
+                        'type' => '用户已经没有' . $type . '的绑定了',
                     ]);
                 }
 
