@@ -86,15 +86,15 @@ class SecurityController extends Controller
             'user' => ['required_without:q', 'integer'],
             'sign' => ['required_without:q', 'string'],
         ]);
+        if ($request->exists('q') && $q = $request->input('q')) {
+            $url = parse_url(urldecode($q));
+            parse_str(Arr::get($url, 'query'), $query);
+            $request->merge($query);
+        }
 
         $response = null;
         switch ($type) {
             case 'wechat':
-                if ($request->exists('q') && $q = $request->input('q')) {
-                    $url = parse_url(urldecode($q));
-                    parse_str(Arr::get($url, 'query'), $query);
-                    $request->merge($query);
-                }
                 if ($this->sign($request->input('user')) != $request->input('sign')) {
                     throw ValidationException::withMessages([
                         'sign' => '无效 sign',
@@ -138,6 +138,11 @@ class SecurityController extends Controller
             'user' => ['required', 'integer'],
             'sign' => ['required', 'string'],
         ]);
+        if ($request->exists('q') && $q = $request->input('q')) {
+            $url = parse_url(urldecode($q));
+            parse_str(Arr::get($url, 'query'), $query);
+            $request->merge($query);
+        }
 
         $response = null;
         switch ($type) {
