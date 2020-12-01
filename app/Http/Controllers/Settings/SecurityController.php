@@ -8,6 +8,7 @@ use App\Models\UserSocialite;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Throwable;
@@ -76,17 +77,24 @@ class SecurityController extends Controller
     {
         Validator::make([
             'type' => $type,
+            'q' => $request->input('q'),
             'user' => $request->input('user'),
             'sign' => $request->input('sign'),
         ], [
             'type' => ['required', 'string', 'in:wechat'],
-            'user' => ['required', 'integer'],
-            'sign' => ['required', 'string'],
+            'q' => ['nullable', 'string'],
+            'user' => ['required_without:q', 'integer'],
+            'sign' => ['required_without:q', 'string'],
         ]);
 
         $response = null;
         switch ($type) {
             case 'wechat':
+                if ($request->exists('q') && $q = $request->input('q')) {
+                    $url = parse_url(urldecode($q));
+                    parse_str(Arr::get($url, 'query'), $query);
+                    $request->merge($query);
+                }
                 if ($this->sign($request->input('user')) != $request->input('sign')) {
                     throw ValidationException::withMessages([
                         'sign' => '无效 sign',
