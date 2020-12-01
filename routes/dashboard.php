@@ -86,5 +86,5 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('security/binding', 'Settings\SecurityController@bindings')->name('security.bind.list');
     Route::get('security/binding/{type}', 'Settings\SecurityController@bindQr')->name('security.bind');
-    Route::post('security/binding/{type}/unbind', 'Settings\SecurityController@unbindConfirm')->name('security.unbind-confirm');
+    Route::get('security/binding/{type}/unbind', 'Settings\SecurityController@unbindConfirm')->name('security.unbind-confirm');
 });
