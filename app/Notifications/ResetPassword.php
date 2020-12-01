@@ -29,7 +29,7 @@ class ResetPassword extends Notification
      */
     protected function resetUrl($notifiable)
     {
-        $appUrl = config('app.client_url', config('app.url'));
+        $appUrl = config('kefu.client_url', config('app.url'));
 
         return url("$appUrl/password/reset/$this->token").'?email='.urlencode($notifiable->email);
     }

@@ -52,6 +52,10 @@ class Visitor extends AbstractModel implements JWTSubject, AuthAuthenticatable
         'address',
     ];
 
+    protected $appends = [
+        'avatar',
+    ];
+
     public function conversations()
     {
         return $this->hasMany(Conversation::class);
@@ -71,5 +75,10 @@ class Visitor extends AbstractModel implements JWTSubject, AuthAuthenticatable
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function getAvatarAttribute()
+    {
+        return config('kefu.client_url') . '/assets/tmp/img/random/35.svg';
     }
 }

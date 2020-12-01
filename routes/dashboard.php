@@ -27,6 +27,7 @@ Route::group(['middleware' => 'guest:api'], function () {
     Route::get('oauth/{driver}/callback', 'Auth\OAuthController@handleProviderCallback')->name('oauth.callback');
 
     Route::post('login-via-miniapp', 'Auth\MiniappLoginController@loginViaMiniApp')->name('login.via.miniapp');
+    Route::post('security/binding/{type}/prepare', 'Settings\SecurityController@bindPrepare')->name('security.bind-prepare');
     Route::post('security/binding/{type}/confirm', 'Settings\SecurityController@bindConfirm')->name('security.bind-confirm');
 });
 

@@ -20,7 +20,7 @@ class VerifyEmail extends Notification
      */
     protected function verificationUrl($notifiable)
     {
-        $appUrl = config('app.client_url', config('app.url'));
+        $appUrl = config('kefu.client_url', config('app.url'));
 
         $url = URL::temporarySignedRoute(
             'verification.verify',

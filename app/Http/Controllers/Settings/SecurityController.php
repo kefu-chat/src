@@ -67,6 +67,51 @@ class SecurityController extends Controller
     }
 
     /**
+     * 各种绑定准备
+     *
+     * @param string $type
+     * @return \Illuminate\Http\Response
+     */
+    public function bindPrepare(string $type, Request $request)
+    {
+        Validator::make([
+            'type' => $type,
+            'user' => $request->input('user'),
+            'sign' => $request->input('sign'),
+        ], [
+            'type' => ['required', 'string', 'in:wechat'],
+            'user' => ['required', 'integer'],
+            'sign' => ['required', 'string'],
+        ]);
+
+        $response = null;
+        switch ($type) {
+            case 'wechat':
+                if ($this->sign($request->input('user')) != $request->input('sign')) {
+                    throw ValidationException::withMessages([
+                        'sign' => '无效 sign',
+                    ]);
+                }
+
+                try {
+                    User::findOrFail($request->input('user'));
+                } catch (ModelNotFoundException $e) {
+                    throw ValidationException::withMessages([
+                        'user' => '无效 user',
+                    ]);
+                }
+
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
+        return response()->success($response);
+    }
+
+    /**
      * 各种绑定确认
      *
      * @param string $type
@@ -76,32 +121,24 @@ class SecurityController extends Controller
     {
         Validator::make([
             'type' => $type,
-            'scene' => $request->input('scene'),
             'code' => $request->input('code'),
+            'user' => $request->input('user'),
+            'sign' => $request->input('sign'),
         ], [
             'type' => ['required', 'string', 'in:wechat'],
-            'scene' => ['required', 'string'],
-            'code' => ['required', 'string', 'regex:bind\-{\d+}\-{\d+}'],
+            'code' => ['required', 'string',],
+            'user' => ['required', 'integer'],
+            'sign' => ['required', 'string'],
         ]);
 
         $response = null;
         switch ($type) {
             case 'wechat':
-                /**
-                 * @var \EasyWeChat\MiniProgram\Application $app
-                 */
-                $app = app('wechat.mini_program');
-                try {
-                    list($bind, $user_id, $crc32) = explode('-', $request->input('code'));
-                    if ($crc32 !== crc32(md5(config('app.key') . $user_id))) {
-                        throw new Exception('bad signature');
-                    }
-                } catch (Throwable $e) {
+                if ($this->sign($request->input('user')) != $request->input('sign')) {
                     throw ValidationException::withMessages([
-                        'scene' => '无效 scene',
+                        'sign' => '无效 sign',
                     ]);
                 }
-
 
                 /**
                  * @var \EasyWeChat\MiniProgram\Application $app
@@ -116,10 +153,16 @@ class SecurityController extends Controller
                     ]);
                 }
                 try {
+                    // 一个OPENID只允许绑定一次
+                    UserSocialite::where([
+                        'type' => UserSocialite::TYPE_WXAPP,
+                        'account' => $openid,
+                    ])->delete();
+
                     /**
                      * @var User $user
                      */
-                    $user = User::findOrFail($user_id);
+                    $user = User::findOrFail($request->input('user'));
                     $socialite = new UserSocialite([
                         'account' => $openid,
                         'type' => UserSocialite::TYPE_WXAPP,
@@ -129,7 +172,7 @@ class SecurityController extends Controller
                     $socialite->save();
                 } catch (ModelNotFoundException $e) {
                     throw ValidationException::withMessages([
-                        'scene' => '无效 scene',
+                        'user' => '无效 user',
                     ]);
                 }
 
