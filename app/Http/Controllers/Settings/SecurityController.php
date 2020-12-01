@@ -186,14 +186,16 @@ class SecurityController extends Controller
                      * @var User $user
                      */
                     $user = User::findOrFail($request->input('user'));
-                    $socialite = UserSocialite::firstOrNew([
-                        'user_id' => $user->id,
-                        'type' => UserSocialite::TYPE_WXAPP,
-                    ],
-                    [
-                        'account' => $openid,
-                        'verified_at' => now(),
-                    ]);
+                    $socialite = UserSocialite::firstOrNew(
+                        [
+                            'user_id' => $user->id,
+                            'type' => UserSocialite::TYPE_WXAPP,
+                        ],
+                        [
+                            'account' => $openid,
+                            'verified_at' => now(),
+                        ]
+                    );
                     $socialite->user()->associate($user);
                     $socialite->save();
                 } catch (ModelNotFoundException $e) {
