@@ -226,19 +226,9 @@ class SecurityController extends Controller
             'type' => ['required', 'string', 'in:wechat'],
         ]);
         $response = null;
+        $user = $this->user;
         switch ($type) {
             case 'wechat':
-                $user = null;
-                try {
-                    /**
-                     * @var User $user
-                     */
-                    $user = User::findOrFail($request->input('user'));
-                } catch (ModelNotFoundException $e) {
-                    throw ValidationException::withMessages([
-                        'user' => '无效 user',
-                    ]);
-                }
                 try {
                     /**
                      * @var UserSocialite $socialite
