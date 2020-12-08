@@ -10,7 +10,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3",
+        "php": ">=7.3",
         "023pay/sdk": "^0.0.1",
         "023sec/svg-captcha": "dev-master",
         "beyondcode/laravel-websockets": "^1.9",
