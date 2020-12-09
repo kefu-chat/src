@@ -167,6 +167,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        \Illuminate\Contracts\Notifications\Dispatcher::class => \Illuminate\Notifications\ChannelManager::class,
     ]));
     override(\Illuminate\Container\Container::makeWith(0), map([
         '' => '@',
@@ -325,6 +326,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        \Illuminate\Contracts\Notifications\Dispatcher::class => \Illuminate\Notifications\ChannelManager::class,
     ]));
     override(\Illuminate\Contracts\Container\Container::make(0), map([
         '' => '@',
@@ -483,6 +485,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        \Illuminate\Contracts\Notifications\Dispatcher::class => \Illuminate\Notifications\ChannelManager::class,
     ]));
     override(\Illuminate\Contracts\Container\Container::makeWith(0), map([
         '' => '@',
@@ -641,6 +644,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        \Illuminate\Contracts\Notifications\Dispatcher::class => \Illuminate\Notifications\ChannelManager::class,
     ]));
     override(\App::make(0), map([
         '' => '@',
@@ -799,6 +803,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        \Illuminate\Contracts\Notifications\Dispatcher::class => \Illuminate\Notifications\ChannelManager::class,
     ]));
     override(\App::makeWith(0), map([
         '' => '@',
@@ -957,6 +962,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        \Illuminate\Contracts\Notifications\Dispatcher::class => \Illuminate\Notifications\ChannelManager::class,
     ]));
     override(\app(0), map([
         '' => '@',
@@ -1115,6 +1121,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        \Illuminate\Contracts\Notifications\Dispatcher::class => \Illuminate\Notifications\ChannelManager::class,
     ]));
     override(\resolve(0), map([
         '' => '@',
@@ -1273,6 +1280,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        \Illuminate\Contracts\Notifications\Dispatcher::class => \Illuminate\Notifications\ChannelManager::class,
     ]));
 
 

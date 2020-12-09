@@ -72,7 +72,7 @@ use Xiaohuilam\Laravel\WxappNotificationChannel\Traits\UserTrait as WxappNotific
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
  * @mixin \Eloquent
  */
-class User extends Authenticatable implements JWTSubject, MustVerifyEmail
+class User extends Authenticatable implements JWTSubject, MustVerifyEmail, Notifiable
 {
     use Notifiable, SetTransformer, HasInstitution, HasEnterprise, HasFactory, HasRoles, HasPublicId, SoftDeletes, HasPushSubscriptions, WxappNotification;
 
