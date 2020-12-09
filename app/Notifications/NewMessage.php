@@ -68,7 +68,19 @@ class NewMessage extends Notification implements ShouldQueue, WechatAppNotificat
      */
     public function getTemplateId()
     {
-        return 'LHgTmtQNNOiAZ8qNL9g4y-7a_gzNX62chkju-eX44jc';
+        return $this->isValidPhone($this->notification) ? 'LHgTmtQNNOiAZ8qNL9g4y-7a_gzNX62chkju-eX44jc' : 'LHgTmtQNNOiAZ8qNL9g4y3RFTOmlMUeaPNkfs5Trte8';
+    }
+
+    protected function isValidPhone($notification)
+    {
+        $phone = optional(optional(optional($notification)->conversation)->visitor)->phone;
+        if (preg_match('/^1[\d]{10,10}$/', $phone)) {
+            return true;
+        }
+        if (preg_match('/^[\d]{3,4}[\d]{5,9}$/', $phone)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -76,9 +88,14 @@ class NewMessage extends Notification implements ShouldQueue, WechatAppNotificat
      */
     public function getTemplateMessageData()
     {
-        return [
+        $name = $this->notification->sender->name;
+        if (!preg_match('/^[a-zA-Z0-9_\u4e00-\u9fa5]+$/', $name)) {
+            $name = '访客';
+        }
+
+        return array_merge([
             'name1' => [ //客户名称
-                'value' => $this->notification->sender->name,
+                'value' => $name,
             ],
             'time2' => [ //咨询时间
                 'value' => $this->notification->created_at->format('Y年m月d日 H:i:s'),
@@ -86,10 +103,12 @@ class NewMessage extends Notification implements ShouldQueue, WechatAppNotificat
             'thing3' => [ //咨询内容
                 'value' => $this->notification->type == Message::TYPE_TEXT ? $this->notification->content : '[图片]',
             ],
+        ],
+        $this->isValidPhone($this->notification) ? [
             'phone_number5' => [ //客户手机号
-                'value' => optional(optional(optional($this->notification)->conversation)->visitor)->phone ?: '未获得手机号',
+                'value' => optional(optional(optional($this->notification)->conversation)->visitor)->phone,
             ],
-        ];
+        ]: []);
     }
 
     /**

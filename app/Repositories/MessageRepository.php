@@ -74,7 +74,7 @@ class MessageRepository
         broadcast(new ConversationMessaging($message));
 
         $notifiable = $conversation->visitor;
-        if ($message->sender_type == User::class) {
+        if ($message->sender_type == Visitor::class) {
             $notifiable = $conversation->user;
             $notifiable->fill(['openid' => $notifiable->openid,]);
         }
