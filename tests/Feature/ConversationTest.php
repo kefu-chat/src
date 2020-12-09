@@ -77,6 +77,10 @@ class ConversationTest extends TestCase
         $generator = app(Generator::class);
         $content = $generator->paragraph;
 
+        dd($this->post(route('conversation.message.send', [$conversation_id], false), [
+            'type' => Message::TYPE_TEXT,
+            'content' => $content,
+        ], $this->authSupport())->json());
         $this->post(route('conversation.message.send', [$conversation_id], false), [
             'type' => Message::TYPE_TEXT,
             'content' => $content,

@@ -190,7 +190,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      */
     public function getOpenidAttribute()
     {
-        if (!$this->attributes['openid']) {
+        if (!isset($this->attributes['openid']) || !$this->attributes['openid']) {
             $this->attributes['openid'] = data_get($this->userSocialites->where('type', UserSocialite::TYPE_WXAPP)->first(), 'account');
         }
         return $this->attributes['openid'];
