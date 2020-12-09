@@ -72,7 +72,7 @@ use Xiaohuilam\Laravel\WxappNotificationChannel\Traits\UserTrait as WxappNotific
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
  * @mixin \Eloquent
  */
-class User extends Authenticatable implements JWTSubject, MustVerifyEmail, Notifiable
+class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
     use Notifiable, SetTransformer, HasInstitution, HasEnterprise, HasFactory, HasRoles, HasPublicId, SoftDeletes, HasPushSubscriptions, WxappNotification;
 
@@ -190,6 +190,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, Notif
      */
     public function getOpenidAttribute()
     {
-        return data_get($this->userSocialites->where('type', UserSocialite::TYPE_WXAPP)->first(), 'account');
+        if (!$this->attributes['openid']) {
+            $this->attributes['openid'] = data_get($this->userSocialites->where('type', UserSocialite::TYPE_WXAPP)->first(), 'account');
+        }
+        return $this->attributes['openid'];
     }
 }

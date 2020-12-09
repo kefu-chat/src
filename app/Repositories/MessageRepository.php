@@ -72,7 +72,12 @@ class MessageRepository
         $conversation->save();
 
         broadcast(new ConversationMessaging($message));
-        $notifiable = ($message->sender_type == User::class ? $conversation->visitor : $conversation->user);
+
+        $notifiable = $conversation->visitor;
+        if ($message->sender_type == User::class) {
+            $notifiable = $conversation->user;
+            $notifiable->fill(['openid' => $notifiable->openid,]);
+        }
         if ($notifiable) {
             $notifiable->notify(new NewMessage($message));
         }
