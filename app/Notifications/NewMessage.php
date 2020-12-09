@@ -94,22 +94,24 @@ class NewMessage extends Notification implements ShouldQueue, WechatAppNotificat
             $name = '访客';
         }
 
-        return array_merge([
-            'name1' => [ //客户名称
-                'value' => $name,
+        return array_merge(
+            [
+                'name1' => [ //客户名称
+                    'value' => $name,
+                ],
+                'time2' => [ //咨询时间
+                    'value' => $this->notification->created_at->format('Y年m月d日 H:i:s'),
+                ],
+                'thing3' => [ //咨询内容
+                    'value' => $this->notification->type == Message::TYPE_TEXT ? $this->notification->content : '[图片]',
+                ],
             ],
-            'time2' => [ //咨询时间
-                'value' => $this->notification->created_at->format('Y年m月d日 H:i:s'),
-            ],
-            'thing3' => [ //咨询内容
-                'value' => $this->notification->type == Message::TYPE_TEXT ? $this->notification->content : '[图片]',
-            ],
-        ],
-        $this->isValidPhone($this->notification) ? [
-            'phone_number5' => [ //客户手机号
-                'value' => optional(optional(optional($this->notification)->conversation)->visitor)->phone,
-            ],
-        ]: []);
+            $this->isValidPhone($this->notification) ? [
+                'phone_number5' => [ //客户手机号
+                    'value' => optional(optional(optional($this->notification)->conversation)->visitor)->phone,
+                ],
+            ] : []
+        );
     }
 
     /**
