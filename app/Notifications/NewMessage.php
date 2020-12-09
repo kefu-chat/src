@@ -76,10 +76,10 @@ class NewMessage extends Notification implements ShouldQueue, WechatAppNotificat
     public function getTemplateMessageData()
     {
         return [
-            'keyword1' => $this->notification->sender->name, //客户名称
-            'keyword2' => $this->notification->created_at->format('Y年m月d日 H:i:s'), //咨询时间
-            'keyword3' => $this->notification->type == Message::TYPE_TEXT ? $this->notification->content : '[客户发来一张图片]', //咨询内容
-            'keyword4' => optional(optional(optional($this->notification)->conversation)->visitor)->phone ?: '未获得手机号', //客户手机号
+            'name1' => $this->notification->sender->name, //客户名称
+            'time2' => $this->notification->created_at->format('Y年m月d日 H:i:s'), //咨询时间
+            'thing3' => $this->notification->type == Message::TYPE_TEXT ? $this->notification->content : '[客户发来一张图片]', //咨询内容
+            'phone_number5' => optional(optional(optional($this->notification)->conversation)->visitor)->phone ?: '未获得手机号', //客户手机号
         ];
     }
 
@@ -88,7 +88,7 @@ class NewMessage extends Notification implements ShouldQueue, WechatAppNotificat
      */
     public function getTemplateMessageEmphasisKeyword()
     {
-        return 'keyword1.DATA';
+        return 'name1.DATA';
     }
 
     /**

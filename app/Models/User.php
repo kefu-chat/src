@@ -183,4 +183,13 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         $socialite = $this->userSocialites->where('type', UserSocialite::TYPE_EMAIL)->first();
         return !!$socialite->verified_at;
     }
+
+    /**
+     * 获取用户绑定微信小程序的openid
+     * @return string
+     */
+    public function getOpenidAttribute()
+    {
+        return data_get($this->userSocialites->where('type', UserSocialite::TYPE_WXAPP)->first(), 'account');
+    }
 }
