@@ -6,6 +6,7 @@ use App\Models\Message;
 use App\Models\User;
 use App\Models\Visitor;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\HasPushSubscriptions;
@@ -125,5 +126,21 @@ class NewMessage extends Notification implements ShouldQueue, WechatAppNotificat
     public function getTemplateMessagePath()
     {
         return '/pages/chat/chat?id=' . $this->notification->conversation->public_id;
+    }
+
+    /**
+     * 什么版本
+     * @return string
+     * @see https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/subscribe-message/subscribeMessage.send.html#%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0
+     */
+    public function getMiniprogramState()
+    {
+        if (config('kefu.qr_url') == 'https://dev.kefu.chat') {
+            return 'developer';
+        }
+        if (config('kefu.qr_url') == 'https://test.kefu.chat') {
+            return 'trial';
+        }
+        return 'formal';
     }
 }
