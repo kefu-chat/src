@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "67f105b474539a68527988810bc5678b",
+    "content-hash": "8dd3e5643f2b560fb803cdcca0b011f8",
     "packages": [
         {
             "name": "023pay/sdk",
@@ -9330,6 +9330,43 @@
             "time": "2020-07-08T17:02:28+00:00"
         },
         {
+            "name": "xiaohuilam/easywechat-adpter",
+            "version": "v99.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/xiaohuilam/easywechat-adpter.git",
+                "reference": "23139a9f0bf20ccc03031a93a92a699088bf7895"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/xiaohuilam/easywechat-adpter/zipball/23139a9f0bf20ccc03031a93a92a699088bf7895",
+                "reference": "23139a9f0bf20ccc03031a93a92a699088bf7895",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "overtrue/laravel-wechat": ">=4.0.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "xiaohui.lam",
+                    "email": "xiaohui.lam@aliyun.com"
+                }
+            ],
+            "description": "EasyWechat 的 laravel 5.0~5.9 全版本适配（4.1兼容）",
+            "time": "2019-06-22T08:53:27+00:00"
+        },
+        {
             "name": "xiaohuilam/laravel-aliyun-waf-trustedproxy",
             "version": "v0.0.1",
             "source": {
@@ -9377,6 +9414,57 @@
             ],
             "description": "add aliyun waf's ip ranges to trust proxy",
             "time": "2019-06-19T10:08:38+00:00"
+        },
+        {
+            "name": "xiaohuilam/laravel-wxapp-notification-channel",
+            "version": "v0.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/xiaohuilam/laravel-wxapp-notification-channel.git",
+                "reference": "63ca98e86df1e35a1e54648940b9f484dd54b8e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/xiaohuilam/laravel-wxapp-notification-channel/zipball/63ca98e86df1e35a1e54648940b9f484dd54b8e3",
+                "reference": "63ca98e86df1e35a1e54648940b9f484dd54b8e3",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "laravel/framework": ">=5.0",
+                "php": ">=5.6",
+                "xiaohuilam/easywechat-adpter": "*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Xiaohuilam\\Laravel\\WxappNotificationChannel\\WxappNotificationServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Xiaohuilam\\Laravel\\WxappNotificationChannel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "xiaohui.lam",
+                    "email": "xiaohui.lam@aliyun.com"
+                }
+            ],
+            "description": "Laravel package to enable wechat mini program template message notification as a channel",
+            "time": "2019-07-30T02:40:14+00:00"
         },
         {
             "name": "yansongda/laravel-pay",

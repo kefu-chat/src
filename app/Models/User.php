@@ -16,6 +16,7 @@ use Illuminate\Notifications\Notifiable;
 use NotificationChannels\WebPush\HasPushSubscriptions;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Xiaohuilam\Laravel\WxappNotificationChannel\Traits\UserTrait as WxappNotification;
 
 /**
  * App\Models\User
@@ -73,7 +74,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  */
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
-    use Notifiable, SetTransformer, HasInstitution, HasEnterprise, HasFactory, HasRoles, HasPublicId, SoftDeletes, HasPushSubscriptions;
+    use Notifiable, SetTransformer, HasInstitution, HasEnterprise, HasFactory, HasRoles, HasPublicId, SoftDeletes, HasPushSubscriptions, WxappNotification;
 
     protected $guard_name = 'api';
 

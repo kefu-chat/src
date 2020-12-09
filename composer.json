@@ -35,6 +35,7 @@
         "tymon/jwt-auth": "^1.0",
         "vinkla/hashids": "^9.0",
         "xiaohuilam/laravel-aliyun-waf-trustedproxy": "^0.0.1",
+        "xiaohuilam/laravel-wxapp-notification-channel": "^0.14.0",
         "yansongda/laravel-pay": "^2.3"
     },
     "require-dev": {

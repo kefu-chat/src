@@ -11,8 +11,9 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\HasPushSubscriptions;
 use NotificationChannels\WebPush\WebPushMessage;
 use NotificationChannels\WebPush\WebPushChannel;
+use Xiaohuilam\Laravel\WxappNotificationChannel\Interfaces\WechatAppNotificationable;
 
-class NewMessage extends Notification implements ShouldQueue
+class NewMessage extends Notification implements ShouldQueue, WechatAppNotificationable
 {
     use Queueable;
 
@@ -33,7 +34,7 @@ class NewMessage extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return [WebPushChannel::class];
+        return $notifiable instanceof User ? [WebPushChannel::class, 'wechat-app'] : [WebPushChannel::class];
     }
 
     /**
@@ -59,5 +60,42 @@ class NewMessage extends Notification implements ShouldQueue
             ->tag($this->notification->sender->name . '(#' . $this->notification->conversation->public_id . ')')
             ->vibrate(1)
             ->{$this->notification->type === Message::TYPE_IMAGE ? 'image' : 'body'}($this->notification->content);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTemplateId()
+    {
+        return 'LHgTmtQNNOiAZ8qNL9g4y-7a_gzNX62chkju-eX44jc';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTemplateMessageData()
+    {
+        return [
+            'keyword1' => $this->notification->sender->name, //客户名称
+            'keyword2' => $this->notification->created_at->format('Y年m月d日 H:i:s'), //咨询时间
+            'keyword3' => $this->notification->type == Message::TYPE_TEXT ? $this->notification->content : '[客户发来一张图片]', //咨询内容
+            'keyword4' => optional(optional(optional($this->notification)->conversation)->visitor)->phone ?: '未获得手机号', //客户手机号
+        ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTemplateMessageEmphasisKeyword()
+    {
+        return 'keyword1.DATA';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTemplateMessagePath()
+    {
+        return '/pages/chat/chat?id=' . $this->notification->conversation->public_id;
     }
 }
