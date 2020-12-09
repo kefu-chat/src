@@ -90,7 +90,7 @@ class NewMessage extends Notification implements ShouldQueue, WechatAppNotificat
     public function getTemplateMessageData()
     {
         $name = $this->notification->sender->name;
-        if (!preg_match('/^[a-zA-Z0-9_\u4e00-\u9fa5]+$/', $name)) {
+        if (!preg_match("/^[\x{4e00}-\x{9fa5}a-zA-Z]+$/u", $name)) {
             $name = '访客';
         }
 
