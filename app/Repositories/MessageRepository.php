@@ -76,6 +76,9 @@ class MessageRepository
         $notifiable = $conversation->visitor;
         if ($message->sender_type == Visitor::class) {
             $notifiable = $conversation->user;
+            if (!$notifiable) {
+                $notifiable = $conversation->institution->users->random();
+            }
             $notifiable->fill(['openid' => $notifiable->openid,]);
         }
         if ($notifiable) {
