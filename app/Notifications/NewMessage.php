@@ -36,7 +36,7 @@ class NewMessage extends Notification implements ShouldQueue, WechatAppNotificat
      */
     public function via($notifiable)
     {
-        return $notifiable instanceof User ? [WebPushChannel::class, WechatAppNotificationChannel::class] : [WebPushChannel::class];
+        return $notifiable instanceof User && $notifiable->openid ? [WebPushChannel::class, WechatAppNotificationChannel::class] : [WebPushChannel::class];
     }
 
     /**

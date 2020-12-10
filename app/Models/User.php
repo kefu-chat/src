@@ -49,6 +49,7 @@ use Xiaohuilam\Laravel\WxappNotificationChannel\Traits\UserTrait as WxappNotific
  * @property-read int|null $roles_count
  * @property-read int|null $user_socialites_count
  * @property-read int|null $notifications_count
+ * @property-read string $openid
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()

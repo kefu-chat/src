@@ -73,16 +73,21 @@ class MessageRepository
 
         broadcast(new ConversationMessaging($message));
 
-        $notifiable = $conversation->visitor;
+        $notifiables = collect([$conversation->visitor])->filter();
         if ($message->sender_type == Visitor::class) {
-            $notifiable = $conversation->user;
-            if (!$notifiable) {
-                $notifiable = $conversation->institution->users->random();
+            $notifiables = collect([$conversation->user])->filter();
+            if (!$notifiables->count()) {
+                $notifiables = $conversation->institution->users->filter();
             }
-            $notifiable->fill(['openid' => $notifiable->openid,]);
         }
-        if ($notifiable) {
-            $notifiable->notify(new NewMessage($message));
+        if ($notifiables) {
+            $notifiables->each(function ($notifiable) use ($message) {
+                /**
+                 * @var User|Visitor $notifiable
+                 */
+                $notifiable->fill(['openid' => $notifiable->openid,]);
+                $notifiable->notify(new NewMessage($message));
+            });
         }
 
         if ($isVisitor) {
