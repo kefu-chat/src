@@ -15,7 +15,7 @@ use NotificationChannels\WebPush\WebPushChannel;
 use Xiaohuilam\Laravel\WxappNotificationChannel\Broadcasting\WechatAppNotificationChannel;
 use Xiaohuilam\Laravel\WxappNotificationChannel\Interfaces\WechatAppNotificationable;
 
-class NewMessage extends Notification implements ShouldQueue, WechatAppNotificationable
+class NewMessage extends Notification implements WechatAppNotificationable//, ShouldQueue
 {
     use Queueable;
 
