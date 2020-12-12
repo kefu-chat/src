@@ -27,7 +27,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapVisitorRoutes();
         $this->mapChatRoutes();
         $this->mapBroadcastingRoutes();
-        $this->mapRocketRoutes();
+        // $this->mapRocketRoutes();
 
         // $this->mapWebRoutes();
 
