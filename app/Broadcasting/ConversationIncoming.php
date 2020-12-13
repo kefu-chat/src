@@ -68,6 +68,7 @@ class ConversationIncoming implements ShouldBroadcast
      */
     public function broadcastWith()
     {
+        $this->conversation->with(['lastMessage',]);
         return $this->conversation->setTransformer(ConversationDetailTransformer::class)->toArray();
     }
 }
