@@ -74,6 +74,6 @@ class MiniappLoginController extends LoginController
             'success' => false,
             'message' => $request->input('errmsg', trans('auth.failed')),
             'code' => 401,
-        ] + $this->sendLoginResponseExtra());
+        ] + $this->sendLoginResponseExtra($request));
     }
 }
