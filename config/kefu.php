@@ -6,4 +6,6 @@ return [
     'client_url' => env('CLIENT_URL', 'http://localhost:3000'),
 
     'qr_url' => env('QR_URL', 'https://www.kefu.chat'),
+
+    'pending_version' => env('PENDING_VERSION'),
 ];

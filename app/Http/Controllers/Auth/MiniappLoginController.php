@@ -34,10 +34,10 @@ class MiniappLoginController extends LoginController
     /**
      * {@inheritDoc}
      */
-    public function sendLoginResponseExtra()
+    public function sendLoginResponseExtra(Request $request)
     {
         return [
-            'is_online' => true,
+            'is_online' => $request->input('version') === config('kefu.pending_version') ? false : true,
         ];
     }
 
@@ -48,6 +48,7 @@ class MiniappLoginController extends LoginController
     {
         $request->validate([
             'code' => ['required', 'string'],
+            'version' => ['nullable', 'string',],
         ]);
 
         /**
