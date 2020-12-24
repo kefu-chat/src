@@ -56,9 +56,11 @@ class ConversationController extends Controller
         $request->validate([
             'offset' => ['nullable', 'string'],
             'type' => ['string', 'in:assigned,unassigned,active,history'],
+            'keyword' => ['nullable', 'string'],
         ]);
 
         $type = $request->input('type');
+        $keyword = $request->input('keyword');
         $request_offset = $request->input('offset');
         $offset = Arr::first(Hashids::decode($request_offset));
         $status = Conversation::STATUS_OPEN;
@@ -79,7 +81,7 @@ class ConversationController extends Controller
                 ]);
             }
         }
-        $conversations = $conversationRepository->listConversations($this->user, $offset, $type, $status, ['messages',]);
+        $conversations = $conversationRepository->listConversations($this->user, $offset, $type, $status, $keyword, ['messages',]);
 
         return response()->success([
             'user_id' => $this->user->public_id,
