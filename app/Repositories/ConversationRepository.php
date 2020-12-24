@@ -203,7 +203,7 @@ class ConversationRepository
                      */
                     return $query->where('name', 'like', '%' . $keyword . '%')
                         ->orWhere('email', 'like', '%' . $keyword . '%')
-                        ->orWhere('phone', 'like', '%' . $keyword) . '%';
+                        ->orWhere('phone', 'like', '%' . $keyword . '%');
                 });
             })
             ->when($offset, function ($query) use ($offset) {
