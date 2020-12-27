@@ -13,6 +13,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Permission;
 
 class RegisterController extends Controller
@@ -59,9 +60,9 @@ class RegisterController extends Controller
         $this->validateCaptcha($captcha_challenge, $captcha_answer);
 
         return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'name' => ['required', 'max:255',],
+            'email' => ['required', 'email', 'max:255', Rule::unique(UserSocialite::class, 'account')->where('type', UserSocialite::TYPE_EMAIL),],
+            'password' => ['required', 'min:6', 'confirmed',],
         ]);
     }
 
