@@ -135,10 +135,11 @@ class ConversationRepository
      * @param int|null $offset
      * @param string|null $type
      * @param bool $status 开关状态
+     * @param string|null $keyword 关键词
      * @param array $has
      * @return Conversation[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Collection<int,Conversation>
      */
-    public function listConversations(User $user, $offset, $type, $status = Conversation::STATUS_OPEN, $has = [])
+    public function listConversations(User $user, $offset, $type, $status = Conversation::STATUS_OPEN, $keyword = null, $has = [])
     {
         /**
          * @var Conversation|Builder $query
@@ -155,6 +156,9 @@ class ConversationRepository
                  * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
                  */
                 return $query->whereHas('institution', function ($query) use ($user) {
+                    /**
+                     * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                     */
                     return $query->where('id', $user->institution_id);
                 });
             })
@@ -171,13 +175,35 @@ class ConversationRepository
                 });
             })
             ->when($type == 'assigned' || $type == 'history', function ($query) use ($user) {
+                /**
+                 * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                 */
                 return $query->where('user_id', $user->id);
             })
             ->when($type == 'active', function ($query) use ($user) {
+                /**
+                 * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                 */
                 return $query->where(function ($query) use ($user) {
+                    /**
+                     * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                     */
                     return $query->where('user_id', $user->id)
                         ->orWhere('user_id', 0)
                         ->orWhereNull('user_id');
+                });
+            })
+            ->when(trim($keyword), function ($query) use ($keyword) {
+                /**
+                 * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                 */
+                return $query->whereHas('visitor', function ($query) use ($keyword) {
+                    /**
+                     * @var Conversation|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+                     */
+                    return $query->where('name', 'like', '%' . $keyword . '%')
+                        ->orWhere('email', 'like', '%' . $keyword . '%')
+                        ->orWhere('phone', 'like', '%' . $keyword . '%');
                 });
             })
             ->when($offset, function ($query) use ($offset) {

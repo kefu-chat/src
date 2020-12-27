@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\DeletedUser;
 use App\Models\Institution;
 use App\Models\User;
+use App\Models\UserSocialite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 
 class EmployeeController extends Controller
@@ -60,15 +62,29 @@ class EmployeeController extends Controller
             abort(403);
         }
 
-        $user = new User([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
-        ]);
-        $user->institution()->associate($institution);
-        $user->enterprise()->associate($institution->enterprise);
-        $user->save();
-        $user->givePermissionTo(Permission::findByName('support', 'api'));
+        try {
+            DB::beginTransaction();
+            $user = new User([
+                'name' => $request->input('name'),
+                'password' => bcrypt($request->input('password')),
+            ]);
+            $user->institution()->associate($institution);
+            $user->enterprise()->associate($institution->enterprise);
+            $user->save();
+            $user->givePermissionTo(Permission::findByName('support', 'api'));
+
+            $userSocialite = new UserSocialite([
+                'type' => UserSocialite::TYPE_EMAIL,
+                'account' => $request->input('email'),
+                'verified_at' => null,
+            ]);
+            $userSocialite->user()->associate($user);
+            $userSocialite->save();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
 
         return response()->success([
             'employee' => $user,
@@ -118,16 +134,34 @@ class EmployeeController extends Controller
             abort(404);
         }
 
-        if ($request->input('name')) {
-            $user->fill(['name' => $request->input('name'),]);
+        try {
+            DB::beginTransaction();
+            if ($request->input('name')) {
+                $user->fill(['name' => $request->input('name'),]);
+            }
+            if ($request->input('password')) {
+                $user->fill(['password' => bcrypt($request->input('password')),]);
+            }
+            if ($request->input('email')) {
+                $userSocialite = $user->userSocialites()->where('type', UserSocialite::TYPE_EMAIL)->first();
+                if (strtolower($userSocialite->account) != strtolower($request->input('email'))) {
+                    if (!$userSocialite) {
+                        $userSocialite = new UserSocialite([
+                            'type' => UserSocialite::TYPE_EMAIL,
+                            'verified_at' => null,
+                        ]);
+                        $userSocialite->user()->associate($user);
+                    }
+                    $userSocialite->fill(['account' => $request->input('email'),]);
+                    $userSocialite->save();
+                }
+            }
+            $user->save();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
         }
-        if ($request->input('email')) {
-            $user->fill(['email' => $request->input('email'),]);
-        }
-        if ($request->input('password')) {
-            $user->fill(['password' => bcrypt($request->input('password')),]);
-        }
-        $user->save();
 
         return response()->success([
             'employee' => $user,
