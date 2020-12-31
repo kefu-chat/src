@@ -196,4 +196,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         }
         return $this->attributes['openid'];
     }
+
+    public function getEmailForVerification()
+    {
+        return data_get($this->userSocialites->where('type', UserSocialite::TYPE_EMAIL)->first(), 'account');
+    }
 }
