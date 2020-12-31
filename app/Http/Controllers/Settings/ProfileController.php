@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Models\UserSocialite;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
@@ -19,7 +21,7 @@ class ProfileController extends Controller
 
         $this->validate($request, [
             'name' => ['nullable', 'string'],
-            'email' => ['nullable', 'email', 'unique:users,email,' . $user->id],
+            'email' => ['required', 'email', 'max:255', Rule::unique(UserSocialite::class, 'account')->where('type', UserSocialite::TYPE_EMAIL)->whereNot('user_id', $user->id),],
             'title' => ['nullable', 'string'],
             'avatar' => ['nullable', 'url'],
         ]);
