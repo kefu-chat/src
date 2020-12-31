@@ -201,4 +201,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     {
         return data_get($this->userSocialites->where('type', UserSocialite::TYPE_EMAIL)->first(), 'account');
     }
+
+    public function routeNotificationForMail()
+    {
+        return $this->getEmailForVerification();
+    }
 }
