@@ -242,11 +242,11 @@ class ConversationRepository
     {
         $conversation = new Conversation([
             'ip' => $ip,
-            'url' => $url,
-            'userAgent' => $userAgent,
+            'url' => substr($url, 0, 250),
+            'userAgent' => substr($userAgent, 0, 250),
             'languages' => $languages,
             'title' => $title,
-            'referer' => $referer,
+            'referer' => substr($url, 0, 250),
             'first_reply_at' => null,
             'last_reply_at' => null,
         ]);
