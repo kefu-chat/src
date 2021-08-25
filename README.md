@@ -52,20 +52,14 @@ php artisan db:seed --class=Database\\Seeders\\VisitorsTableSeeder
 
 ## Socket 服务器启动
 
-Nginx 需要配置
-```nginx
-    location /websocket {
-        proxy_pass http://127.0.0.1:6003;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
-        break;
-    }
+配置文件
+```bash
+cp laravel-echo-server.json.example laravel-echo-server.json
 ```
 
 启动服务
 ```
-php artisan websocket:serve --host=127.0.0.1 --port=6003
+sh ./laravel-echo-server-start.sh
 ```
 
 ## 单元测试
