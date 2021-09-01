@@ -69,4 +69,4 @@ php artisan test
 
 ## 授权协议
 
-商业软件, 保留知识产权, 不开源.
+[MIT License](LICENSE)
